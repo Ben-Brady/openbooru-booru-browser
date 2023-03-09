@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import LoadingIcon from "lib/LoadingIcon.svelte";
 	export let callback: () => void;
-	export let post: Types.Post | null;
+	export let post: Post | null;
 	export let loading: boolean = false;
 </script>
 
 <div on:click="{callback}">
 	{#if post}
-		<img src="{post.thumbnail.url}" alt="" />
+		<img src="{post.thumbnail.url.toString()}" alt="" />
 	{:else if loading}
 		<LoadingIcon />
 	{/if}

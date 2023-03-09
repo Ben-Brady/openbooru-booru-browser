@@ -1,19 +1,32 @@
-import { API_URL, SITE_URL } from "js/config";
+import { SITE_URL } from "js/config";
+import { boorus } from "js/booru";
+import { Sort } from "js/booru/query";
 import Links from "js/links";
 
-let cached_ids: number[] = [];
 let lastUpdated = new Date(0);
-async function getIds(): Promise<number[]> {
+
+let cached_posts: Post[] = [];
+async function updateCache() {
+	let all_posts = [];
+	for (let booru_class of boorus) {
+		let booru = new booru_class();
+		let posts = booru.search({ sort: Sort.HighestRated });
+		all_posts = all_posts.concat(posts);
+	}
+	cached_posts = await r.json();
+	lastUpdated = curDate;
+}
+
+async function getPosts(): Promise<Post[]> {
 	const curDate = new Date();
 	const timeSinceUpdated = (Number(curDate) - Number(lastUpdated)) / 1000;
 
 	if (timeSinceUpdated > 3600) {
-		const r = await fetch(API_URL + "/posts/ids");
-		cached_ids = await r.json();
-		lastUpdated = curDate;
+		updateCache()
 	}
+	
+	return cached_posts
 
-	return cached_ids;
 }
 
 function generateSitemapUrl(path: string, changefreq: string, priority: string) {

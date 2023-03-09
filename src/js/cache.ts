@@ -32,4 +32,4 @@ function set(key: string, value: any, ttl: number = 5) {
     sessionStorage.setItem(key, JSON.stringify(store))
 }
 
-export default { get, set};
+export default { get, set };

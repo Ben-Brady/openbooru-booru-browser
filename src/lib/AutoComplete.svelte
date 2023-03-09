@@ -1,18 +1,19 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
 	import { afterUpdate } from "svelte";
-	import { tagAutocomplete } from "js/booru";
+
+	import type {  } from "js/booru/types";
 	import Tag from "./Tag.svelte";
 
 	export let input: string;
+	export let autocomplete_func: (search: string) => Promise<string[]>;
 	export let callback: (tag: string) => void;
 </script>
 
-{#await tagAutocomplete(input, 8) then tags}
+{#await autocomplete_func(input) then tags}
 	{#if tags.length > 0}
 		<div>
 			{#each tags as tag}
-				<Tag tagName="{tag.name}" data="{tag}" on:click="{() => callback(tag.name)}" />
+				<Tag tagName={tag} on:click={() => callback(tag)} />
 			{/each}
 		</div>
 	{/if}

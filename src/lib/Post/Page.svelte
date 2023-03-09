@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import PostInfo from "lib/Post/Info/index.svelte";
 	import Media from "lib/Post/Media/index.svelte";
-	export let post: Types.Post;
+	export let post: Post;
 </script>
 
 <main>

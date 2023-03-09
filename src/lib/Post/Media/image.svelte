@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
-	import { browser } from "$app/environment";
+	import type { Image, Animation } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
 	import ZoomableImage from "./ZoomableImage.svelte";
-	export let media: Types.Image;
+	export let media: Image | Animation;
 
 	let aspectRatio = Math.max(media.height / media.width, media.width / media.height);
 </script>

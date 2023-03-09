@@ -1,13 +1,9 @@
 <script lang="ts">
-	import type { PageData } from "./$types";
+	import type { Post } from "js/booru/types";
+	import { Rule34 } from "js/booru/rule34";
 	import { browser } from "$app/environment";
 	import PostsPage from "lib/Posts/Page.svelte";
 	import HeadInfo from "lib/HeadInfo.svelte";
-	import type { Types } from "openbooru";
-
-	export let data: PageData;
-	// @ts-ignore
-	let posts: Types.Post[] = data.posts;
 
 	let layout: "grid" | "column" = "grid";
 	if (browser) {
@@ -19,4 +15,4 @@
 </script>
 
 <HeadInfo path="/posts" />
-<PostsPage layout="{layout}" initialPosts="{posts}" />
+<PostsPage layout={layout} booru={Rule34} />

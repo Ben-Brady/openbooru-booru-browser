@@ -1,50 +1,46 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
 	import { BSL } from "openbooru";
 	import { page } from "$app/stores";
 
-	import { posts_search } from "js/booru";
+	import type { Post, Booru } from "js/booru/types";
+	import type { Query } from "js/booru/query";
+	import { encode_query, decode_query } from "js/booru/query";
 	import Links from "js/links";
 	import Grid from "lib/Posts/Grid/index.svelte";
 	import Column from "lib/Posts/Column/index.svelte";
-	import PostButtons from "./Buttons/PostButtons.svelte";
 	import LayoutSelector from "./Buttons/LayoutSelector.svelte";
 
 	export let layout: "grid" | "column" = "grid";
-	export let initialPosts: Types.Post[] = [];
+	export let initialPosts: Post[] = [];
+	export let booru: Booru;
 
 	let finished = false;
 	let loading = false;
-	let posts: Types.Post[] = [];
+	let posts: Post[] = [];
 
 	$: params = $page.url.searchParams;
-	$: bsl = params.get("query") || "";
-	if (typeof bsl === "object") bsl = bsl[0];
-	$: query = BSL.decode(bsl);
-
+	$: search = params.get("query") || "";
+	if (typeof search === "object") search = search[0];
+	$: query = decode_query(search);
+	
 	async function requestPosts() {
 		if (finished || loading) return;
 		loading = true;
 
-		const limit = 100;
 		let new_posts;
 		try {
-			new_posts = await posts_search(query, posts.length, limit);
+			new_posts = await booru.search(query, posts.length);
 		} catch (e) {
 			return;
 		}
 
-		// Helps to test loading
-		// if (import.meta.env.DEV){
-		// 	await new Promise(resolve => setTimeout(resolve, 2000))
-		// }
 		posts = posts.concat(new_posts);
 		if (new_posts.length === 0) finished = true;
 		loading = false;
 	}
 
-	function setQuery(query: Types.PostQuery) {
-		let bsl = BSL.encode(query);
+	function setQuery(query: Query) {
+		let bsl = encode_query(query);
 		let search = bsl ? "?query=" + bsl : "";
 		window.location.search = search;
 	}
@@ -55,7 +51,7 @@
 	}
 	function PostCallback({ id, index }: PostCallbackInterface) {
 		return () => {
-			location.href = Links.post(id);
+			location.href = Links.post(id.toString(), booru.name);
 		};
 	}
 
@@ -66,13 +62,19 @@
 	const LayoutElement = LayoutLookup[layout] ?? Grid;
 </script>
 
-<PostButtons query="{query}" setQuery="{setQuery}" />
 <LayoutSelector layout="{layout}" />
-<svelte:component
-	this="{LayoutElement}"
+<Grid
 	finished="{finished}"
 	loading="{loading}"
 	posts="{posts || initialPosts}"
 	requestPosts="{requestPosts}"
 	callback="{PostCallback}"
 />
+<!-- <svelte:component
+	this="{LayoutElement}"
+	finished="{finished}"
+	loading="{loading}"
+	posts="{posts || initialPosts}"
+	requestPosts="{requestPosts}"
+	callback="{PostCallback}"
+/> -->

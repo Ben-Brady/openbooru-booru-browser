@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
 	import Links from "js/links";
 	import Image from "lib/Post/Media/image.svelte";
 	import { onMount } from "svelte";
 	import About from "lib/Info/About.svelte";
 
-	export let post: Types.Post;
+	export let post: Post;
 	export let callback: (() => void) | null;
 	export let lazy: boolean;
 

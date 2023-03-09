@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import Media from "lib/Post/Media/index.svelte";
 	import PostInfo from "lib/Post/Info/index.svelte";
 	import Button from "./button.svelte";
@@ -8,9 +8,9 @@
 	export let visit: () => void;
 	export let gotoNextPost: () => void;
 	export let gotoPrevPost: () => void;
-	export let prevPost: Types.Post | null;
-	export let post: Types.Post;
-	export let nextPost: Types.Post | null;
+	export let prevPost: Post | null;
+	export let post: Post;
+	export let nextPost: Post | null;
 	export let loading: boolean;
 
 	function keyboardHandler(e: KeyboardEvent) {
@@ -37,7 +37,7 @@
 <div id="container" on:keydown="{keyboardHandler}">
 	<div id="post">
 		<Button post="{prevPost}" callback="{gotoPrevPost}" />
-		<Media post="{post}" callback="{exit}" />
+		<Media post="{post}"/>
 		<Button post="{nextPost}" callback="{gotoNextPost}" loading="{loading}" />
 	</div>
 	<PostInfo post="{post}" />

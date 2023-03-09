@@ -1,14 +1,15 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import { onMount } from "svelte";
 	import LoadingIcon from "lib/LoadingIcon.svelte";
 	import GridItem from "./Item.svelte";
 
 	export let finished: boolean = false;
+	export const loading: boolean = false;
 	export let useScroll: boolean = true;
-	export let posts: Types.Post[] = [];
+	export let posts: Post[] = [];
 	export let requestPosts: () => void = () => {};
-	export let callback: (({ id, index }: { id: number; index: number }) => () => void) | null =
+	export let callback: (({ id, index }: { id: string; index: number }) => () => void) | null =
 		null;
 
 	let container: Element;

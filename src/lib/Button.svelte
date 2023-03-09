@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let src: string = "/favicon.ico";
-	export let name: string = "Lorum";
+	export let name: string = "";
 	export let href: string = "";
 	export let active: boolean = false;
 

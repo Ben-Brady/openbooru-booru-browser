@@ -1,7 +1,7 @@
 <script lang="ts">
+	import type { Image, Animation } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
-	import type { Types } from "openbooru";
-	export let media: Types.Image;
+	export let media: Image | Animation;
 
 	let zoomed = false;
 	const zoomIn = () => (zoomed = true);

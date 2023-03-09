@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import Image from "./image.svelte";
 	import Video from "./video.svelte";
-	export let post: Types.Post | null;
+	export let post: Post | null;
 </script>
 
 {#if post}

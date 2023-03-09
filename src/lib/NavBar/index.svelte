@@ -1,27 +1,10 @@
 <script>
 	import Item from "./Section.svelte";
-	import { profile } from "js/booru";
-	import { READ_ONLY } from "js/config";
 </script>
 
 <nav>
 	<Item path="/" name="Home" image="/images/home.svg" />
-	<!-- {#if !READ_ONLY}
-		<Item path="/tags" name="Tags" image="/images/tags.svg" />
-		<Item path="/subscriptions" name="Subs" image="/images/profile.svg" />
-	{/if} -->
-
 	<Item path="/info" name="Info" image="/images/info.svg" />
-
-	{#if !READ_ONLY}
-		{#await profile()}
-			<Item path="/account" name="" image="/images/profile.svg" />
-		{:then data}
-			<Item path="/account" name="{data.username}" image="/images/profile.svg" />
-		{:catch}
-			<Item path="/account" name="Login" image="/images/profile.svg" />
-		{/await}
-	{/if}
 </nav>
 
 <style>

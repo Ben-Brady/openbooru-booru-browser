@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Video, Image } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
-	export let video: Types.Video;
-	export let poster: Types.Image | null = null;
+	export let video: Video;
+	export let poster: Image | null = null;
 
 	let videoElement: HTMLVideoElement;
 
@@ -31,7 +31,6 @@
 		src="{generateUrl(video.url)}"
 		width="{video.width}"
 		height="{video.height}"
-		type="{video.mimetype}"
 	/>
 </video>
 

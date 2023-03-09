@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import { afterUpdate, onMount, onDestroy } from "svelte";
 	import LoadingIcon from "lib/LoadingIcon.svelte";
 	import Item from "./Item.svelte";
@@ -9,7 +9,7 @@
 
 	export let finished: boolean;
 	export let loading: boolean;
-	export let posts: Types.Post[];
+	export let posts: Post[];
 	export let requestPosts: () => void;
 	export let callback: ({id, index}: {id: number,index: number}) => () => void;;
 

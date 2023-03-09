@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Types } from "openbooru";
 	import { createEventDispatcher } from "svelte";
+	
 	export let tagName: string | null = null;
 	export let data: Types.Tag | null = null;
 	export let href: string | null = null;
@@ -13,7 +14,7 @@
 	const dispatch = createEventDispatcher()
 </script>
 
-<a href="{href}" on:click={dispatch("click", name)}>
+<a href="{href}" on:click={() => dispatch("click", name)}>
 	<span class="{namespace}">
 		{name}
 		{#if showCount && count !== null}

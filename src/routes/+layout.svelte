@@ -1,6 +1,5 @@
 <script>
 	import { QueryClient, QueryClientProvider } from "@sveltestack/svelte-query";
-	import { AGE_RESTRICTED } from "js/config";
 	import Prompts from "lib/Prompts/index.svelte";
 	import NavigationBar from "lib/NavBar/index.svelte";
 
@@ -25,7 +24,7 @@
 		overflow-x: hidden;
 	}
 
-	:root {
+	:global(:root) {
 		--BACKGROUND-1: var(--COLOR-1);
 
 		--BACKGROUND-2: var(--COLOR-2);
@@ -44,6 +43,14 @@
 		--BORDER-2-HOVER: var(--COLOR-7);
 		
 		--NAVBAR-HEIGHT: 2.8rem;
+
+		--COLOR-1: #303a30;
+		--COLOR-2: #2f3e37;
+		--COLOR-3: #26322c;
+		--COLOR-4: #1c2520;
+		--COLOR-5: #131815;
+		--COLOR-6: #0E120F;
+		--COLOR-7: #090b09;
 	}
 	
 	:global(body) {
@@ -85,29 +92,3 @@
 		font-display: swap;
 	}
 </style>
-
-{#if !AGE_RESTRICTED}
-	<style>
-		:root {
-			--COLOR-1: #9ac9d5;
-			--COLOR-2: #62b6cb;
-			--COLOR-3: #3f8098;
-			--COLOR-4: #306173;
-			--COLOR-5: #1e3d48;
-			--COLOR-6: #0c181d;
-			--COLOR-7: #070e11;
-		}
-		</style>
-{:else}
-	<style>
-		:root {
-			--COLOR-1: #303a30;
-			--COLOR-2: #2f3e37;
-			--COLOR-3: #26322c;
-			--COLOR-4: #1c2520;
-			--COLOR-5: #131815;
-			--COLOR-6: #0E120F;
-			--COLOR-7: #090b09;
-		}
-	</style>
-{/if}

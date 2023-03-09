@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import { onMount } from "svelte";
 	import Links from "js/links";
 	import DesktopPosts from "./desktop.svelte";
 
 	export let loading: boolean;
 	export let finished: boolean;
-	export let posts: Types.Post[];
+	export let posts: Post[];
 	export let requestPosts: () => void;
 	export let exitCallback: () => void;
 	export let index: number;

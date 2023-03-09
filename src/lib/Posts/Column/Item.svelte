@@ -1,11 +1,12 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Post } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
 	import Links from "js/links";
 
 	export let index: number;
-	export let post: Types.Post;
-	export let postCallback: () => void;
+	export let post: Post;
+	type PostCallbackType = { id: string, index: number };
+	export let postCallback: (data: PostCallbackType) => void;
 	export let isTarget: boolean = false;
 	export let priority: boolean = false;
 
@@ -22,7 +23,7 @@
 
 <a
 	title="Post: {post.id}"
-	href="{Links.post(post.id)}"
+	href="{Links.post(post.id, post.booru)}"
 	class="{post.full.type}"
 	style="{aspectRatioStyle}"
 	on:load="{isTarget ? () => scrollTo() : null}"

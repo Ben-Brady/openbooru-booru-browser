@@ -1,40 +1,19 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
-	import { Post } from "openbooru";
-	import PostEdit from "lib/Post/Edit/index.svelte";
+	import type { Post } from "js/booru/types";
 	import Source from "./Source.svelte";
 	import Info from "./Info.svelte";
 	import TagList from "./TagList.svelte";
-	import Buttons from "./Buttons.svelte";
 
-	export let post: Types.Post | null;
-
-	let editting = false;
-	const deleteCallback = async () => {
-		if (post) {
-			await Post.Delete(post.id);
-			window.location.reload();
-		}
-	};
-
-	function toggleEditting() {
-		editting = !editting;
-	}
+	export let post: Post | null;
 </script>
 
 <div id="main">
 	{#if post}
-		<span id="source"><Source sources="{post.sources}" /> </span>
 		<div id="inner">
 			<Info post="{post}" />
 			<div id="content">
-				{#if editting}
-					<PostEdit post="{post}" />
-				{:else}
-					<TagList tags="{post.tags}" />
-				{/if}
+				<TagList tags="{post.tags}" />
 			</div>
-			<Buttons editCallback="{toggleEditting}" deleteCallback="{deleteCallback}" />
 		</div>
 	{/if}
 </div>

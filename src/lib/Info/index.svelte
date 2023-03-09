@@ -2,9 +2,8 @@
 	import Sidebar from "./Sidebar.svelte";
 	import About from "./About.svelte";
 	import Contact from "./Contact.svelte";
-	import Api from "./Api.svelte";
 
-	export let page: "about" | "contact" | "api" = "api";
+	export let page: "about" | "contact" = "about";
 </script>
 
 <main>
@@ -13,8 +12,6 @@
 		<About />
 	{:else if page == "contact"}
 		<Contact />
-	{:else if page == "api"}
-		<Api />
 	{/if}
 </main>
 

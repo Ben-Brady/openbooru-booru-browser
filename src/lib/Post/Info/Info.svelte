@@ -1,16 +1,13 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
-	import Votes from "./Votes.svelte";
+	import type { Post } from "js/booru/types";
 	import titleCase from "ap-style-title-case";
-	export let post: Types.Post;
+	export let post: Post;
 
-	let created_at = new Date(post.created_at * 1000).toDateString();
-	let rating = titleCase(post.rating);
+	let created_at = post.created_at.toDateString();
 </script>
 
 <div>
-	<span>{created_at} - {rating}</span>
-	<Votes post="{post}" />
+	<span>{created_at}</span>
 </div>
 
 <style>
