@@ -1,80 +1,147 @@
-import type { Post, Image, Media } from "./types";
+import type { Media, Post, Booru, Image } from "./types";
+import { guess_media_type, guess_mimetype } from "./utils";
 
-export function parse_xml(xml: string, booru: string): Post[] {
+export function parse_xml_nodes(xml: string, booru: Booru): GelbooruPost[] {
     const parser = new DOMParser().parseFromString(xml, "application/xml");
     let post_nodes = parser.getElementsByTagName("post");
     
-    return Array.from(post_nodes)
-        .map(node => parse_post_node(node, booru))
-        .filter(v => !!v)
+    let posts = [];
+    for (const index in post_nodes) {
+        try {
+            let node = post_nodes[index]
+            let gel_post = parse_node(node);
+            let post = parse_post(gel_post, booru);
+            posts.push(post)
+        } catch (e) { console.error(e) }
+    }
+    
+    return posts;
 }
 
-function parse_post_node(node: Element, booru: string): Post {
+function parse_post(post: GelbooruPost, booru: Booru): Post {
+    let origin = booru.generate_url(post.id)
+    let id = Number(post.id).toString();
+    let tags = post.tags.trim().split(" ").filter(v => v != "");
+    let score = Number(post.score);
+    let created_at = new Date(post.created_at);
+    let source = post.source;
+    let type = guess_media_type(post.file_url);
+
     let full: Media = {
-        //@ts-ignore
-        url: new URL(node.getAttribute("file_url")),
-        width: Number(node.getAttribute("width")),
-        height: Number(node.getAttribute("height")),
+        url: new URL(post.file_url),
+        width: Number(post.width),
+        height: Number(post.height),
+        type: guess_media_type(post.file_url),
+        mimetype: guess_mimetype(post.file_url),
     }
 
     let preview: Media = {
-        //@ts-ignore
-        url: new URL(node.getAttribute("sample_url")),
-        width: Number(node.getAttribute("sample_width")),
-        height: Number(node.getAttribute("sample_height")),
+        url: new URL(post.sample_url),
+        width: Number(post.sample_width),
+        height: Number(post.sample_height),
+        type: guess_media_type(post.sample_url),
+        mimetype: guess_mimetype(post.sample_url),
     }
 
     let thumbnail: Image = {
         //@ts-ignore
-        url: new URL(node.getAttribute("preview_url")),
-        width: Number(node.getAttribute("preview_width")),
-        height: Number(node.getAttribute("preview_height")),
+        url: new URL(post.preview_url),
+        width: Number(post.preview_width),
+        height: Number(post.preview_height),
+        type: guess_media_type(post.preview_url),
+        mimetype: guess_mimetype(post.preview_url),
     }
-
-    //@ts-ignore
-    let id = Number(node.getAttribute("id")).toString()
-
-    //@ts-ignore
-    let tags = node.getAttribute("tags").split(" ").filter(v => v != "")
-
-    //@ts-ignore
-    const IMAGE_EXTENTIONS = ["png", "jpeg", "jpg", "webp"]
-    const ANIMATION_EXTENTIONS = ["gif"]
-    const VIDEO_EXTENTIONS = ["webm", "mp4"]
-    
-    let extention = full.url.pathname.split('.').pop();
-    let type: "image" | "animation" | "video";
-    if (extention === undefined) {
-        throw new Error("Invalid Post Type")
-    } else if (IMAGE_EXTENTIONS.includes(extention)) {
-        type = "image"
-    } else if (ANIMATION_EXTENTIONS.includes(extention)) {
-        type = "animation"
-    } else if (VIDEO_EXTENTIONS.includes(extention)) {
-        type = "video"
-    } else {
-        throw new Error("Invalid Post Type")
-    }
-    
-
-    //@ts-ignore
-    let score = Number(node.getAttribute("score"));
-
-    //@ts-ignore
-    let created_at = new Date(node.getAttribute("created_at"));
 
     return {
-        id,
-        booru: booru,
-        tags,
-        type,
-        score,
-        title: "",
-        description: "",
-        created_at,
-        full,
-        preview,
-        thumbnail,
+        id, created_at, type, tags, origin,
+        score, source, full, preview, thumbnail,
+        booru: booru.name,title: "", description: "",
     }
-
 }
+
+function parse_node(node: Element): GelbooruPost {
+    console.log(node)
+    function assert_get_attribute(key: string): string {
+        let value = node.getAttribute(key);
+        if (value === null) { throw new Error("Assertiong Error", key, node) }
+        else { return value }
+    }
+    return {
+        file_url: assert_get_attribute("file_url"),
+        width: assert_get_attribute("width"),
+        height: assert_get_attribute("height"),
+        sample_url: assert_get_attribute("sample_url"),
+        sample_width: assert_get_attribute("sample_width"),
+        sample_height: assert_get_attribute("sample_height"),
+        preview_url: assert_get_attribute("preview_url"),
+        preview_width: assert_get_attribute("preview_width"),
+        preview_height: assert_get_attribute("preview_height"),
+        score: assert_get_attribute("score"),
+        parent_id: assert_get_attribute("parent_id"),
+        rating: assert_get_attribute("rating"),
+        tags: assert_get_attribute("tags"),
+        id: assert_get_attribute("id"),
+        change: assert_get_attribute("change"),
+        md5: assert_get_attribute("md5"),
+        creator_id: assert_get_attribute("creator_id"),
+        has_children: assert_get_attribute("has_children"),
+        created_at: assert_get_attribute("created_at"),
+        status: assert_get_attribute("status"),
+        source: assert_get_attribute("source"),
+        has_notes: assert_get_attribute("has_notes"),
+        has_comments: assert_get_attribute("has_comments"),
+    }
+}
+
+
+export type GelbooruPost = {
+    file_url: string,
+    width: string,
+    height: string,
+    sample_url: string,
+    sample_width: string,
+    sample_height: string,
+    preview_url: string,
+    preview_width: string,
+    preview_height: string,
+    score: string,
+    parent_id: string,
+    rating: string,
+    tags: string,
+    id: string,
+    change: string,
+    md5: string,
+    creator_id: string,
+    has_children: string,
+    created_at: string,
+    status: string,
+    source: string,
+    has_notes: string,
+    has_comments: string,
+}
+// 	file_url="https://api-cdn.rule34.xxx/images/6626/12a78cf55a628c59abc8742dd0a5b4fc.jpeg"
+// 	width="768"
+// 	height="1056"
+
+// 	sample_url="https://api-cdn.rule34.xxx/images/6626/12a78cf55a628c59abc8742dd0a5b4fc.jpeg"
+// 	sample_width="768"
+// 	sample_height="1056"
+
+// 	preview_url="https://api-cdn.rule34.xxx/thumbnails/6626/thumbnail_12a78cf55a628c59abc8742dd0a5b4fc.jpg"
+// 	preview_width="109"
+// 	preview_height="150"
+
+// 	score="3"
+// 	parent_id=""
+// 	rating="q"
+// 	tags=" lop_(star_wars_visions) lop_and_ochou lopunny_(cosplay) tagme "
+// 	id="7560776"
+// 	change="1678375135"
+// 	md5="12a78cf55a628c59abc8742dd0a5b4fc"
+// 	creator_id="1809909"
+// 	has_children="false"
+// 	created_at="Thu Mar 09 15:18:55 +0000 2023"
+// 	status="active"
+// 	source=""
+// 	has_notes="false"
+// 	has_comments="false"
