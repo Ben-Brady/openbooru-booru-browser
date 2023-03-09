@@ -8,9 +8,9 @@
 	export const loading: boolean = false;
 	export let useScroll: boolean = true;
 	export let posts: Post[] = [];
-	export let requestPosts: () => void = () => {};
-	export let callback: (({ id, index }: { id: string; index: number }) => () => void) | null =
-		null;
+	export let requestPosts: () => Promise<void> = () => new Promise(resolve => resolve());
+	type CallbackSignature = (({ id, index }: { id: string; index: number }) => () => void)
+	export let callback: CallbackSignature | null = null;
 
 	let container: Element;
 	async function CheckNewPosts() {
