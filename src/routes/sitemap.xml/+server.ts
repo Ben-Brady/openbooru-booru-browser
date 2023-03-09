@@ -7,14 +7,12 @@ let lastUpdated = new Date(0);
 
 let cached_posts: Post[] = [];
 async function updateCache() {
-	let all_posts = [];
-	for (let booru_class of boorus) {
-		let booru = new booru_class();
+	cached_posts = [];
+	for (let booru of boorus) {
 		let posts = booru.search({ sort: Sort.HighestRated });
-		all_posts = all_posts.concat(posts);
+		cached_posts = cached_posts.concat(posts);
 	}
-	cached_posts = await r.json();
-	lastUpdated = curDate;
+	lastUpdated = new Date();
 }
 
 async function getPosts(): Promise<Post[]> {
@@ -56,12 +54,12 @@ export async function GET() {
 	urls.push(generateSitemapUrl("/", "monthly", "1"));
 	urls.push(generateSitemapUrl("/posts", "monthly", "1"));
 	urls.push(generateSitemapUrl("/info", "monthly", "1"));
-	urls.push(generateSitemapUrl("/account", "monthly", "1"));
 
-	const ids = await getIds();
-	for (const id of ids) {
-		urls.push(generateSitemapUrl(Links.post(id), "weekly", "0.8"));
-	}
+	// const posts = await getPosts();
+	// for (const post of posts) {
+	// 	let url = generateSitemapUrl(Links.post(post.id, post.booru));
+	// 	urls.push(url, "monthly", "0.8");
+	// }
 
 	const body = prefix + urls.join("") + suffix;
 	return new Response(body, {
