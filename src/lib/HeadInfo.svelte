@@ -14,6 +14,9 @@
 </script>
 
 <svelte:head>
+	<link rel="preconnect" href="https://api.rule34.xxx" />
+	<link rel="preconnect" href="https://e621.net" />
+	
 	<title>{RenderedTitle}</title>
 	<meta name="description" content="{RenderedDescription}" />
 	<meta name="keywords" content="{RenderedKeywords.join(', ')}" />
