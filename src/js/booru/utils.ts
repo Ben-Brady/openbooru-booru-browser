@@ -21,18 +21,6 @@ export function guess_media_type(url: string | URL): MediaType {
     }
 }
 
-export function guess_mimetype(url: string | URL): string {
-    url = new URL(url.toString())
-    let ext = "." + url.pathname.split(".").pop();
-    let mimetype = MIMETYPE_LOOKUP.get(ext)
-    
-    if (mimetype === undefined) {
-        throw new Error("Could not guess MimeType")
-    } else {
-        return mimetype
-    }
-}
-
 const MIMETYPE_LOOKUP: Map<string, string> = new Map([
     [".webp", "image/webp"],
     [".png", "image/png"],
@@ -46,3 +34,15 @@ const MIMETYPE_LOOKUP: Map<string, string> = new Map([
     [".mp4", "video/mp4"],
     [".webm", "video/webm"],
 ]);
+
+export function guess_mimetype(url: string | URL): string {
+    url = new URL(url.toString())
+    let ext = "." + url.pathname.split(".").pop();
+    let mimetype = MIMETYPE_LOOKUP.get(ext)
+    
+    if (mimetype === undefined) {
+        throw new Error("Could not guess MimeType")
+    } else {
+        return mimetype
+    }
+}
