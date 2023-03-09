@@ -1,7 +1,5 @@
 <script lang="ts">
-	export let sources: string[] = [];
-
-	let source = sources[0];
+	export let source: string;
 
 	let url: URL | null;
 	try {

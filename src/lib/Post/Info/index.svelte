@@ -12,6 +12,7 @@
 		<div id="inner">
 			<Info post="{post}" />
 			<div id="content">
+				<Source source={post.source} />
 				<TagList tags="{post.tags}" />
 			</div>
 		</div>
@@ -27,13 +28,6 @@
 		height: fit-content;
 		min-height: 14rem;
 		background-color: var(--BACKGROUND-3);
-	}
-
-	#source {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 	}
 
 	div#inner {
