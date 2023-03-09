@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { BSL } from "openbooru";
 	import { page } from "$app/stores";
 
 	import type { Post, Booru } from "js/booru/types";
@@ -51,7 +50,7 @@
 	}
 	function PostCallback({ id, index }: PostCallbackInterface) {
 		return () => {
-			location.href = Links.post(id.toString(), booru.name);
+			location.href = Links.post(id.toString(), booru.short_name);
 		};
 	}
 

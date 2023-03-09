@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
+	import type { Tag } from "js/booru/types";
 	import { createEventDispatcher } from "svelte";
 	
 	export let tagName: string | null = null;
-	export let data: Types.Tag | null = null;
+	export let data: Tag | null = null;
 	export let href: string | null = null;
 	export let showCount: boolean = false;
 

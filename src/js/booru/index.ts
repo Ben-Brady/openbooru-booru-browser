@@ -7,7 +7,7 @@ export const boorus = [
 
 const lookup = {};
 for (let booru of boorus) {
-    lookup[booru.name] = booru
+    lookup[booru.short_name] = booru
 }
 
 export function booru_from_string(booru_name: string): Booru | undefined {

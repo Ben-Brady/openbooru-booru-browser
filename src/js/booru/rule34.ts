@@ -2,14 +2,15 @@ import type { Booru, Post, Query, Image, Media } from "./types";
 import { Sort } from "./query";
 import { parse_xml_nodes } from "./gelbooru_2";
 
-export class Rule34 implements Rule34 {
-    static name = "r34"
+export class Rule34 implements Booru {
+    static short_name = "r34"
+    static display_name = "rule34.xxx"
     
     static async is_working() {
         return true
     }
 
-    static async generate_url(id: string): string {
+    static generate_url(id: string): string {
         return `https://rule34.xxx/index.php?page=post&s=view&id=${id}`
     }
 
@@ -20,7 +21,7 @@ export class Rule34 implements Rule34 {
         let search = query.search;
         if (query.sort == Sort.HighestRated) { search += "sort:score" }
         else if (query.sort == Sort.LowestRated) { search += "sort:score:asc"}
-        else if (query.sort == Sort.Hotest) { search += "sort:score"}
+        else if (query.sort == Sort.Hotest) { search += "sort:score id:>=7000000"}
         else if (query.sort == Sort.Newest) { search += "sort:id"}
         params.set("tags", search)
 

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Post } from "js/booru/types";
-	import titleCase from "ap-style-title-case";
 	export let post: Post;
 
 	let created_at = post.created_at.toDateString();

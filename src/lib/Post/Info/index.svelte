@@ -1,18 +1,21 @@
 <script lang="ts">
 	import type { Post } from "js/booru/types";
 	import Source from "./Source.svelte";
-	import Info from "./Info.svelte";
+	import LeftBlock from "./LeftBlock.svelte";
 	import TagList from "./TagList.svelte";
 
 	export let post: Post | null;
+	console.log(post)
 </script>
 
 <div id="main">
 	{#if post}
 		<div id="inner">
-			<Info post="{post}" />
+			<LeftBlock post="{post}" />
 			<div id="content">
-				<Source source={post.source} />
+				<div id="source">
+					<Source source={post.origin.toString()} />
+				</div>
 				<TagList tags="{post.tags}" />
 			</div>
 		</div>
@@ -20,6 +23,13 @@
 </div>
 
 <style>
+	#source {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
 	div#main {
 		display: grid;
 		grid-template-rows: 1.2rem 1fr;
@@ -37,7 +47,6 @@
 	}
 
 	div#content {
-		padding: 1rem;
 	}
 
 	@media screen and (max-width: 40rem), (orientation: portrait) {

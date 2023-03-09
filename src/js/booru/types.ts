@@ -1,8 +1,8 @@
 export type { Query } from "./query";
-import type { Query } from "./query";
 
 export interface Booru {
-    name: string
+    short_name: string
+    display_name: string
     generate_url: (id: string) => string
     
     is_working: () => Promise<boolean>
@@ -26,6 +26,10 @@ export type Post = {
     thumbnail: Image,
     preview: Image
     full: Media
+}
+
+export type Tag {
+
 }
 
 export type MediaType = "image" | "video" | "animation"

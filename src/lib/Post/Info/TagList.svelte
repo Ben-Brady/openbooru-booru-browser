@@ -1,13 +1,15 @@
 <script lang="ts">
-	import type { Types } from "openbooru";
-	import { BSL } from "openbooru";
+	import type { Query } from "js/booru/types";
+	import { encode_query } from "js/booru/query";
+	import Links from "js/links";
 	import Tag from "lib/Tag.svelte";
 	export let tags: string[] = [];
 	tags.sort();
 
 	function create_link(tag: string) {
-		let query: Types.PostQuery = { include_tags: [tag] };
-		let bsl = BSL.encode(query);
+		let query: Query = { search: tag };
+		let bsl = encode_query(query);
+		// TODO: Add button Links.posts
 		let href = `/posts/?query=${bsl}`;
 		return href;
 	}

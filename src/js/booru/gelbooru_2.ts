@@ -55,7 +55,7 @@ function parse_post(post: GelbooruPost, booru: Booru): Post {
     return {
         id, created_at, type, tags, origin,
         score, source, full, preview, thumbnail,
-        booru: booru.name,title: "", description: "",
+        booru: booru.short_name,title: "", description: "",
     }
 }
 
