@@ -1,7 +1,6 @@
 import type { Media, Post, Booru, Image } from "../types";
 import { guess_media_type, guess_mimetype } from "../utils";
 import { DOMParser } from "@xmldom/xmldom";
-import { Option, Some, None } from "ts-results";
 
 export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 	const parser = new DOMParser().parseFromString(xml, "application/xml");
@@ -11,15 +10,15 @@ export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 	post_nodes.forEach(node => {
 		const gel_post = parse_node(node);
 		const post = parse_post(gel_post, booru);
-		if (post.some) {
-			posts.push(post.val);
+		if (post) {
+			posts.push(post);
 		}
 	})
 
 	return posts;
 }
 
-function parse_post(post: GelbooruPost, booru: Booru): Option<Post> {
+function parse_post(post: GelbooruPost, booru: Booru): Post | undefined {
 	let origin = booru.generate_url(post.id);
 	let id = Number(post.id).toString();
 	let tags = post.tags
@@ -55,7 +54,7 @@ function parse_post(post: GelbooruPost, booru: Booru): Option<Post> {
 		mimetype: guess_mimetype(post.preview_url),
 	};
 
-	return Some({
+	return {
 		id,
 		created_at,
 		type,
@@ -69,7 +68,7 @@ function parse_post(post: GelbooruPost, booru: Booru): Option<Post> {
 		booru: booru.short_name,
 		title: "",
 		description: "",
-	});
+	};
 }
 
 function parse_node(node: Element): GelbooruPost {
