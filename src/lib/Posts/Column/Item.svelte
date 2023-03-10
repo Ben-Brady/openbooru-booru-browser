@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Post } from "js/booru/types";
+	import type { Post, Image } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
 	import Links from "js/links";
 
@@ -12,8 +12,19 @@
 
 	const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
-	let image = post.preview?.type === "image" ? post.preview : post.thumbnail;
-	image ??= post.thumbnail;
+	let image: Image;
+	function onLoad(e: Event) {
+		if (post.preview === undefined) return
+		if (post.preview.type !== "image") return
+
+		const MAX_SIZE_PIXELS = 8_000_000;
+		let { width, height } = post.preview;
+		if ((width * height) > MAX_SIZE_PIXELS) return
+
+		image = post.preview;
+	}
+	
+	image = post.thumbnail;
 
 	let aspectRatio = image.height / image.width;
 	let adjustedAspectRatio = clamp(aspectRatio, 0.5, 2);
@@ -38,6 +49,7 @@
 		height="{image.height}"
 		alt="{post.tags.join(', ')}"
 		loading="{priority ? null : 'lazy'}"
+		on:load={onLoad}
 	/>
 </a>
 
