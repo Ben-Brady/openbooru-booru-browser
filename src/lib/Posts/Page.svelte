@@ -2,8 +2,7 @@
 	import { page } from "$app/stores";
 
 	import type { Post, Booru } from "js/booru/types";
-	import type { Query } from "js/booru/query";
-	import { encode_query, decode_query } from "js/booru/query";
+	import { decode_query } from "js/booru/query";
 	import Links from "js/links";
 	import Grid from "lib/Posts/Grid/index.svelte";
 	import Column from "lib/Posts/Column/index.svelte";
@@ -21,48 +20,42 @@
 	$: search = params.get("query") || "";
 	if (typeof search === "object") search = search[0];
 	$: query = decode_query(search);
-	
+
 	async function requestPosts() {
 		if (finished || loading) return;
 		loading = true;
 
-		let new_posts;
+		
 		try {
-			new_posts = await booru.search(query, posts.length);
-		} catch (e) {
-			return;
-		}
-
-		posts = posts.concat(new_posts);
-		if (new_posts.length === 0) finished = true;
+			let new_posts = await booru.search(query, posts.length);
+			posts = posts.concat(...new_posts);
+			if (new_posts.length === 0) finished = true;
+		} catch (e) { console.debug(e)}
+		console.log({posts})
+		
 		loading = false;
 	}
-
-	function setQuery(query: Query) {
-		let bsl = encode_query(query);
-		let search = bsl ? "?query=" + bsl : "";
-		window.location.search = search;
-	}
-
-	interface PostCallbackInterface {
-		id: number;
-		index: number;
-	}
-	function PostCallback({ id, index }: PostCallbackInterface) {
+	
+	type PostCallbackInterface = { id: string, index: number }
+	function PostCallback({ id }: PostCallbackInterface) {
 		return () => {
 			location.href = Links.post(id.toString(), booru.short_name);
 		};
 	}
 
-	const LayoutLookup = {
-		grid: Grid,
-		column: Column,
-	};
-	const LayoutElement = LayoutLookup[layout] ?? Grid;
+	let layout_element: any;
+	if (layout === "grid") {
+		layout_element = Grid;
+	} else if (layout === "column") {
+		layout_element = Column;
+	} else {
+		layout_element = Grid;
+	}
 </script>
 
 <LayoutSelector layout="{layout}" />
-<Grid
+<svelte:component
+	this={layout_element}
 	finished="{finished}"
 	loading="{loading}"
 	posts="{posts || initialPosts}"

@@ -1,33 +1,45 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
-	import type { Post, Booru } from "js/booru/types";
-	import { booru_from_string  } from "js/booru";
+	import type { Post } from "js/booru/types";
+	import { booru_from_string } from "js/booru";
 	import * as Links from "js/links";
 	import HeadInfo from "lib/HeadInfo.svelte";
 	import PostPage from "lib/Post/Page.svelte";
 
 	export let data: PageData;
-	const { booru_name, id } = data;
+	const { post, booru_name, id } = data;
 
+	console.log(data);
 	async function getPost() {
 		const booru = booru_from_string(booru_name);
-		const post = await booru?.get(id)
-		console.log()
-		if (post === undefined){
-			location.href = "/"
-			throw 404
+		const post = await booru?.get(id);
+		if (post === undefined) {
+			location.href = "/";
+			throw 404;
 		} else {
-			return post
+			return post;
 		}
 	}
 
 	function generateTitle(post: Post) {
 		const booru = booru_from_string(booru_name);
-		return `${booru?.display_name}: Post ${post.id}`
+		return `${booru?.display_name}: Post ${post.id}`;
 	}
 </script>
 
+{#if post}
+	<HeadInfo
+		title="{generateTitle(post)}"
+		path="{Links.post(post.id, post.booru)}"
+		media="{post.full}"
+	/>
+	<PostPage post="{post}" />
+{/if}
 {#await getPost() then post}
-	<HeadInfo title={generateTitle(post)} path="{Links.post(post.id, post.booru)}" media="{post.full}" />
+	<HeadInfo
+		title="{generateTitle(post)}"
+		path="{Links.post(post.id, post.booru)}"
+		media="{post.full}"
+	/>
 	<PostPage post="{post}" />
 {/await}

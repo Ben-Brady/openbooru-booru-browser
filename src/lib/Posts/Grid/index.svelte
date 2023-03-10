@@ -9,12 +9,13 @@
 	export let useScroll: boolean = true;
 	export let posts: Post[] = [];
 	export let requestPosts: () => Promise<void> = () => new Promise(resolve => resolve());
-	type CallbackSignature = (({ id, index }: { id: string; index: number }) => () => void)
+	type CallbackSignature = ({ id, index }: { id: string; index: number }) => () => void;
 	export let callback: CallbackSignature | null = null;
 
 	let container: Element;
 	async function CheckNewPosts() {
 		if (!container) return;
+		//@ts-ignore
 		const { scrollTop, offsetHeight, scrollHeight } = container;
 		let distanceFromTop = scrollTop + offsetHeight;
 		let distanceFromBottom = scrollHeight - distanceFromTop;

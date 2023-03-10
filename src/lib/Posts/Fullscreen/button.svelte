@@ -6,7 +6,7 @@
 	export let loading: boolean = false;
 </script>
 
-<div on:click="{callback}">
+<div on:click="{callback}" on:keydown="{callback}">
 	{#if post}
 		<img src="{post.thumbnail.url.toString()}" alt="" />
 	{:else if loading}

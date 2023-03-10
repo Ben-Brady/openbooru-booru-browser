@@ -1,7 +1,7 @@
-export function generateUrl(url: URL | undefined): string | undefined {
-	if (url && url.hostname.includes("rule34.xxx")) {
+export function generateUrl(url: URL | string | undefined): string | undefined {
+	if (url) {
 		return url?.toString();
 	} else {
-		return url?.toString();
+		return undefined;
 	}
 }

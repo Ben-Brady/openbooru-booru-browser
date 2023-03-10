@@ -5,7 +5,7 @@
 
 	export let index: number;
 	export let post: Post;
-	type PostCallbackType = { id: string, index: number };
+	type PostCallbackType = { id: string; index: number };
 	export let postCallback: (data: PostCallbackType) => void;
 	export let isTarget: boolean = false;
 	export let priority: boolean = false;

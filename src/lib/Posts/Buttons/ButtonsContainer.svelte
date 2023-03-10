@@ -1,9 +1,9 @@
 <script lang="ts">
-	export let position: "left"|"right";
+	export let position: "left" | "right";
 </script>
 
-<div id={position}>
-	<slot/>
+<div id="{position}">
+	<slot />
 </div>
 
 <style>

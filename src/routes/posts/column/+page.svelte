@@ -10,4 +10,4 @@
 </script>
 
 <HeadInfo path="/posts/column" />
-<PostsPage layout="column" booru={Rule34}/>
+<PostsPage layout="column" booru="{Rule34}" />

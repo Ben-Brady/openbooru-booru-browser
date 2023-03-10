@@ -17,7 +17,7 @@
 		height="{media.height}"
 		loading="eager"
 	/>
-	
+
 	<style>
 		img {
 			width: 100%;

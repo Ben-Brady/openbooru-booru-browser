@@ -1,15 +1,15 @@
 <script lang="ts" context="module">
 	export let show = () => {
-		if (searchModal) searchModal.show()
-	}
+		if (searchModal) searchModal.show();
+	};
 	export let hide = () => {
-		if (searchModal) searchModal.close()
-	}
+		if (searchModal) searchModal.close();
+	};
 	export let toggle = () => {
 		if (searchModal) {
 			searchModal.open ? hide() : show();
 		}
-	}
+	};
 	let searchModal: HTMLDialogElement;
 </script>
 
@@ -17,8 +17,8 @@
 	export let visible: boolean;
 </script>
 
-<dialog open={visible} bind:this={searchModal}>
-	<slot/>
+<dialog open="{visible}" bind:this="{searchModal}">
+	<slot />
 </dialog>
 
 <style>
@@ -38,4 +38,4 @@
 		width: 100%;
 		background: rgba(0, 0, 0, 0.8);
 	}
- </style>
+</style>

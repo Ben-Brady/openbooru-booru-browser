@@ -7,7 +7,7 @@
 </script>
 
 <main>
-	<Sidebar current={page} />
+	<Sidebar current="{page}" />
 	{#if page == "about"}
 		<About />
 	{:else if page == "contact"}

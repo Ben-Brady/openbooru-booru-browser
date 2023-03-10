@@ -4,4 +4,4 @@
 </script>
 
 <HeadInfo title="Info | Api" path="/info/api" />
-<InfoPage page="api" />
+<InfoPage page="about" />

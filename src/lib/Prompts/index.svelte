@@ -1,10 +1,10 @@
 <script lang="ts">
-  import CookiePrompt from "./CookiePrompt.svelte";
-  import AgePrompt from "./AgePrompt.svelte";
+	import CookiePrompt from "./CookiePrompt.svelte";
+	import AgePrompt from "./AgePrompt.svelte";
 
-  let shouldPromptAge: boolean = false;
-  let shouldPromptCookies: boolean = false;
+	let shouldPromptAge = false;
+	let shouldPromptCookies = false;
 </script>
 
-<AgePrompt bind:shouldPrompt={shouldPromptAge}/>
-<CookiePrompt bind:shouldPrompt={shouldPromptCookies}/>
+<AgePrompt bind:shouldPrompt="{shouldPromptAge}" />
+<CookiePrompt bind:shouldPrompt="{shouldPromptCookies}" />

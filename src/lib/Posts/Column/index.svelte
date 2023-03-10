@@ -1,23 +1,22 @@
 <script lang="ts">
 	import type { Post } from "js/booru/types";
-	import { afterUpdate, onMount, onDestroy } from "svelte";
+	import { onMount, onDestroy } from "svelte";
 	import LoadingIcon from "lib/LoadingIcon.svelte";
 	import Item from "./Item.svelte";
 	import { SplitPosts } from "./utils";
-	import About from "lib/Info/About.svelte";
-	import type { LoadEvent } from "@sveltejs/kit";
 
 	export let finished: boolean;
 	export let loading: boolean;
 	export let posts: Post[];
-	export let requestPosts: () => void;
-	export let callback: ({id, index}: {id: number,index: number}) => () => void;;
+	export let requestPosts: () => Promise<void>;
+	export let callback: ({ id, index }: { id: number; index: number }) => () => void;
 
 	const Clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
 	let container: Element;
 	async function checkNewPosts() {
 		if (!container || finished) return;
+		//@ts-ignore
 		const { scrollTop, offsetHeight, scrollHeight } = container;
 		let distanceFromTop = scrollTop + offsetHeight;
 		let distanceFromBottom = scrollHeight - distanceFromTop;
@@ -27,21 +26,20 @@
 	}
 
 	let column_count = 3;
-	let width =  300
+	let width = 300;
 	$: post_columns = SplitPosts(posts, Clamp(column_count, 1, 8));
 	$: column_count = Math.floor((width - 200) / 300);
 
-
 	let interval: NodeJS.Timer;
 	onMount(() => {
-		interval = setInterval(checkNewPosts, 300)
-	})
-	onDestroy(() => clearInterval(interval))
-	
+		interval = setInterval(checkNewPosts, 300);
+	});
+	onDestroy(() => clearInterval(interval));
+
 	onMount(checkNewPosts);
 </script>
 
-<main bind:this="{container}" bind:clientWidth={width}>
+<main bind:this="{container}" bind:clientWidth="{width}">
 	<div id="columns">
 		{#each post_columns as column}
 			<div class="column">
@@ -50,7 +48,7 @@
 						index="{index}"
 						post="{post}"
 						priority="{index < 5}"
-						postCallback={callback({ id: post.id, index })}
+						postCallback="{callback({ id: post.id, index })}"
 					/>
 				{/each}
 			</div>

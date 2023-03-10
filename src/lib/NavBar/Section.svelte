@@ -1,6 +1,4 @@
 <script lang="ts">
-	import About from "lib/Info/About.svelte";
-
 	export let image: string;
 	export let name: string;
 	export let path: string;

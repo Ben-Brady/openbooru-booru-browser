@@ -5,7 +5,7 @@
 	export let active: boolean = false;
 
 	import { createEventDispatcher } from "svelte";
-	const dispatch = createEventDispatcher()
+	const dispatch = createEventDispatcher();
 </script>
 
 {#if href}
@@ -15,7 +15,7 @@
 		</button>
 	</a>
 {:else}
-	<button class="{active ? 'active' : ''}" on:click={() => dispatch("click")}>
+	<button class="{active ? 'active' : ''}" on:click="{() => dispatch('click')}">
 		<img src="{src}" alt="{name}" />
 	</button>
 {/if}

@@ -5,7 +5,6 @@
 	import DesktopPosts from "./desktop.svelte";
 
 	export let loading: boolean;
-	export let finished: boolean;
 	export let posts: Post[];
 	export let requestPosts: () => void;
 	export let exitCallback: () => void;
@@ -24,7 +23,7 @@
 	}
 
 	function visit() {
-		window.location.href = Links.post(post.id);
+		window.location.href = Links.post(post.id, post.booru);
 	}
 
 	function gotoNextPost() {
@@ -44,12 +43,12 @@
 </script>
 
 <DesktopPosts
-	exit={exitCallback}
-	visit={visit}
-	gotoNextPost={gotoNextPost}
-	gotoPrevPost={gotoPrevPost}
-	prevPost={prevPost}
-	post={post}
-	nextPost={nextPost}
-	loading={loading}
+	exit="{exitCallback}"
+	visit="{visit}"
+	gotoNextPost="{gotoNextPost}"
+	gotoPrevPost="{gotoPrevPost}"
+	prevPost="{prevPost}"
+	post="{post}"
+	nextPost="{nextPost}"
+	loading="{loading}"
 />

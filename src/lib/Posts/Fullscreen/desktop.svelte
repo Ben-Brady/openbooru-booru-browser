@@ -37,7 +37,7 @@
 <div id="container" on:keydown="{keyboardHandler}">
 	<div id="post">
 		<Button post="{prevPost}" callback="{gotoPrevPost}" />
-		<Media post="{post}"/>
+		<Media post="{post}" />
 		<Button post="{nextPost}" callback="{gotoNextPost}" loading="{loading}" />
 	</div>
 	<PostInfo post="{post}" />

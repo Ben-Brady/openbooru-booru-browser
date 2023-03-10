@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Query } from "js/booru/types";
 	import { encode_query } from "js/booru/query";
-	import Links from "js/links";
 	import Tag from "lib/Tag.svelte";
 	export let tags: string[] = [];
 	tags.sort();
@@ -17,7 +16,7 @@
 
 <div>
 	{#each tags as tag}
-		<Tag tagName="{tag}" href="{create_link(tag)}" />
+		<Tag name="{tag}" href="{create_link(tag)}" />
 	{/each}
 </div>
 

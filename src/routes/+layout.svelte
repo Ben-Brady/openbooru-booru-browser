@@ -7,7 +7,7 @@
 </script>
 
 <QueryClientProvider client="{queryClient}">
-	<Prompts/>
+	<Prompts />
 	<NavigationBar />
 	<main>
 		<slot />
@@ -41,7 +41,7 @@
 
 		--BORDER-2: var(--COLOR-6);
 		--BORDER-2-HOVER: var(--COLOR-7);
-		
+
 		--NAVBAR-HEIGHT: 2.8rem;
 
 		--COLOR-1: #303a30;
@@ -49,10 +49,10 @@
 		--COLOR-3: #26322c;
 		--COLOR-4: #1c2520;
 		--COLOR-5: #131815;
-		--COLOR-6: #0E120F;
+		--COLOR-6: #0e120f;
 		--COLOR-7: #090b09;
 	}
-	
+
 	:global(body) {
 		margin: 0;
 		padding: 0;
@@ -69,7 +69,7 @@
 	:global(a) {
 		text-decoration: none;
 	}
-	
+
 	/* latin */
 	@font-face {
 		font-family: "Lato";

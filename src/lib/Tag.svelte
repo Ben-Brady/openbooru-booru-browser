@@ -1,23 +1,22 @@
 <script lang="ts">
-	import type { Tag } from "js/booru/types";
+	import type { TagNamespace } from "js/booru/types";
 	import { createEventDispatcher } from "svelte";
-	
-	export let tagName: string | null = null;
-	export let data: Tag | null = null;
-	export let href: string | null = null;
+
+	export let name: string;
+	export let namespace: TagNamespace | undefined = undefined;
+	export let count: number | undefined = undefined;
+	export let href: string | undefined = undefined;
 	export let showCount: boolean = false;
 
-	const name = tagName ?? data?.name ?? "Foo";
-	const namespace = data?.namespace ?? "generic";
-	const count = data?.count ?? null;
+	namespace ??= "generic";
 
-	const dispatch = createEventDispatcher()
+	const dispatch = createEventDispatcher();
 </script>
 
-<a href="{href}" on:click={() => dispatch("click", name)}>
+<a href="{href}" on:click="{() => dispatch('click', name)}">
 	<span class="{namespace}">
 		{name}
-		{#if showCount && count !== null}
+		{#if showCount && count !== undefined}
 			{count}
 		{/if}
 		<slot />
@@ -48,6 +47,9 @@
 
 		padding: 0 0.3rem;
 
+	}
+	
+	span.generic {
 		color: black;
 	}
 

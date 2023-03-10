@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { afterUpdate } from "svelte";
-
-	import type {  } from "js/booru/types";
 	import Tag from "./Tag.svelte";
 
 	export let input: string;
@@ -13,7 +10,7 @@
 	{#if tags.length > 0}
 		<div>
 			{#each tags as tag}
-				<Tag tagName={tag} on:click={() => callback(tag)} />
+				<Tag name="{tag}" on:click="{() => callback(tag)}" />
 			{/each}
 		</div>
 	{/if}

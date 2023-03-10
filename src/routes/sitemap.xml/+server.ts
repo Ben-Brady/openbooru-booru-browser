@@ -1,7 +1,8 @@
+import type { Post } from "js/booru/types";
+import Links from "js/links";
 import { SITE_URL } from "js/config";
 import { boorus } from "js/booru";
 import { Sort } from "js/booru/query";
-import Links from "js/links";
 
 let lastUpdated = new Date(0);
 
@@ -9,10 +10,11 @@ let cached_posts: Post[] = [];
 async function updateCache() {
 	cached_posts = [];
 	for (let booru of boorus) {
-		let posts = booru.search({ sort: Sort.HighestRated });
+		let posts = await booru.search({ sort: Sort.HighestRated }, 0);
 		cached_posts = cached_posts.concat(posts);
 	}
 	lastUpdated = new Date();
+	return cached_posts
 }
 
 async function getPosts(): Promise<Post[]> {
@@ -20,11 +22,10 @@ async function getPosts(): Promise<Post[]> {
 	const timeSinceUpdated = (Number(curDate) - Number(lastUpdated)) / 1000;
 
 	if (timeSinceUpdated > 3600) {
-		updateCache()
+		return updateCache();
+	} else {
+		return cached_posts;
 	}
-	
-	return cached_posts
-
 }
 
 function generateSitemapUrl(path: string, changefreq: string, priority: string) {
@@ -55,11 +56,12 @@ export async function GET() {
 	urls.push(generateSitemapUrl("/posts", "monthly", "1"));
 	urls.push(generateSitemapUrl("/info", "monthly", "1"));
 
-	// const posts = await getPosts();
-	// for (const post of posts) {
-	// 	let url = generateSitemapUrl(Links.post(post.id, post.booru));
-	// 	urls.push(url, "monthly", "0.8");
-	// }
+	const posts = await getPosts();
+	for (const post of posts) {
+		let url = Links.post(post.id, post.booru);
+		let xml = generateSitemapUrl(url, "monthly", "0.8");
+		urls.push(xml);
+	}
 
 	const body = prefix + urls.join("") + suffix;
 	return new Response(body, {

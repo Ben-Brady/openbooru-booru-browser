@@ -27,11 +27,7 @@
 	controls
 	loop
 >
-	<source
-		src="{generateUrl(video.url)}"
-		width="{video.width}"
-		height="{video.height}"
-	/>
+	<source src="{generateUrl(video.url)}" width="{video.width}" height="{video.height}" />
 </video>
 
 <style>

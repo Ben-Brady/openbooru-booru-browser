@@ -10,4 +10,4 @@
 </script>
 
 <HeadInfo path="/posts/grid" />
-<PostsPage layout="grid" booru={Rule34} />
+<PostsPage layout="grid" booru="{Rule34}" />

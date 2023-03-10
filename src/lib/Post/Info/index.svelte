@@ -5,7 +5,6 @@
 	import TagList from "./TagList.svelte";
 
 	export let post: Post | null;
-	console.log(post)
 </script>
 
 <div id="main">
@@ -14,7 +13,7 @@
 			<LeftBlock post="{post}" />
 			<div id="content">
 				<div id="source">
-					<Source source={post.origin.toString()} />
+					<Source source="{post.origin.toString()}" />
 				</div>
 				<TagList tags="{post.tags}" />
 			</div>
@@ -46,8 +45,7 @@
 		padding-bottom: 1rem;
 	}
 
-	div#content {
-	}
+	/* div#content {} */
 
 	@media screen and (max-width: 40rem), (orientation: portrait) {
 		div#inner {
