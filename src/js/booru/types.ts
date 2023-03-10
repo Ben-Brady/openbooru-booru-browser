@@ -4,6 +4,8 @@ import type { Query } from "./query";
 export interface Booru {
 	short_name: string;
 	display_name: string;
+	icon: string;
+
 	generate_url: (id: string) => string;
 
 	is_working: () => Promise<boolean>;
@@ -25,7 +27,7 @@ export type Post = {
 	origin: string;
 
 	thumbnail: Image;
-	preview: Media;
+	preview: Media|undefined;
 	full: Media;
 };
 
@@ -57,10 +59,9 @@ export type Video = {
 
 export type Media = Image | Animation | Video;
 
-
 export type TagNamespace = "generic" | "copyright" | "character" | "creator" | "meta";
 export interface Tag {
 	name: string;
 	namespace?: TagNamespace;
 	count?: number;
-};
+}

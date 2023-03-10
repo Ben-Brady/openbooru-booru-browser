@@ -17,15 +17,6 @@ const config: UserConfig = {
 	},
 	server: {
 		headers: {
-			"Content-Security-Policy": encodeURIComponent(`
-                connect-src https://hcaptcha.com, https://\*.hcaptcha.com ${process.env.VITE_API_URL};
-                frame-src: https://hcaptcha.com, https://\*.hcaptcha.com;
-                style-src: https://hcaptcha.com, https://\*.hcaptcha.com;
-                script-src: https://hcaptcha.com, https://\*.hcaptcha.com;
-                default-src 'self';
-                frame-ancestors 'self';
-                form-action 'self';
-            `),
 		},
 	},
 };

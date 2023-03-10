@@ -31,5 +31,10 @@
 		justify-content: center;
 		align-content: baseline;
 		gap: 0.5rem;
+
+		height: 14rem;
+		overflow-y: auto;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
 	}
 </style>

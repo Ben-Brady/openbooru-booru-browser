@@ -9,12 +9,12 @@
 
 <div id="main">
 	{#if post}
+		<div id="source">
+			<Source source="{post.origin.toString()}" />
+		</div>
 		<div id="inner">
 			<LeftBlock post="{post}" />
 			<div id="content">
-				<div id="source">
-					<Source source="{post.origin.toString()}" />
-				</div>
 				<TagList tags="{post.tags}" />
 			</div>
 		</div>

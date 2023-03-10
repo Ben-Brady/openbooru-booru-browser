@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Rule34 } from "js/booru/rule34";
+	import { boorus } from "js/booru";
 	import { browser } from "$app/environment";
 	import PostsPage from "lib/Posts/Page.svelte";
 	import HeadInfo from "lib/HeadInfo.svelte";
@@ -14,4 +14,4 @@
 </script>
 
 <HeadInfo path="/posts" />
-<PostsPage layout="{layout}" booru="{Rule34}" />
+<PostsPage layout="{layout}" booru="{boorus[0]}" />

@@ -14,7 +14,7 @@ async function updateCache() {
 		cached_posts = cached_posts.concat(posts);
 	}
 	lastUpdated = new Date();
-	return cached_posts
+	return cached_posts;
 }
 
 async function getPosts(): Promise<Post[]> {

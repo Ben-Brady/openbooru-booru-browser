@@ -25,18 +25,18 @@
 		if (finished || loading) return;
 		loading = true;
 
-		
 		try {
 			let new_posts = await booru.search(query, posts.length);
 			posts = posts.concat(...new_posts);
 			if (new_posts.length === 0) finished = true;
-		} catch (e) { console.debug(e)}
-		console.log({posts})
-		
+		} catch (e) {
+			console.trace(e);
+		}
+
 		loading = false;
 	}
-	
-	type PostCallbackInterface = { id: string, index: number }
+
+	type PostCallbackInterface = { id: string; index: number };
 	function PostCallback({ id }: PostCallbackInterface) {
 		return () => {
 			location.href = Links.post(id.toString(), booru.short_name);
@@ -55,7 +55,7 @@
 
 <LayoutSelector layout="{layout}" />
 <svelte:component
-	this={layout_element}
+	this="{layout_element}"
 	finished="{finished}"
 	loading="{loading}"
 	posts="{posts || initialPosts}"

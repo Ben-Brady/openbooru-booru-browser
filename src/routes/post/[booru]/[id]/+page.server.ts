@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		let post: Post | undefined = await get_post(booru_name, id);
 		return { post, booru_name, id };
 	} catch (e: any) {
-		console.error(e);
+		console.trace(e);
 		throw error(404, "Post Not Found");
 	}
 };

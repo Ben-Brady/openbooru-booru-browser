@@ -12,7 +12,7 @@ export enum Sort {
 
 export function encode_query(query: Query): string | undefined {
 	return query.search;
-}	
+}
 
 export function decode_query(search: string): Query {
 	return { search };

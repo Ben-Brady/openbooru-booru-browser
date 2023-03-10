@@ -1,28 +1,25 @@
-import { browser } from "$app/environment";
-import type { Media, Post, Booru, Image } from "./types";
-import { guess_media_type, guess_mimetype } from "./utils";
+import type { Media, Post, Booru, Image } from "../types";
+import { guess_media_type, guess_mimetype } from "../utils";
 import { DOMParser } from "@xmldom/xmldom";
+import { Option, Some, None } from "ts-results";
 
-export async function parse_xml_nodes(xml: string, booru: Booru): Post[] {
-    const parser = new DOMParser().parseFromString(xml, "application/xml");
-    const post_nodes = parser.getElementsByTagName("post");
-
-	let posts = [];
-	for (const index in post_nodes) {
-		try {
-			const node = post_nodes[index];
-			const gel_post = parse_node(node);
-			const post = parse_post(gel_post, booru);
-			posts.push(post);
-		} catch (e) {
-			console.debug(e);
+export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
+	const parser = new DOMParser().parseFromString(xml, "application/xml");
+	const post_nodes = Array.from(parser.getElementsByTagName("post"));
+	
+	let posts: Post[] = [];
+	post_nodes.forEach(node => {
+		const gel_post = parse_node(node);
+		const post = parse_post(gel_post, booru);
+		if (post.some) {
+			posts.push(post.val);
 		}
-	}
+	})
 
 	return posts;
 }
 
-function parse_post(post: GelbooruPost, booru: Booru): Post {
+function parse_post(post: GelbooruPost, booru: Booru): Option<Post> {
 	let origin = booru.generate_url(post.id);
 	let id = Number(post.id).toString();
 	let tags = post.tags
@@ -58,7 +55,7 @@ function parse_post(post: GelbooruPost, booru: Booru): Post {
 		mimetype: guess_mimetype(post.preview_url),
 	};
 
-	return {
+	return Some({
 		id,
 		created_at,
 		type,
@@ -72,10 +69,13 @@ function parse_post(post: GelbooruPost, booru: Booru): Post {
 		booru: booru.short_name,
 		title: "",
 		description: "",
-	};
+	});
 }
 
 function parse_node(node: Element): GelbooruPost {
+	if (!node.getAttribute) {
+		throw new Error("Invalid Element")
+	}
 	function assert_get_attribute(key: string): string {
 		let value = node.getAttribute(key);
 		if (value === null) {

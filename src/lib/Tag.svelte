@@ -46,9 +46,8 @@
 		background: var(--BACKGROUND-4);
 
 		padding: 0 0.3rem;
-
 	}
-	
+
 	span.generic {
 		color: black;
 	}

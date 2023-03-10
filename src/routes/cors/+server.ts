@@ -1,8 +1,10 @@
 import type { RequestHandler } from "./$types";
 
-export const GET: RequestHandler = async ({ url, request }) => {
+export const GET: RequestHandler = async ({ url, request, fetch }) => {
 	try {
-		let url_param = url.searchParams.entries().next().value[0];
+		let url_param = url.searchParams.get("url");
+		if (url_param === null) throw new Error("No URL Specified");
+		
 		let image_url = new URL(url_param);
 
 		request = new Request(url, request);

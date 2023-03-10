@@ -5,8 +5,12 @@
 	"arrowParens": "avoid",
 	"tabWidth": 4,
 	"printWidth": 100,
-	"overrides": [{ 
-		"files": "./src/*{.svelte,.ts}", "options": { "parser": "svelte" } }],
+	"overrides": [
+		{
+			"files": "./src/*{.svelte,.ts}",
+			"options": { "parser": "svelte" }
+		}
+	],
 
 	"svelteIndentScriptAndStyle": true,
 	"svelteStrictMode": true,

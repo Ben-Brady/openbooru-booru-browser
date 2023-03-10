@@ -31,4 +31,26 @@ function set(key: string, value: any, ttl: number = 5) {
 	sessionStorage.setItem(key, JSON.stringify(store));
 }
 
-export default { get, set };
+function use_cache<T>(key: string, ttl: number = 5, func: () => T): T {
+	let cached_value = get(key);
+	if (cached_value) {
+		return cached_value;
+	} else {
+		let value = func();
+		set(key, value, ttl);
+		return value;
+	}
+}
+
+async function use_cache_async<T>(key: string, ttl: number = 5, func: () => Promise<T>): Promise<Awaited<T>> {
+	let cached_value = get(key);
+	if (cached_value) {
+		return cached_value;
+	} else {
+		let value = await func();
+		set(key, value, ttl);
+		return value;
+	}
+}
+
+export default { get, set, use_cache, use_cache_async };

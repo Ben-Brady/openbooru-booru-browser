@@ -9,7 +9,6 @@
 	export let data: PageData;
 	const { post, booru_name, id } = data;
 
-	console.log(data);
 	async function getPost() {
 		const booru = booru_from_string(booru_name);
 		const post = await booru?.get(id);
@@ -34,12 +33,13 @@
 		media="{post.full}"
 	/>
 	<PostPage post="{post}" />
+{:else}
+	{#await getPost() then post}
+		<HeadInfo
+			title="{generateTitle(post)}"
+			path="{Links.post(post.id, post.booru)}"
+			media="{post.full}"
+		/>
+		<PostPage post="{post}" />
+	{/await}
 {/if}
-{#await getPost() then post}
-	<HeadInfo
-		title="{generateTitle(post)}"
-		path="{Links.post(post.id, post.booru)}"
-		media="{post.full}"
-	/>
-	<PostPage post="{post}" />
-{/await}
