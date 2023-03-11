@@ -68,6 +68,7 @@
 
 	:global(a) {
 		text-decoration: none;
+		color: #b0e0b0;
 	}
 
 	/* latin */
