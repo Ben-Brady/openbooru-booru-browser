@@ -36,15 +36,14 @@ export abstract class Gelbooru2 implements Booru {
 		
 		let top_id = await this.get_recent_top_id();
 		let recent_id = Math.max(top_id * 0.9, top_id - 100_000);
-		const SORT_LOOKUP = new Map<any, string>([
+		const SORT_LOOKUP = new Map<Sort, string>([
 			[Sort.HighestRated, "sort:score"],
 			[Sort.LowestRated, "sort:score:asc"],
 			[Sort.Hotest, `sort:score id:>=${recent_id}`],
 			[Sort.Newest, "sort:id"],
-			[undefined, `sort:score id:>=${recent_id} -video`],
 		]);
-		search += " " + SORT_LOOKUP.get(query.sort);
-
+		search += " " + SORT_LOOKUP.get(query.sort ?? Sort.Hotest);
+		
 
 		let params = new URLSearchParams();
 		params.set("tags", search ?? "");
