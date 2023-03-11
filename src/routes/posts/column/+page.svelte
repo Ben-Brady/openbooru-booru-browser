@@ -1,13 +1,10 @@
 <script lang="ts">
 	import PostsPage from "lib/Posts/Page.svelte";
 	import HeadInfo from "lib/HeadInfo.svelte";
-	import { browser } from "$app/environment";
-	import { boorus } from "js/booru";
+	import Settings from "js/settings";
 
-	if (browser) {
-		localStorage.setItem("last-posts", "column");
-	}
+	Settings.last_layout = "column"
 </script>
 
 <HeadInfo path="/posts/column" />
-<PostsPage layout="column" booru="{boorus[0]}" />
+<PostsPage layout="column" booru="{Settings.last_booru}" />
