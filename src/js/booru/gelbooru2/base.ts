@@ -23,7 +23,7 @@ export abstract class Gelbooru2 implements Booru {
 
 	async get_recent_top_id(): Promise<number> {
 		return cache.use_cache_async(`${this.short_name}-top_id`, 60 * 60, async () => {
-			let url = this.api_url + `/index.php?page=dapi&s=post&q=index&limit=1&json=1`;
+			let url = this.api_url + `/index.php?page=dapi&s=post&q=index&json=1`;
 			let r = await fetch(url);
 			let posts = await r.json();
 			let post = posts[0];
@@ -33,7 +33,7 @@ export abstract class Gelbooru2 implements Booru {
 
 	async search(query: Query, index: number = 0): Promise<Post[]> {
 		let search = query.search ?? "";
-
+		
 		let top_id = await this.get_recent_top_id();
 		let recent_id = Math.max(top_id * 0.9, top_id - 100_000);
 		const SORT_LOOKUP = new Map<any, string>([
@@ -43,16 +43,16 @@ export abstract class Gelbooru2 implements Booru {
 			[Sort.Newest, "sort:id"],
 			[undefined, `sort:score id:>=${recent_id} -video`],
 		]);
+		search += " " + SORT_LOOKUP.get(query.sort);
 
-		search += SORT_LOOKUP.get(query.sort);
 
-		let url = this.api_url + "/index.php?page=dapi&s=post&q=index";
 		let params = new URLSearchParams();
 		params.set("tags", search ?? "");
 		params.set("pid", String(index / 100));
 		params.set("limit", "100");
 
-		let r = await fetch(url + "&" + params.toString());
+		let url = this.api_url + "/index.php?page=dapi&s=post&q=index&" + params.toString();
+		let r = await fetch(url);
 		let body = await r.text();
 		let posts = parse_xml_nodes(body, this);
 		return posts;
@@ -77,10 +77,13 @@ export abstract class Gelbooru2 implements Booru {
 			value: string;
 		};
 
-		const URL = this.url + "/autocomplete.php";
-		let params = new URLSearchParams({ q: search });
-		let r = await fetch(URL + "?" + params.toString());
+		let url = this.url;
+		url += "/autocomplete.php"
+		url += "?"
+		url += new URLSearchParams({ q: search })
+		let r = await fetch(url);
 		let tags: Tag[] = await r.json();
 		return tags.map(tag => tag.value);
 	}
 }
+

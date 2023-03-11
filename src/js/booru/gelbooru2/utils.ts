@@ -3,8 +3,9 @@ import { guess_media_type, guess_mimetype } from "../utils";
 import { DOMParser } from "@xmldom/xmldom";
 
 export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
-	const parser = new DOMParser().parseFromString(xml, "application/xml");
-	const post_nodes = Array.from(parser.getElementsByTagName("post"));
+	const parser = new DOMParser();
+	const document = parser.parseFromString(xml, "application/xml")
+	const post_nodes = Array.from(document.getElementsByTagName("post"));
 	
 	let posts: Post[] = [];
 	post_nodes.forEach(node => {

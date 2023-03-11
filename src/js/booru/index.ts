@@ -1,23 +1,30 @@
 import type { Booru } from "./types";
-import { Rule34 } from "./gelbooru2/rule34";
-import { Safebooru } from "./gelbooru2/safebooru";
-import { HypnoHub } from "./gelbooru2/hypnohub";
-import { RealBooru } from "./gelbooru2/realbooru";
-import { XBooru } from "./gelbooru2/xbooru";
+import { Rule34 as _Rule34 } from "./gelbooru2/rule34";
+import { Safebooru as _Safebooru } from "./gelbooru2/safebooru";
+import { HypnoHub as _HypnoHub } from "./gelbooru2/hypnohub";
+import { RealBooru as _RealBooru } from "./gelbooru2/realbooru";
+import { XBooru as _XBooru } from "./gelbooru2/xbooru";
 
-export const boorus = [
-	new Rule34(),
-	new Safebooru(),
-	new HypnoHub(),
-	new RealBooru(),
-	new XBooru(),
+export const Rule34 = new _Rule34();
+export const Safebooru = new _Safebooru();
+export const HypnoHub = new _HypnoHub();
+export const RealBooru = new _RealBooru();
+export const XBooru = new _XBooru();
+
+export const boorus: Booru[] = [
+	Rule34,
+	Safebooru,
+	HypnoHub,
+	RealBooru,
+	XBooru,
 ];
 
-const lookup = new Map<string, Booru>();
-for (let booru of boorus) {
-	lookup.set(booru.short_name, booru);
-}
 
-export function booru_from_string(booru_name: string): Booru | undefined {
-	return lookup.get(booru_name);
+export function booru_from_string(booru_name: string): Booru {
+	for (let booru of boorus) {
+		if (booru.short_name === booru_name) {
+			return booru
+		}
+	}
+	throw new Error(`Booru "${booru_name}" does not exist`)
 }

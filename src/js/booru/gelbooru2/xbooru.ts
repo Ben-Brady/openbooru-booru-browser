@@ -1,5 +1,5 @@
 import type { Booru } from "../types";
-import { Gelbooru2 } from "./abstract";
+import { Gelbooru2 } from "./base";
 
 export class XBooru extends Gelbooru2 implements Booru {
 	url = "https://xbooru.com";
