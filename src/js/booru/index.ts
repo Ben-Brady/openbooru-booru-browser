@@ -4,6 +4,7 @@ import { Safebooru as _Safebooru } from "./gelbooru2/safebooru";
 import { HypnoHub as _HypnoHub } from "./gelbooru2/hypnohub";
 import { RealBooru as _RealBooru } from "./gelbooru2/realbooru";
 import { XBooru as _XBooru } from "./gelbooru2/xbooru";
+export * from "./types";
 
 export const Rule34 = new _Rule34();
 export const Safebooru = new _Safebooru();

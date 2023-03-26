@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { TagNamespace } from "js/booru/types";
+	import { TagNamespace } from "js/booru/types";
 	import { createEventDispatcher } from "svelte";
 
 	export let name: string;
 	export let namespace: TagNamespace | undefined = undefined;
 	export let count: number | undefined = undefined;
 	export let href: string | undefined = undefined;
-	export let showCount: boolean = false;
+	export let showCount: boolean = true;
 
-	namespace ??= "generic";
+	namespace ??= TagNamespace.Generic;
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -17,13 +17,13 @@
 	<span class="{namespace}">
 		{name}
 		{#if showCount && count !== undefined}
-			{count}
+			({count})
 		{/if}
 		<slot />
 	</span>
 </a>
 
-<style>
+<style lang="scss">
 	a {
 		cursor: pointer;
 		text-decoration: none;
@@ -46,8 +46,13 @@
 		background: var(--BACKGROUND-3);
 
 		padding: 0 0.3rem;
+		
+		transition: 0.2s ease-in-out;
+		a:hover & {
+			color: invert(90%);
+			background-color: var(--BACKGROUND-3-HOVER);
+		}
 	}
-
 
 	span.copyright {
 		color: #f0a0f0;

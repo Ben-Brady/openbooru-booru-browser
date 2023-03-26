@@ -22,7 +22,7 @@
 	onMount(checkNewPosts);
 </script>
 
-<main bind:this="{container}" on:scroll="{() => checkNewPosts()}" data-scroll="{useScroll}">
+<div id="main" bind:this="{container}" on:scroll="{() => checkNewPosts()}" data-scroll="{useScroll}">
 	<div id="grid">
 		{#if posts.length > 0}
 			{#each posts as post, index}
@@ -35,23 +35,24 @@
 			<LoadingIcon fadeIn />
 		{/if}
 	</div>
-</main>
+</div>
 
-<style>
-	main[data-scroll="false"] {
-		overflow-y: visible;
-		max-height: unset;
-	}
-
-	main {
-		--IMAGE-SIZE: 180px;
+<style lang="scss">
+	
+	div#main {
+		--IMAGE-SIZE: 200px;
 		/* API Thumbnail Size */
-
+		
 		/* Position */
-		max-width: 100vw;
+		max-width: 100%;
 		max-height: 100%;
 		overflow-y: auto;
 		overflow-x: hidden;
+		
+		&[data-scroll="false"] {
+			overflow-y: visible;
+			max-height: unset;
+		}
 	}
 
 	#grid {

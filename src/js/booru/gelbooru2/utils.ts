@@ -2,6 +2,9 @@ import type { Media, Post, Booru, Image } from "../types";
 import { guess_media_type, guess_mimetype } from "../utils";
 import { DOMParser } from "@xmldom/xmldom";
 
+export function get_max_length(xml: string): number {
+}
+
 export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 	const parser = new DOMParser();
 	const document = parser.parseFromString(xml, "application/xml")
@@ -10,16 +13,16 @@ export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 	let posts: Post[] = [];
 	post_nodes.forEach(node => {
 		const gel_post = parse_node(node);
-		const post = parse_post(gel_post, booru);
-		if (post) {
+		try {
+			const post = parse_post(gel_post, booru);
 			posts.push(post);
-		}
+		} catch { }
 	})
 
 	return posts;
 }
 
-function parse_post(post: GelbooruPost, booru: Booru): Post | undefined {
+function parse_post(post: GelbooruPost, booru: Booru): Post {
 	let origin = booru.generate_url(post.id);
 	let id = Number(post.id).toString();
 	let tags = post.tags

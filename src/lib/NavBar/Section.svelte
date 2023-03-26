@@ -18,7 +18,7 @@
 	</span>
 </a>
 
-<style>
+<style lang="scss">
 	a {
 		/* Shape */
 		min-width: 5rem;
@@ -32,25 +32,17 @@
 		gap: 1rem;
 		align-items: center;
 		justify-content: left;
+		transition: 0.2s ease-in-out;
 	}
 
 	a {
 		cursor: pointer;
 		border: 3px solid var(--BORDER-1);
 		background-color: var(--BACKGROUND-3);
-	}
 
-	@media screen and (max-width: 40rem), (orientation: portrait) {
-		a {
-			width: 100%;
-			padding: 0;
-			margin: 0.1rem;
-			justify-content: center;
+		&:hover {
+		background-color: var(--BACKGROUND-3-HOVER);
 		}
-	}
-
-	a:hover {
-		border-color: var(--BORDER-1-HOVER);
 	}
 
 	span {
@@ -60,6 +52,11 @@
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		transition: 0.2s ease-in-out;
+
+		a:hover & {
+			filter: invert(90%);
+		}
 	}
 
 	img {
@@ -67,6 +64,15 @@
 		width: 1.5rem;
 		position: relative;
 		left: 0.3rem;
+	}
+
+	@media screen and (max-width: 40rem), (orientation: portrait) {
+		a {
+			width: 100%;
+			padding: 0;
+			margin: 0.1rem;
+			justify-content: center;
+		}
 	}
 
 	@keyframes fadeIn {

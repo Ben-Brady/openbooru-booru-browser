@@ -5,7 +5,7 @@
 	import Settings from "js/settings";
 </script>
 
-{#if Settings.tracking_cookies }
+{#if Settings.tracking_cookies}
 	<Analytics measurementID="G-DH7G2DZL9B"/>
 {/if}
 

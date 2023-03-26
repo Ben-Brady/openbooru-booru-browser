@@ -20,9 +20,11 @@
 	</button>
 {/if}
 
-<style>
+<style lang="scss">
 	button {
 		aspect-ratio: 1/1;
+		min-width: 48px;
+		min-height: 48px;
 		width: 2.5rem;
 		height: 2.5rem;
 		padding: 0.2rem;
@@ -37,11 +39,9 @@
 
 		cursor: pointer;
 		transition: 0.2s ease-in-out;
-	}
-
-	button:hover,
-	button.active {
+		&:hover, &.active {
 		background-color: var(--BACKGROUND-3-HOVER);
+		}
 	}
 
 	img {
@@ -52,9 +52,10 @@
 
 		animation-fill-mode: forwards;
 		transition: 0.2s ease-in-out;
+
+		button:hover & {
+			filter: invert(90%);
+		}
 	}
 
-	button:hover img {
-		filter: invert(90%);
-	}
 </style>

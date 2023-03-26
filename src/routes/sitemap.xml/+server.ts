@@ -1,8 +1,8 @@
 import type { Post } from "js/booru/types";
-import Links from "js/links";
+import { generate_post_link } from "js/links";
 import { SITE_URL } from "js/config";
 import { boorus } from "js/booru";
-import { Sort } from "js/booru/query";
+import { Sort } from "js/booru";
 
 let lastUpdated = new Date(0);
 
@@ -10,7 +10,7 @@ let cached_posts: Post[] = [];
 async function updateCache() {
 	cached_posts = [];
 	for (let booru of boorus) {
-		let posts = await booru.search({ sort: Sort.HighestRated }, 0);
+		let posts = await booru.search({ sort: Sort.Top_Rated }, 0);
 		cached_posts = cached_posts.concat(posts);
 	}
 	lastUpdated = new Date();
@@ -58,7 +58,7 @@ export async function GET() {
 
 	const posts = await getPosts();
 	for (const post of posts) {
-		let url = Links.post(post.id, post.booru);
+		let url = generate_post_link(post.id, post.booru);
 		let xml = generateSitemapUrl(url, "monthly", "0.8");
 		urls.push(xml);
 	}

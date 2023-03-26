@@ -1,6 +1,3 @@
-export type { Query } from "./query";
-import type { Query } from "./query";
-
 export interface Booru {
 	short_name: string;
 	display_name: string;
@@ -9,10 +6,11 @@ export interface Booru {
 	generate_url: (id: string) => string;
 
 	is_working: () => Promise<boolean>;
-	search: (query: Query, index: number) => Promise<Post[]>;
+	search: (query: Query, page: number) => Promise<Post[]>;
 	get: (id: string) => Promise<Post | undefined>;
 	search_tags: (search: string) => Promise<string[]>;
 }
+
 
 export type Post = {
 	booru: string;
@@ -30,8 +28,6 @@ export type Post = {
 	preview: Media|undefined;
 	full: Media;
 };
-
-export type MediaType = "image" | "video" | "animation";
 
 export type Image = {
 	width: number;
@@ -59,9 +55,37 @@ export type Video = {
 
 export type Media = Image | Animation | Video;
 
-export type TagNamespace = "generic" | "copyright" | "character" | "creator" | "meta";
+export enum MediaType{
+	Image = "image",
+	Video = "video",
+	Animation = "animation",
+}
+
+
+export enum TagNamespace {
+	Generic = "generic",
+	Copyright = "copyright",
+	Character = "character",
+	Creator = "creator",
+	Meta = "meta",
+
+}
+
 export interface Tag {
 	name: string;
 	namespace?: TagNamespace;
 	count?: number;
+}
+
+export interface Query {
+	search?: string;
+	sort?: Sort;
+	media?: MediaType[];
+}
+
+export enum Sort {
+	Newest = "Newest",
+	Hotest = "Hotest",
+	Top_Rated = "Top-Rated",
+	Lowest_Rated = "Lowest-Rated",
 }

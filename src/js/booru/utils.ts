@@ -1,4 +1,4 @@
-import type { MediaType } from "./types";
+import { MediaType } from "./types";
 
 const IMAGE_EXTENTIONS = ["png", "jpeg", "jpg", "webp"];
 const ANIMATION_EXTENTIONS = ["gif"];
@@ -11,13 +11,13 @@ export function guess_media_type(url: string | URL): MediaType {
 	if (extention === undefined) {
 		throw new Error("Invalid Post Type");
 	} else if (IMAGE_EXTENTIONS.includes(extention)) {
-		return "image";
+		return MediaType.Image;
 	} else if (ANIMATION_EXTENTIONS.includes(extention)) {
-		return "animation";
+		return MediaType.Animation;
 	} else if (VIDEO_EXTENTIONS.includes(extention)) {
-		return "video";
+		return MediaType.Video;
 	} else {
-		throw new Error("Invalid Post Type");
+		throw new Error(`Invalid Post Type: ${url}`);
 	}
 }
 

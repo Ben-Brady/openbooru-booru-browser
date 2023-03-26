@@ -35,7 +35,7 @@
 	onMount(checkNewPosts);
 </script>
 
-<main bind:this="{container}" bind:clientWidth="{width}">
+<div id="main" bind:this="{container}" bind:clientWidth="{width}">
 	<div id="columns">
 		{#each post_columns as column}
 			<div class="column">
@@ -54,13 +54,12 @@
 			<LoadingIcon />
 		</div>
 	{/if}
-</main>
+</div>
 
 <style>
-	main {
+	div#main {
 		box-sizing: border-box;
 		height: 100%;
-		padding: 3rem 10vw;
 		overflow-y: auto;
 
 		display: flex;
