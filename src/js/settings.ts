@@ -15,7 +15,7 @@ function genericGet<T>(key: string, default_value: T): T{
     }
 }
 
-function genericSet(key: string, value: string) {
+function genericSet(key: string, value: any) {
     if (!browser) return
     let data = JSON.stringify(value);
     sessionStorage.setItem(key, data)
@@ -30,13 +30,21 @@ class Settings {
         genericSet("layout", value)
     }
 
-    public get last_booru(): Booru {
+    public get current_booru(): Booru {
         let booru_name = genericGet("booru_name", Rule34.short_name);
         return booru_from_string(booru_name)
     }
-
-    public set last_booru(value: Booru) {
+    
+    public set current_booru(value: Booru) {
         genericSet("booru_name", value.short_name)
+    }
+    
+    public get tracking_cookies(): boolean {
+        return genericGet("tracking-cookies", false);
+    }
+    
+    public set tracking_cookies(value: boolean) {
+        genericSet("tracking-cookies", value);
     }
 }
 

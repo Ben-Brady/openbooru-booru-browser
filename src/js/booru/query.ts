@@ -1,6 +1,13 @@
 export interface Query {
 	search?: string;
 	sort?: Sort;
+	media?: Set<MediaType>;
+}
+
+export enum MediaType {
+	Image,
+	Video,
+	Gif,
 }
 
 export enum Sort {

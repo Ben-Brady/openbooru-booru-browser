@@ -6,4 +6,4 @@
 	</script>
 
 <HeadInfo path="/posts" />
-<PostsPage layout="{Settings.last_layout}" booru="{Settings.last_booru}" />
+<PostsPage layout="{Settings.last_layout}" booru="{Settings.current_booru}" />

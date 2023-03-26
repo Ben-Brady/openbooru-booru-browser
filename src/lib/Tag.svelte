@@ -43,14 +43,11 @@
 
 		border: 0.1rem solid var(--BORDER-2);
 		border-radius: 1rem;
-		background: var(--BACKGROUND-4);
+		background: var(--BACKGROUND-3);
 
 		padding: 0 0.3rem;
 	}
 
-	span.generic {
-		color: black;
-	}
 
 	span.copyright {
 		color: #f0a0f0;

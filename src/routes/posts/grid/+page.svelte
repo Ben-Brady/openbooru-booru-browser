@@ -7,4 +7,4 @@
 </script>
 
 <HeadInfo path="/posts/grid" />
-<PostsPage layout="grid" booru="{Settings.last_booru}" />
+<PostsPage layout="grid" booru="{Settings.current_booru}" />

@@ -2,6 +2,7 @@ import type { Booru, Post, Query } from "../types";
 import { Sort } from "../query";
 import { parse_xml_nodes } from "./utils";
 import cache from "js/cache";
+import { CORS_PROXY } from "js/config";
 
 export abstract class Gelbooru2 implements Booru {
 	url!:string 
@@ -80,6 +81,8 @@ export abstract class Gelbooru2 implements Booru {
 		url += "/autocomplete.php"
 		url += "?"
 		url += new URLSearchParams({ q: search })
+		
+		url = CORS_PROXY + encodeURI(url)
 		let r = await fetch(url);
 		let tags: Tag[] = await r.json();
 		return tags.map(tag => tag.value);

@@ -1,22 +1,15 @@
 <script lang="ts">
 	import type { Post } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
-	import Links from "js/links";
+	import { generate_post_link } from "js/links";
 
 	export let post: Post;
-	export let callback: (() => void) | null;
 	export let lazy: boolean;
 
 	let image = post.thumbnail;
-	function onClick(e: Event) {
-		if (callback) {
-			e.preventDefault();
-			callback();
-		}
-	}
 </script>
 
-<a class="border {post.full.type}" href="{Links.post(post.id, post.booru)}" on:click="{onClick}">
+<a class="border {post.full.type}" href="{generate_post_link(post.id, post.booru)}">
 	<img
 		class="border"
 		src="{generateUrl(image.url)}"

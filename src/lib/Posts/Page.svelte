@@ -3,7 +3,7 @@
 
 	import type { Post, Booru } from "js/booru/types";
 	import { decode_query } from "js/booru/query";
-	import Links from "js/links";
+	import { generate_post_link } from "js/links";
 	import Grid from "lib/Posts/Grid/index.svelte";
 	import Column from "lib/Posts/Column/index.svelte";
 	import LayoutSelector from "./Buttons/LayoutSelector.svelte";
@@ -16,6 +16,7 @@
 	let loading = false;
 	let posts: Post[] = [];
 
+	// Calculate Query 
 	$: params = $page.url.searchParams;
 	$: search = params.get("query") || "";
 	if (typeof search === "object") search = search[0];
@@ -36,13 +37,6 @@
 		loading = false;
 	}
 
-	type PostCallbackInterface = { id: string; index: number };
-	function PostCallback({ id }: PostCallbackInterface) {
-		return () => {
-			location.href = Links.post(id.toString(), booru.short_name);
-		};
-	}
-
 	let layout_element: any;
 	if (layout === "grid") {
 		layout_element = Grid;
@@ -60,7 +54,6 @@
 	loading="{loading}"
 	posts="{posts || initialPosts}"
 	requestPosts="{requestPosts}"
-	callback="{PostCallback}"
 />
 <!-- <svelte:component
 	this="{LayoutElement}"

@@ -7,4 +7,4 @@
 </script>
 
 <HeadInfo path="/posts/column" />
-<PostsPage layout="column" booru="{Settings.last_booru}" />
+<PostsPage layout="column" booru="{Settings.current_booru}" />

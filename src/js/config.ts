@@ -8,3 +8,4 @@ export const SITE_NAME = PUBLIC_SITE_NAME;
 export const SITE_DESC = PUBLIC_SITE_DESCRIPTION;
 export const SITE_URL = PUBLIC_SITE_URL;
 export const SITE_KEYWORDS: string[] = PUBLIC_SITE_KEYWORDS.split(",");
+export const CORS_PROXY: string = "https://r34proxy.openbooru.workers.dev?url="

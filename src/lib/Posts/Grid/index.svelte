@@ -3,38 +3,32 @@
 	import { onMount } from "svelte";
 	import LoadingIcon from "lib/LoadingIcon.svelte";
 	import GridItem from "./Item.svelte";
+	import { reachedEndOfScroll } from "../search";
 
 	export let finished: boolean = false;
 	export const loading: boolean = false;
 	export let useScroll: boolean = true;
 	export let posts: Post[] = [];
 	export let requestPosts: () => Promise<void> = () => new Promise(resolve => resolve());
-	type CallbackSignature = ({ id, index }: { id: string; index: number }) => () => void;
-	export let callback: CallbackSignature | null = null;
 
 	let container: Element;
-	async function CheckNewPosts() {
+	async function checkNewPosts() {
 		if (!container) return;
-		//@ts-ignore
-		const { scrollTop, offsetHeight, scrollHeight } = container;
-		let distanceFromTop = scrollTop + offsetHeight;
-		let distanceFromBottom = scrollHeight - distanceFromTop;
-		if (distanceFromBottom < 2000 && !finished) {
+		if (reachedEndOfScroll(container) && !finished) {
 			await requestPosts();
 		}
 	}
 
-	onMount(CheckNewPosts);
+	onMount(checkNewPosts);
 </script>
 
-<main bind:this="{container}" on:scroll="{() => CheckNewPosts()}" data-scroll="{useScroll}">
+<main bind:this="{container}" on:scroll="{() => checkNewPosts()}" data-scroll="{useScroll}">
 	<div id="grid">
 		{#if posts.length > 0}
 			{#each posts as post, index}
 				<GridItem
 					post="{post}"
 					lazy="{index > 30}"
-					callback="{callback ? callback({ id: post.id, index }) : null}"
 				/>
 			{/each}
 		{:else if !finished}

@@ -3,24 +3,20 @@
 	import { onMount, onDestroy } from "svelte";
 	import LoadingIcon from "lib/LoadingIcon.svelte";
 	import Item from "./Item.svelte";
+	import { reachedEndOfScroll } from "../search";
 	import { SplitPosts } from "./utils";
 
 	export let finished: boolean;
 	export let loading: boolean;
 	export let posts: Post[];
 	export let requestPosts: () => Promise<void>;
-	export let callback: ({ id, index }: { id: number; index: number }) => () => void;
 
 	const Clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
 	let container: Element;
 	async function checkNewPosts() {
-		if (!container || finished) return;
-		//@ts-ignore
-		const { scrollTop, offsetHeight, scrollHeight } = container;
-		let distanceFromTop = scrollTop + offsetHeight;
-		let distanceFromBottom = scrollHeight - distanceFromTop;
-		if (distanceFromBottom < 2000) {
+		if (!container) return;
+		if (reachedEndOfScroll(container) && !finished) {
 			await requestPosts();
 		}
 	}
@@ -45,10 +41,8 @@
 			<div class="column">
 				{#each column as post, index}
 					<Item
-						index="{index}"
 						post="{post}"
 						priority="{index < 5}"
-						postCallback="{callback({ id: post.id, index })}"
 					/>
 				{/each}
 			</div>

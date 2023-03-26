@@ -1,18 +1,20 @@
 <script>
-	import { QueryClient, QueryClientProvider } from "@sveltestack/svelte-query";
-	import Prompts from "lib/Prompts/index.svelte";
+	import ConsentPrompt from "lib/ConsentPrompt.svelte";
 	import NavigationBar from "lib/NavBar/index.svelte";
-
-	const queryClient = new QueryClient();
+	import Analytics from "lib/Analytics.svelte";
+	import Settings from "js/settings";
 </script>
 
-<QueryClientProvider client="{queryClient}">
-	<Prompts />
-	<NavigationBar />
+{#if Settings.tracking_cookies }
+	<Analytics measurementID="G-DH7G2DZL9B"/>
+{/if}
+
+<ConsentPrompt>
+	<NavigationBar/>
 	<main>
-		<slot />
+		<slot/>
 	</main>
-</QueryClientProvider>
+</ConsentPrompt>
 
 <style>
 	main {
@@ -24,33 +26,26 @@
 		overflow-x: hidden;
 	}
 
+
 	:global(:root) {
-		--BACKGROUND-1: var(--COLOR-1);
+		--BACKGROUND-1: #303a30;
 
-		--BACKGROUND-2: var(--COLOR-2);
-		--BACKGROUND-2-HOVER: var(--COLOR-3);
+		--BACKGROUND-2: #2c352c;
+		--BACKGROUND-2-HOVER: #202620;
 
-		--BACKGROUND-3: var(--COLOR-3);
-		--BACKGROUND-3-HOVER: var(--COLOR-4);
+		--BACKGROUND-3: #283028;
+		--BACKGROUND-3-HOVER: #1b211b;
+		
+		--BORDER-1: #151a15;
+		--BORDER-1-HOVER: #101410;
 
-		--BACKGROUND-4: var(--COLOR-4);
-		--BACKGROUND-4-HOVER: var(--COLOR-5);
-
-		--BORDER-1: var(--COLOR-5);
-		--BORDER-1-HOVER: var(--COLOR-6);
-
-		--BORDER-2: var(--COLOR-6);
-		--BORDER-2-HOVER: var(--COLOR-7);
+		--BORDER-2: #151a15;
+		--BORDER-2-HOVER: #101410;
+		
+		--TEXT-NORMAL: #878787;
+		--TEXT-LINK: #93b393;
 
 		--NAVBAR-HEIGHT: 2.8rem;
-
-		--COLOR-1: #303a30;
-		--COLOR-2: #2f3e37;
-		--COLOR-3: #26322c;
-		--COLOR-4: #1c2520;
-		--COLOR-5: #131815;
-		--COLOR-6: #0e120f;
-		--COLOR-7: #090b09;
 	}
 
 	:global(body) {
@@ -60,6 +55,8 @@
 		overflow-y: hidden;
 		font-family: "Lato", sans-serif;
 		background-color: var(--BACKGROUND-1);
+
+		color: #a7a4a4;
 	}
 
 	:global(img) {

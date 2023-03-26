@@ -2,8 +2,9 @@
 	import Sidebar from "./Sidebar.svelte";
 	import About from "./About.svelte";
 	import Contact from "./Contact.svelte";
+	import ToS from "./ToS.svelte";
 
-	export let page: "about" | "contact" = "about";
+	export let page: "about" | "contact" | "tos" = "about";
 </script>
 
 <main>
@@ -12,6 +13,8 @@
 		<About />
 	{:else if page == "contact"}
 		<Contact />
+	{:else if page == "tos"}
+		<ToS />
 	{/if}
 </main>
 

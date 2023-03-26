@@ -1,13 +1,9 @@
 <script lang="ts">
 	import type { Post, Image } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
-	import Links from "js/links";
+	import { generate_post_link } from "js/links";
 
-	export let index: number;
 	export let post: Post;
-	type PostCallbackType = { id: string; index: number };
-	export let postCallback: (data: PostCallbackType) => void;
-	export let isTarget: boolean = false;
 	export let priority: boolean = false;
 
 	const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
@@ -34,14 +30,9 @@
 
 <a
 	title="Post: {post.id}"
-	href="{Links.post(post.id, post.booru)}"
+	href="{generate_post_link(post.id, post.booru)}"
 	class="{post.full.type}"
 	style="{aspectRatioStyle}"
-	on:load="{isTarget ? () => scrollTo() : null}"
-	on:click="{e => {
-		e.preventDefault();
-		postCallback({ id: post.id, index });
-	}}"
 >
 	<img
 		src="{generateUrl(image.url)}"

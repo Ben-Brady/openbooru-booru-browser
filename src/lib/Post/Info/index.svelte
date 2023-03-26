@@ -36,7 +36,7 @@
 		position: relative;
 		height: fit-content;
 		min-height: 14rem;
-		background-color: var(--BACKGROUND-3);
+		background-color: var(--BACKGROUND-2);
 	}
 
 	div#inner {
