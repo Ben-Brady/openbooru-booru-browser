@@ -4,6 +4,37 @@ import { parse_xml_nodes } from "./utils";
 import cache from "js/cache";
 import { CORS_PROXY } from "js/config";
 
+const BLACKLISTED_TAGS = [
+	"gore",
+	"scat",
+	"shit",
+	"pissing",
+	"smegma",
+	"musk",
+	"fart_fetish",
+	"fart_cloud",
+	"fart",
+	"mlp",
+	"my_little_pony",
+	"friendship_is_magic",
+	"incest",
+	"gore",
+	"cannibalism",
+	"implied_cannibalism",
+	"necrophilia",
+]
+
+// To comply with UK Pornography Laws
+const UK_BLACKLISTED_TAGS = [
+	"rape",
+	"necrophilia",
+	"gaping",
+	"bestiality",
+	"equine",
+	"horse",
+	"dog",
+]
+
 export abstract class Gelbooru2 implements Booru {
 	url!:string 
 	api_url!:string
@@ -44,6 +75,8 @@ export abstract class Gelbooru2 implements Booru {
 			[Sort.Newest, "sort:id"],
 		]);
 		search += " " + SORT_LOOKUP.get(query.sort ?? Sort.Hotest);
+		search += " " + BLACKLISTED_TAGS.map(tag => "-" + tag).join(" ");
+		search += " " + UK_BLACKLISTED_TAGS.map(tag => "-" + tag).join(" ");
 		
 
 		let params = new URLSearchParams();
