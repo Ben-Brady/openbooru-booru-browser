@@ -19,7 +19,6 @@ export function encode_query(query: Query): string {
 	if (query.search) {
 		search += `${query.search}`
 	}
-	console.log({old_query: query})
 	return search
 }
 
@@ -37,6 +36,5 @@ export function decode_query(search: string): Query {
 	
 	let sections = search.split("-");
 	query.search = sections.pop();
-	console.log({new_query: query})
 	return query
 }

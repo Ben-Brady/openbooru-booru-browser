@@ -22,7 +22,6 @@
 
 	async function resetSearch() {
 		if (!browser) return
-		console.log("Reseting Search")
 		pid = 0;
 		finished = false;
 		loading = false;
