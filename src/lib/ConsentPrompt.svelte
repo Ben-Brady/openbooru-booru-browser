@@ -26,6 +26,7 @@
 	}
 	
 	const WHITELISTED_PAGES = [
+		Links.INFO,
 		Links.ABOUT_US,
 		Links.CONTACT_US,
 		Links.TOS,

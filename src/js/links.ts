@@ -1,4 +1,5 @@
 export const HOME = "/";
+export const INFO = "/info";
 export const ABOUT_US = "/info/about";
 export const CONTACT_US = "/info/contact";
 export const TOS = "/info/tos";
@@ -13,4 +14,5 @@ export default {
     ABOUT_US,
     CONTACT_US,
     TOS,
+    INFO,
 };
