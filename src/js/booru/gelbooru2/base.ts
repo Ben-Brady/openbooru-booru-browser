@@ -132,7 +132,7 @@ export abstract class Gelbooru2 implements Booru {
 
 	private async create_sort_tag(query: Query): Promise<string> {
 		let top_id = await this.get_recent_top_id();
-		let recent_id = Math.max(top_id * 0.9, top_id - 100_000);
+		let recent_id = Math.max(top_id * 0.9);
 		const SORT_LOOKUP = new Map<Sort, string>([
 			[Sort.Top_Rated, "sort:score"],
 			[Sort.Lowest_Rated, "sort:score:asc"],
