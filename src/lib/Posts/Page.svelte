@@ -66,31 +66,29 @@
 	}
 </script>
 
-{#if browser}
-	{#if innerWidth < 640}
-		<Column
+{#if browser && innerWidth < 640}
+	<Column
+		finished="{finished}"
+		loading="{loading}"
+		posts="{posts}"
+		requestPosts="{requestPosts}"
+	/>
+{:else}
+	<LayoutSelector layout="{layout}" />
+	<div id="container">
+		<div id="search">
+			<SearchBox
+				bind:booru={booru}
+				bind:query={query}
+			/>
+		</div>
+		<svelte:component this="{layout_element}"
 			finished="{finished}"
 			loading="{loading}"
 			posts="{posts}"
 			requestPosts="{requestPosts}"
 		/>
-	{:else}
-		<LayoutSelector layout="{layout}" />
-		<div id="container">
-			<div id="search">
-				<SearchBox
-					bind:booru={booru}
-					bind:query={query}
-				/>
-			</div>
-			<svelte:component this="{layout_element}"
-				finished="{finished}"
-				loading="{loading}"
-				posts="{posts}"
-				requestPosts="{requestPosts}"
-			/>
-		</div>
-	{/if}
+	</div>
 {/if}
 
 <style>

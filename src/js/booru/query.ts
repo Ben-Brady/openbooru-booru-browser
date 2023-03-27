@@ -17,7 +17,7 @@ export function encode_query(query: Query): string {
 	}
 
 	if (query.search) {
-		search += `${query.search}`
+		search += `-"${query.search}" `
 	}
 	return search
 }
@@ -34,7 +34,7 @@ export function decode_query(search: string): Query {
 	if (search.includes("media:animation")) query.media.push(MediaType.Animation);
 	if (search.includes("media:video")) query.media.push(MediaType.Video);
 	
-	let sections = search.split("-");
-	query.search = sections.pop();
+	let sections = search.split('\"');
+	query.search = sections.at(-2);
 	return query
 }
