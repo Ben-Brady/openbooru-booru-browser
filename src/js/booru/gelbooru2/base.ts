@@ -137,7 +137,7 @@ export abstract class Gelbooru2 implements Booru {
 			[Sort.Hotest, `sort:score`],
 			[Sort.Newest, "sort:id"],
 		]);
-		let sort = query.sort ?? Sort.Newest;
+		let sort = query.sort ?? Sort.Top_Rated;
 		return ` ${SORT_LOOKUP.get(sort)} `;
 	}
 
