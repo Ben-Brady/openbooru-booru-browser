@@ -12,7 +12,7 @@
 </script>
 
 <BooruButton booru={booru} on:click={toggle}/>
-{#if displayBooruSelect}
+<!-- {#if displayBooruSelect}
   <div>
     <BooruSelect
       on:click={event => {
@@ -22,7 +22,7 @@
       bind:current_booru={booru}
     />
   </div>
-{/if}
+{/if} -->
 
 <style>
   div {
