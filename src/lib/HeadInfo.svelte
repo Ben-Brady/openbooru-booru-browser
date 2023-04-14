@@ -15,6 +15,8 @@
 </script>
 
 <svelte:head>
+	<link rel="preconnect" href="	https://www.googletagmanager.com/" />
+	<link rel="preconnect" href="https://fonts.gstatic.com/" />
 	<link rel="preconnect" href="https://api-cdn.rule34.xxx/" />
 	<link rel="preconnect" href="https://api.rule34.xxx" />
 	<link rel="preconnect" href="https://e621.net" />
