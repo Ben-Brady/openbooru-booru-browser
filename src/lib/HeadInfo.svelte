@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { boorus } from "js/booru";
 	import type { Media } from "js/booru/types";
 	import { SITE_NAME, SITE_DESC, SITE_URL, SITE_KEYWORDS } from "js/config";
 
@@ -14,6 +15,7 @@
 </script>
 
 <svelte:head>
+	<link rel="preconnect" href="https://api-cdn.rule34.xxx/" />
 	<link rel="preconnect" href="https://api.rule34.xxx" />
 	<link rel="preconnect" href="https://e621.net" />
 

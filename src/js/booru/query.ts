@@ -1,40 +1,54 @@
 import { type Query, Sort, MediaType } from "./types";
 
 
-export function encode_query(query: Query): string {
+export function encode_query(query: Query): URLSearchParams {
+	let params = new URLSearchParams();
 	let search = "";
 	if (query.sort) {
-		if (query.sort === Sort.Hotest) search += "sort:hotest-"
-		if (query.sort === Sort.Newest) search += "sort:newest-"
-		if (query.sort === Sort.Top_Rated) search += "sort:best-"
-		if (query.sort === Sort.Lowest_Rated) search += "sort:worst-"
+		if (query.sort === Sort.Hotest) params.set("sort", "hotest")
+		if (query.sort === Sort.Newest) params.set("sort", "newest")
+		if (query.sort === Sort.Top_Rated) params.set("sort", "best")
+		if (query.sort === Sort.Lowest_Rated) params.set("sort", "worst")
 	}
 
-	if (query.media) {
-		if (query.media.includes(MediaType.Image)) search += "media:image-"
-		if (query.media.includes(MediaType.Animation)) search += "media:animation-"
-		if (query.media.includes(MediaType.Video)) search += "media:video-"
+	if (query.media && query.media.length > 0) {
+		let media = []
+		if (query.media.includes(MediaType.Image)) media.push("image");
+		if (query.media.includes(MediaType.Animation)) media.push("animation");
+		if (query.media.includes(MediaType.Video)) media.push("video");
+
+		params.set("media", media.join("-"));
 	}
 
 	if (query.search) {
-		search += `-"${query.search}" `
+		params.set("search", query.search);
 	}
-	return search
+
+	return params;
 }
 
-export function decode_query(search: string): Query {
+export function decode_query(params: URLSearchParams): Query {
 	let query: Query = {};
-	if (search.includes("sort:hotest ")) query.sort = Sort.Hotest;
-	if (search.includes("sort:newest ")) query.sort = Sort.Newest;
-	if (search.includes("sort:best ")) query.sort = Sort.Top_Rated;
-	if (search.includes("sort:worst ")) query.sort = Sort.Lowest_Rated;
-	
-	query.media = []
-	if (search.includes("media:image")) query.media.push(MediaType.Image);
-	if (search.includes("media:animation")) query.media.push(MediaType.Animation);
-	if (search.includes("media:video")) query.media.push(MediaType.Video);
-	
-	let sections = search.split('\"');
-	query.search = sections.at(-2);
-	return query
+
+	let sort_param = params.get("sort");
+	if (sort_param) {
+		if (sort_param == "newest") query.sort = Sort.Newest;
+		if (sort_param === "best") query.sort = Sort.Top_Rated;
+		if (sort_param === "worst") query.sort = Sort.Lowest_Rated;
+	}
+
+	let media_param = params.get("media");
+	if (media_param) {
+		query.media = [];
+		if (media_param.includes("image")) query.media.push(MediaType.Image);
+		if (media_param.includes("animation")) query.media.push(MediaType.Animation);
+		if (media_param.includes("video")) query.media.push(MediaType.Video);
+	}
+
+	let search_param = params.get("search")
+	if (search_param) {
+		query.search = search_param;
+	}
+
+	return query;
 }

@@ -1,10 +1,10 @@
 import type { PageServerLoad } from "./$types";
 import type { Post } from "js/booru/types";
 import { error } from "@sveltejs/kit";
-import { booru_from_string } from "js/booru";
+import { get_booru } from "js/booru";
 
 async function get_post(booru_name: string, id: string) {
-	const booru = booru_from_string(booru_name);
+	const booru = get_booru(booru_name);
 	const post = await booru?.get(id);
 	if (post === undefined) throw 404;
 	return post;

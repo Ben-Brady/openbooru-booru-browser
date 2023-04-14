@@ -1,4 +1,4 @@
-import type { Booru, Post, Query } from "../types";
+import type { Booru, Post, Query, Tag } from "../types";
 import { Sort, MediaType } from "../types";
 import { parse_xml_nodes } from "./utils";
 import { CORS_PROXY } from "js/config";
@@ -36,11 +36,11 @@ const UK_BLACKLISTED_TAGS = [
 ]
 
 export abstract class Gelbooru2 implements Booru {
-	url!:string 
+	url! :string
 	api_url!:string
 	short_name!: string;
 	display_name!: string;
-	
+
 	get icon() {
 		return this.url + "/favicon.ico";
 	}
@@ -86,8 +86,8 @@ export abstract class Gelbooru2 implements Booru {
 		}
 	}
 
-	async search_tags(search: string): Promise<string[]> {
-		type Tag = {
+	async search_tags(search: string): Promise<Tag[]> {
+		type GelbooruTag = {
 			label: string;
 			value: string;
 		};
@@ -96,35 +96,45 @@ export abstract class Gelbooru2 implements Booru {
 		url += "/autocomplete.php"
 		url += "?"
 		url += new URLSearchParams({ q: search })
-		
+
 		url = CORS_PROXY + encodeURI(url)
 		let r = await fetch(url);
-		let tags: Tag[] = await r.json();
-		return tags.map(tag => tag.value);
+		let raw_tags: GelbooruTag[] = await r.json();
+
+		return raw_tags.map((tag: GelbooruTag): Tag => {
+			let name = tag.value;
+
+			let count_match = tag.label.match(/\((\d+)\)/);
+			let count = 0;
+			if (count_match) {
+				count = Number(count_match[1])
+			}
+
+			return { count, name }
+		});
 	}
 
 	private async create_media_tags(query: Query): Promise<string> {
 		if (query.media === undefined) return ""
 		if (query.media.length === 0) return ""
 
-		let include_images = query.media.includes(MediaType.Image);
-		let include_videos = query.media.includes(MediaType.Video);
-		let include_animations = query.media.includes(MediaType.Animation);
-		
-		if (include_images && include_videos && include_animations) {
-			return ""
-		} else if (include_images && !include_videos && include_animations) {
-			return " -video "
-		} else if (include_images && include_videos && !include_animations) {
-			return " "
-		}  else if (include_images && !include_videos && !include_animations) {
-			return " -video -gif "
-		} else if (!include_images && include_videos && include_animations) {
-			return " ( video ~ gif ) "
-		} else if (!include_images && include_videos && !include_animations) {
+		let images = query.media.includes(MediaType.Image);
+		let videos = query.media.includes(MediaType.Video);
+		let gifs = query.media.includes(MediaType.Animation);
+
+		// Some videos are tagged as gif
+		// So was can't do -gif if we need videos
+		// GIF filtering is hard :(
+		if (images && !videos && !gifs) {
+			return " -gif -video "
+		} else if (gifs && videos && !images) {
+			return " ( video ~ gif ) ";
+		} else if (gifs && !videos && !images) {
+			return " gif -video ";
+		} else if (videos && !gifs && !images) {
 			return " video "
-		} else if (!include_images && !include_videos && include_animations) {
-			return " gif "
+		} else if (gifs && images && !videos) {
+			return " -video ";
 		} else {
 			return ""
 		}

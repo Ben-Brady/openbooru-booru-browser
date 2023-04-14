@@ -1,6 +1,6 @@
 <script lang="ts">
   import { MediaType } from "js/booru/types";
-  
+
   export let media: MediaType[]|undefined;
 
   let media_types = [
@@ -44,10 +44,9 @@
     display: flex;
     flex-flow: nowrap row;
 
-    width: 14rem;
+    width: 100%;
     height: 4em;
     border: solid #c54242(0,0%,100%,.12) 1px;
-    
   }
 
   div.blacked {
@@ -72,28 +71,28 @@
     background: var(--BACKGROUND-3);
     color: white;
     font-weight: bold;
-    
+
 
     &:hover {
       filter: brightness(1.1);
       transition: 100ms ease-out;
     }
-    
+
     &[data-selected="true"] {
       transition: 50ms ease-in-out;
       background: var(--BACKGROUND-3-HOVER);
     }
-    
+
     border: solid #000000 1px;
-    
+
     --BORDER-RADIUS: .5rem;
     &:first-child {
       border-right: 0;
       border-top-left-radius: var(--BORDER-RADIUS);
       border-bottom-left-radius: var(--BORDER-RADIUS);
     }
-    
-    
+
+
     &:last-child{
       border-left: 0;
       border-top-right-radius: var(--BORDER-RADIUS);

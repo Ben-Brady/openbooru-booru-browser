@@ -1,4 +1,5 @@
 export interface Booru {
+	api_url: string;
 	short_name: string;
 	display_name: string;
 	icon: string;
@@ -8,7 +9,7 @@ export interface Booru {
 	is_working: () => Promise<boolean>;
 	search: (query: Query, page: number) => Promise<Post[]>;
 	get: (id: string) => Promise<Post | undefined>;
-	search_tags: (search: string) => Promise<string[]>;
+	search_tags: (search: string) => Promise<Tag[]>;
 }
 
 

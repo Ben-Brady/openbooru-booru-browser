@@ -7,7 +7,7 @@ import { Sort } from "js/booru";
 let lastUpdated = new Date(0);
 
 let cached_posts: Post[] = [];
-async function updateCache() {
+async function updateCache(): Promise<Post> {
 	cached_posts = [];
 	for (let booru of boorus) {
 		let posts = await booru.search({ sort: Sort.Top_Rated }, 0);

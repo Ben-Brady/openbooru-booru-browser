@@ -5,7 +5,7 @@
   import { createEventDispatcher } from "svelte";
 	import { browser } from "$app/environment";
   const dispatch = createEventDispatcher();
-	
+
 	export let current_booru: Booru;
 	let booru: Booru|null = browser ? current_booru : null
 </script>
@@ -31,7 +31,7 @@
 		border: .2rem solid var(--COLOR-5);
 		padding: .2rem;
 		border-radius: .5rem;
-		
+
 		width: min-content;
 		height: min-content;
 	}
@@ -48,21 +48,21 @@
 		border: none;
 		background: none;
 		cursor: pointer;
-		
+
 		width: 100%;
-		
+
 		border-radius: .2rem;
-		
+
 		display: flex;
 		flex-flow: row nowrap;
 		align-items: center;
 		gap: .5rem;
 	}
-	
+
 	.option:hover {
 		background: var(--COLOR-3);
 	}
-	
+
 	.active {
 		background: var(--BAC-3);
 		border: .1rem solid var(--COLOR-5);

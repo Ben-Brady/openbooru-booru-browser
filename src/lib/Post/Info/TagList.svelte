@@ -1,15 +1,11 @@
 <script lang="ts">
-	import type { Query } from "js/booru/types";
-	import { encode_query } from "js/booru/query";
 	import Tag from "lib/Tag.svelte";
+	import { generate_posts_link } from "js/links";
 	export let tags: string[] = [];
 	tags.sort();
 
 	function create_link(tag: string) {
-		let query: Query = { search: tag };
-		let bsl = encode_query(query);
-		// TODO: Add button Links.posts
-		let href = `/posts/?query=${bsl}`;
+		let href = generate_posts_link("", { search: tag});
 		return href;
 	}
 </script>

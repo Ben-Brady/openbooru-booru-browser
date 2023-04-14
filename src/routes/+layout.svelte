@@ -1,11 +1,16 @@
-<script>
+<script lang="ts">
 	import ConsentPrompt from "lib/ConsentPrompt.svelte";
 	import NavigationBar from "lib/NavBar/index.svelte";
 	import Analytics from "lib/Analytics.svelte";
 	import Settings from "js/settings";
+
+	let tracking_cookies: boolean;
+	Settings.tracking_cookies.subscribe(value => {
+		tracking_cookies = value
+	})
 </script>
 
-{#if Settings.tracking_cookies}
+{#if tracking_cookies}
 	<Analytics measurementID="G-DH7G2DZL9B"/>
 {/if}
 
@@ -35,13 +40,13 @@
 
 		--BACKGROUND-3: #283028;
 		--BACKGROUND-3-HOVER: #1b211b;
-		
+
 		--BORDER-1: #151a15;
 		--BORDER-1-HOVER: #101410;
 
 		--BORDER-2: #151a15;
 		--BORDER-2-HOVER: #101410;
-		
+
 		--TEXT-NORMAL: #878787;
 		--TEXT-LINK: #93b393;
 

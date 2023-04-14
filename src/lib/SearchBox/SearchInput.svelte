@@ -4,11 +4,12 @@
 	export let search: string|undefined;
 	let input: string = search ?? "";
 
+	let element: HTMLInputElement;
 	$: ((input: string) => {
 		clearTimeout(update_timeout);
 		update_timeout = setTimeout(() => {
 			search = input
-		}, 300)
+		}, 1000)
 	})(input)
 
 	let update_timeout: string | number | NodeJS.Timeout | undefined;
@@ -22,7 +23,7 @@
 
 <div>
 	<img src="/images/search.svg" alt="Search" />
-	<input bind:value="{input}"/>
+	<input bind:this={element} bind:value="{input}"/>
 </div>
 
 <style>

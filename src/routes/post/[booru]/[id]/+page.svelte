@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
 	import type { Post } from "js/booru/types";
-	import { booru_from_string } from "js/booru";
+	import { get_booru } from "js/booru";
 	import { generate_post_link } from "js/links";
 	import HeadInfo from "lib/HeadInfo.svelte";
 	import PostPage from "lib/Post/Page.svelte";
@@ -10,7 +10,7 @@
 	const { post, booru_name, id } = data;
 
 	async function getPost() {
-		const booru = booru_from_string(booru_name);
+		const booru = get_booru(booru_name);
 		const post = await booru?.get(id);
 		if (post === undefined) {
 			location.href = "/";
@@ -21,7 +21,7 @@
 	}
 
 	function generateTitle(post: Post) {
-		const booru = booru_from_string(booru_name);
+		const booru = get_booru(booru_name);
 		return `${booru?.display_name}: Post ${post.id}`;
 	}
 </script>

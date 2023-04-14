@@ -21,11 +21,22 @@ export const boorus: Booru[] = [
 ];
 
 
-export function booru_from_string(booru_name: string): Booru {
+export function get_booru(booru_name: string): Booru {
+	return Rule34
 	for (let booru of boorus) {
 		if (booru.short_name === booru_name) {
 			return booru
 		}
 	}
 	throw new Error(`Booru "${booru_name}" does not exist`)
+}
+
+export function attempt_get_booru(booru_name: string): Booru|undefined {
+	return Rule34
+	for (let booru of boorus) {
+		if (booru.short_name === booru_name) {
+			return booru
+		}
+	}
+	return undefined
 }

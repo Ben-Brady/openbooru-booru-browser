@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { booru_from_string } from "js/booru"
-	import Settings from "js/settings";
+  import { get_booru, type Booru } from "js/booru"
+	import { current_booru } from "js/settings";
+
+  let booru: Booru;
+  current_booru.subscribe(value => { booru = get_booru(value) })
 
   async function searchTags(search: string) {
-    return await Settings.current_booru.search_tags(search)
+    return await booru.search_tags(search)
   }
 
   let search = "";
@@ -16,7 +19,7 @@
 
     </div>
   {/if}
-  
+
 {/await}
 
 <style lang="scss">

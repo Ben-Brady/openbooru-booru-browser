@@ -2,7 +2,7 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
   import type { Booru } from "js/booru/types";
-  
+
   export let booru: Booru;
 </script>
 
@@ -20,7 +20,7 @@
     border: none;
 
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 25%;
     width: 2.8rem;
     height: auto;
 
@@ -29,11 +29,10 @@
   img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    border: .2rem solid var(--COLOR-4);
-
+    border-radius: 25%;
+    border: .2rem solid var(--BORDER-1);
   }
-  
+
   img:hover {
     border-color: var(--BORDER-5);
   }

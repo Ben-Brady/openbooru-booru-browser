@@ -2,12 +2,12 @@
 	import { page } from '$app/stores';
 	import { onMount } from "svelte";
 	import Modal from "lib/Modal.svelte";
-	import Settings from "js/settings";
+	import { tracking_cookies } from "js/settings";
 	import Links from "js/links";
 	import { browser } from '$app/environment';
 
 	let shouldPrompt = false;
-	
+
 	const KEY = "consented"
 	function has_already_accepted() {
 		return localStorage.getItem(KEY);
@@ -16,15 +16,15 @@
 	function accept_neccessary_cookies() {
 		localStorage.setItem(KEY, "minimal");
 		shouldPrompt = false;
-		Settings.tracking_cookies = false;
+		tracking_cookies.set(false);
 	}
-	
+
 	function accept_all_cookies() {
 		localStorage.setItem(KEY, "all");
 		shouldPrompt = false;
-		Settings.tracking_cookies = true;
+		tracking_cookies.set(true);
 	}
-	
+
 	const WHITELISTED_PAGES = [
 		Links.INFO,
 		Links.ABOUT_US,
@@ -64,7 +64,7 @@
 				</a>.
 			</p>
 			<p>
-				Some cookies are required for this site to work, such as user settings and caching. However, some cookies non-nessarary cookies are used for  Google Ads/Analytics and other serivces. 
+				Some cookies are required for this site to work, such as user settings and caching. However, some cookies non-nessarary cookies are used for  Google Ads/Analytics and other serivces.
 			</p>
 			<div id="buttons">
 				<button on:click="{accept_all_cookies}">

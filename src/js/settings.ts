@@ -1,51 +1,47 @@
+import { writable, type Writable } from 'svelte/store';
 import { browser } from "$app/environment";
-import { Rule34, booru_from_string } from "js/booru";
-import type { Booru } from "./booru/types";
+import { Rule34, get_booru } from "js/booru";
 
-type Layout = "grid" | "column"
 
-function genericGet<T>(key: string, default_value: T): T{
-    if (!browser) return default_value
+class Setting<T> {
+    #key: string
+    #default: T
+    #store: Writable<T>
 
-    let stored_value = sessionStorage.getItem(key)
-    if (stored_value === null) {
-        return default_value
-    } else {
-        return JSON.parse(stored_value)
+    constructor(key: string, default_value: T) {
+        this.#key = key
+        this.#default = default_value
+        this.#store = writable(this.#get())
+    }
+
+    #get(): T {
+        if (!browser) return this.#default
+
+        let stored_value = localStorage.getItem(this.#key)
+        if (stored_value === null) {
+            return this.#default
+        } else {
+            return JSON.parse(stored_value)
+        }
+    }
+
+    set(value: T) {
+        if (!browser) return
+        let data = JSON.stringify(value);
+        localStorage.setItem(this.#key, data)
+        this.#store.set(value)
+    }
+
+    subscribe(func: (value: T) => void): void {
+        this.#store.subscribe(func)
     }
 }
 
-function genericSet(key: string, value: any) {
-    if (!browser) return
-    let data = JSON.stringify(value);
-    sessionStorage.setItem(key, data)
+export const current_booru = new Setting("booru-name", Rule34.short_name)
+export const tracking_cookies = new Setting("tracking-cookies", false)
+export const counter = new Setting("counter", 0)
+export default {
+    current_booru,
+    tracking_cookies,
+    counter,
 }
-
-class Settings {
-    public get last_layout(): Layout {
-        return genericGet<Layout>("layout", "grid");
-    }
-
-    public set last_layout(value: Layout) {
-        genericSet("layout", value)
-    }
-
-    public get current_booru(): Booru {
-        let booru_name = genericGet("booru_name", Rule34.short_name);
-        return booru_from_string(booru_name)
-    }
-    
-    public set current_booru(value: Booru) {
-        genericSet("booru_name", value.short_name)
-    }
-    
-    public get tracking_cookies(): boolean {
-        return genericGet("tracking-cookies", false);
-    }
-    
-    public set tracking_cookies(value: boolean) {
-        genericSet("tracking-cookies", value);
-    }
-}
-
-export default new Settings();
