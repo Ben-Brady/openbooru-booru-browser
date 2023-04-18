@@ -7,7 +7,7 @@
 
   export let query: Query = {};
   export let booru: Booru;
-  $: ((_) => {
+  $: {
     let tmp_query: Query = Object.assign({}, query);
     if (tmp_query.media && tmp_query.media.length === 0) {
       delete tmp_query.media
@@ -19,7 +19,7 @@
     if (tmp_query !== query) {
       query = tmp_query
     }
-  })(query)
+  }
 </script>
 
 <div id="container">

@@ -2,14 +2,11 @@ import type { Media, Post, Booru, Image } from "../types";
 import { guess_media_type, guess_mimetype } from "../utils";
 import { DOMParser } from "@xmldom/xmldom";
 
-export function get_max_length(xml: string): number {
-}
-
 export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 	const parser = new DOMParser();
 	const document = parser.parseFromString(xml, "application/xml")
 	const post_nodes = Array.from(document.getElementsByTagName("post"));
-	
+
 	let posts: Post[] = [];
 	post_nodes.forEach(node => {
 		const gel_post = parse_node(node);
@@ -28,7 +25,8 @@ function parse_post(post: GelbooruPost, booru: Booru): Post {
 	let tags = post.tags
 		.trim()
 		.split(" ")
-		.filter(v => v != "");
+		.filter(v => v != "")
+		.map(tag => ({ name: tag }));
 	let score = Number(post.score);
 	let created_at = new Date(post.created_at);
 	let source = post.source;

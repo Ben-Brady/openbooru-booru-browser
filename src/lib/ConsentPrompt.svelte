@@ -32,7 +32,7 @@
 		Links.TOS,
 	]
 
-	$: ((url: URL) => {
+	$: {
 		if (browser) {
 			if (navigator.userAgent?.toLowerCase()?.includes("bot")) {
 				shouldPrompt = false;
@@ -44,7 +44,7 @@
 				shouldPrompt = true
 			}
 		}
-	})($page.url);
+	};
 
 </script>
 

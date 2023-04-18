@@ -20,7 +20,7 @@ export type Post = {
 	created_at: Date;
 	title: string;
 	description: string;
-	tags: string[];
+	tags: Tag[];
 	score: number;
 	source: string;
 	origin: string;
@@ -69,7 +69,6 @@ export enum TagNamespace {
 	Character = "character",
 	Creator = "creator",
 	Meta = "meta",
-
 }
 
 export interface Tag {

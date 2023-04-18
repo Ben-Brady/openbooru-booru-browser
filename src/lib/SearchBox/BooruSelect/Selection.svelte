@@ -1,13 +1,14 @@
 <script lang="ts">
-  import type { Booru } from "js/booru/types";
-  import { boorus } from "js/booru";
-
-  import { createEventDispatcher } from "svelte";
 	import { browser } from "$app/environment";
+  import type { Booru } from "js/booru/types";
+  import { Rule34, E621  } from "js/booru";
+  import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
-	export let current_booru: Booru;
-	let booru: Booru|null = browser ? current_booru : null
+	const boorus = [ Rule34, E621 ];
+
+	export let selected_booru: Booru;
+	let active_booru: Booru|null = browser ? selected_booru : null
 </script>
 
 <div id="popout">
@@ -15,7 +16,7 @@
 		{#each boorus as booru}
 			<button
 				name="{booru.short_name}"
-				class={booru?.short_name === booru.short_name ? "option active" : "option" }
+				class={active_booru?.short_name === booru.short_name ? "option active" : "option" }
 				on:click={() => dispatch("click", booru)}
 			>
 				<img src="{booru.icon}" alt="{booru.display_name}" />

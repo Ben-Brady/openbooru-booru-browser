@@ -32,16 +32,18 @@
 		if (finished || loading) return;
 		loading = true;
 
+		let new_posts: Post[];
 		try {
 			let cache_key = `${booru.short_name}-${pid}-${JSON.stringify(query)}`;
-			let new_posts = await Cache.use_cache_async(cache_key, 60 , () => booru.search(query, pid));
-			pid += 1;
-			posts = posts.concat(...new_posts);
-			if (new_posts.length === 0) finished = true;
+			new_posts = await Cache.use_cache_async(cache_key, 60 , () => booru.search(query, pid));
 		} catch (e) {
 			console.trace(e);
+			return;
 		}
 
+		pid += 1;
+		posts = posts.concat(...new_posts);
+		if (new_posts.length === 0) finished = true;
 		loading = false;
 	}
 

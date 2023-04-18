@@ -5,10 +5,8 @@
 	import Settings from "js/settings";
 
 	let booru: Booru;
-	Settings.current_booru.subscribe(value => {
-		booru = get_booru(value)
-	})
-	</script>
+	Settings.current_booru.subscribe(value => {booru = get_booru(value)})
+</script>
 
 <HeadInfo path="/posts" />
 <PostsPage booru="{booru}" />

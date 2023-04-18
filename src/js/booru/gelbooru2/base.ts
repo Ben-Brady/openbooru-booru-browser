@@ -14,29 +14,17 @@ const BLACKLISTED_TAGS = [
 	"fart_fetish",
 	"fart_cloud",
 	"fart",
-	"mlp",
-	"my_little_pony",
-	"friendship_is_magic",
 	"incest",
 	"gore",
 	"cannibalism",
 	"implied_cannibalism",
-	"necrophilia",
-]
-
-// To comply with UK Pornography Laws
-const UK_BLACKLISTED_TAGS = [
 	"rape",
 	"necrophilia",
 	"gaping",
-	"bestiality",
-	"equine",
-	"horse",
-	"dog",
 ]
 
 export abstract class Gelbooru2 implements Booru {
-	url! :string
+	url!:string
 	api_url!:string
 	short_name!: string;
 	display_name!: string;
@@ -59,7 +47,6 @@ export abstract class Gelbooru2 implements Booru {
 		search += await this.create_sort_tag(query);
 		search += await this.create_media_tags(query);
 		search += " " + BLACKLISTED_TAGS.map(tag => "-" + tag).join(" ") + " ";
-		search += " " + UK_BLACKLISTED_TAGS.map(tag => "-" + tag).join(" ") + " ";
 
 		let params = new URLSearchParams();
 		params.set("tags", search ?? "");
@@ -149,15 +136,5 @@ export abstract class Gelbooru2 implements Booru {
 		]);
 		let sort = query.sort ?? Sort.Top_Rated;
 		return ` ${SORT_LOOKUP.get(sort)} `;
-	}
-
-	private async get_recent_top_id(): Promise<number> {
-		return Cache.use_cache_async(`${this.short_name}-top_id`, 60 * 60, async () => {
-			let url = this.api_url + `/index.php?page=dapi&s=post&q=index&json=1`;
-			let r = await fetch(url);
-			let posts = await r.json();
-			let post = posts[0];
-			return post["id"];
-		});
 	}
 }

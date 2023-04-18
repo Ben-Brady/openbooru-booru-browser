@@ -10,13 +10,13 @@ function generate_cache_key(key: string) {
 }
 
 function get(key: string): null | any {
-	key = generate_cache_key(key);
-	let json = sessionStorage.getItem(key);
+	let cache_key = generate_cache_key(key);
+	let json = sessionStorage.getItem(cache_key);
 	if (json == null) return null;
 
 	let store: CacheStore = JSON.parse(json);
 	if (Date.now() > store.expiration) {
-		sessionStorage.removeItem(key);
+		sessionStorage.removeItem(cache_key);
 		return null;
 	}
 
@@ -24,13 +24,18 @@ function get(key: string): null | any {
 }
 
 function set(key: string, value: any, ttl: number = 5) {
-	key = generate_cache_key(key);
+	let cache_key = generate_cache_key(key);
 
 	let store = {
 		value: value,
 		expiration: Date.now() + ttl * 1000,
 	};
-	sessionStorage.setItem(key, JSON.stringify(store));
+
+	try {
+		sessionStorage.setItem(cache_key, JSON.stringify(store));
+	} catch {
+		sessionStorage.clear()
+	}
 }
 
 function use_cache<T>(key: string, ttl: number = 5, func: () => T): T {

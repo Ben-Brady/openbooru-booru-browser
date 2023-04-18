@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { onMount, onDestroy } from "svelte";
-	
+
 	export let search: string|undefined;
 	let input: string = search ?? "";
 
 	let element: HTMLInputElement;
-	$: ((input: string) => {
+	$: {
 		clearTimeout(update_timeout);
 		update_timeout = setTimeout(() => {
 			search = input
 		}, 1000)
-	})(input)
+	}
 
 	let update_timeout: string | number | NodeJS.Timeout | undefined;
 	onMount(() => {

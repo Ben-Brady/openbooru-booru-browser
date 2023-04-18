@@ -1,18 +1,25 @@
 <script lang="ts">
+	import type { TagNamespace, Tag as TagType } from "js/booru";
 	import Tag from "lib/Tag.svelte";
 	import { generate_posts_link } from "js/links";
-	export let tags: string[] = [];
+	export let tags: TagType[] = [];
 	tags.sort();
 
 	function create_link(tag: string) {
-		let href = generate_posts_link("", { search: tag});
+		let href = generate_posts_link("", { search: tag });
 		return href;
 	}
+	
 </script>
 
 <div>
 	{#each tags as tag}
-		<Tag name="{tag}" href="{create_link(tag)}" />
+		<Tag
+			name="{tag.name}"
+			count={tag.count}
+			namespace={tag.namespace}
+			href="{create_link(tag.name)}"
+		/>
 	{/each}
 </div>
 

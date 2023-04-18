@@ -5,9 +5,7 @@
 	import Settings from "js/settings";
 
 	let tracking_cookies: boolean;
-	Settings.tracking_cookies.subscribe(value => {
-		tracking_cookies = value
-	})
+	Settings.tracking_cookies.subscribe(value => { tracking_cookies = value })
 </script>
 
 {#if tracking_cookies}

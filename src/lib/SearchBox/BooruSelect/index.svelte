@@ -1,7 +1,6 @@
 <script lang="ts">
   import BooruButton from "./Button.svelte";
   import BooruSelect from "./Selection.svelte";
-	import { current_booru } from "js/settings";
 	import type { Booru } from "js/booru/types";
 
   export let booru: Booru
@@ -12,17 +11,17 @@
 </script>
 
 <BooruButton booru={booru} on:click={toggle}/>
-<!-- {#if displayBooruSelect}
+{#if displayBooruSelect}
   <div>
     <BooruSelect
       on:click={event => {
-        current_booru.set(event.detail);
+        booru = event.detail;
         hide()
       }}
-      bind:current_booru={booru}
+      bind:selected_booru={booru}
     />
   </div>
-{/if} -->
+{/if}
 
 <style>
   div {
