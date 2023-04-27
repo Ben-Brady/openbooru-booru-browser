@@ -7,7 +7,7 @@
 	let aspectRatio = Math.max(media.height / media.width, media.width / media.height);
 </script>
 
-{#if aspectRatio > 4}
+{#if aspectRatio > 2.5}
 	<ZoomableImage media="{media}" />
 {:else}
 	<img
