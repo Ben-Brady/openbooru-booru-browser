@@ -17,8 +17,11 @@
 	<a href={TOS} class="{getActiveClass('tos')}"> ToS </a>
 </div>
 
-<style>
+<style lang="scss">
 	div {
+		@media screen and (max-width: 40rem), (orientation: portrait) {
+			display: none;
+		}
 		background: var(--BACKGROUND-2);
 
 		padding-left: 5%;

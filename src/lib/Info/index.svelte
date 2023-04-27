@@ -20,12 +20,15 @@
 	</div>
 </main>
 
-<style>
+<style lang="scss">
 	main {
 		display: grid;
-		grid-template-columns: 10rem 1fr;
 		height: 100%;
 		background: var(--BACKGROUND-1);
+		grid-template-columns: 10rem 1fr;
+		@media screen and (max-width: 40rem), (orientation: portrait) {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	div {
