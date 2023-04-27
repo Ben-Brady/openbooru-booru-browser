@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ConsentPrompt from "lib/ConsentPrompt.svelte";
-	import NavigationBar from "lib/NavBar/index.svelte";
+	import NavigationBar from "lib/NavigationBar.svelte";
 	import Analytics from "lib/Analytics.svelte";
 	import Settings from "js/settings";
 
@@ -13,17 +13,23 @@
 {/if}
 
 <ConsentPrompt>
-	<NavigationBar/>
-	<main>
-		<slot/>
-	</main>
+	<div>
+		<NavigationBar/>
+		<main>
+			<slot/>
+		</main>
+	</div>
 </ConsentPrompt>
 
 <style>
+	div {
+		display: grid;
+		grid-template-columns: 2rem 1fr;
+	}
+
 	main {
 		display: block;
-		max-height: calc(100vh - var(--NAVBAR-HEIGHT));
-		height: calc(100vh - var(--NAVBAR-HEIGHT));
+		height: 100vh;
 		width: 100%;
 		overflow-y: auto;
 		overflow-x: hidden;
@@ -47,8 +53,6 @@
 
 		--TEXT-NORMAL: #878787;
 		--TEXT-LINK: #93b393;
-
-		--NAVBAR-HEIGHT: 2.8rem;
 	}
 
 	:global(body) {
