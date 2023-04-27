@@ -19,7 +19,7 @@
 
 		image = post.preview;
 	}
-	
+
 	image = post.thumbnail;
 
 	let aspectRatio = image.height / image.width;
@@ -44,39 +44,43 @@
 	/>
 </a>
 
-<style>
+<style lang="scss">
 	a {
 		display: block;
 		height: auto;
+		max-height: 50rem;
 		width: 100%;
 		cursor: pointer;
 
 		margin: 0.2rem;
 		outline: 0.3rem solid;
 		background: var(--BACKGROUND-3);
-	}
 
-	a.image {
+		&.image {
 		outline-color: var(--BACKGROUND-3);
+		}
+
+		&.video {
+			outline-color: #008600;
+		}
+
+		&.animation {
+			outline-color: #000085;
+		}
 	}
 
-	a.video {
-		outline-color: #008600;
-	}
-
-	a.animation {
-		outline-color: #000085;
-	}
 
 	img {
 		height: 100%;
 		width: 100%;
 		object-fit: cover;
-	}
-	a,
-	img {
 		border-radius: 1rem;
 	}
+
+	a, img {
+		border-radius: 1rem;
+	}
+
 	a:hover,
 	img:hover {
 		outline-width: 0.3rem;
