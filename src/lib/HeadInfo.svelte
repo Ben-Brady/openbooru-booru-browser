@@ -24,7 +24,6 @@
 	<title>{RenderedTitle}</title>
 	<meta name="description" content="{RenderedDescription}" />
 	<meta name="keywords" content="{RenderedKeywords.join(', ')}" />
-	<meta name="author" content="Ben Brady" />
 	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 	<link rel="canonical" href="{SITE_URL + path}" />
 
