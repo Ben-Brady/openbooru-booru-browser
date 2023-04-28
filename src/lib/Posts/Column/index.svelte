@@ -16,15 +16,14 @@
 	let container: Element;
 	async function checkNewPosts() {
 		if (!container) return;
-		if (reachedEndOfScroll(container) && !finished) {
+		if (reachedEndOfScroll(container, 5000) && !finished) {
 			await requestPosts();
 		}
 	}
 
-	let column_count = 3;
-	let width = 300;
-	$: post_columns = SplitPosts(posts, Clamp(column_count, 1, 8));
+	let width = 0;
 	$: column_count = Math.floor((width - 200) / 300);
+	$: post_columns = SplitPosts(posts, Clamp(column_count, 1, 8));
 
 	let interval: NodeJS.Timer;
 	onMount(() => {
