@@ -5,6 +5,7 @@
 	import { generate_post_link } from "js/links";
 	import HeadInfo from "lib/HeadInfo.svelte";
 	import PostPage from "lib/Post/Page.svelte";
+	import { goto } from "$app/navigation";
 
 	export let data: PageData;
 	const { post, booru_name, id } = data;
@@ -15,7 +16,8 @@
 		const post = await booru.get(id);
 
 		if (post === undefined) {
-			location.href = "/";
+			await goto("/")
+			throw error(404, "Post not found");
 		} else {
 			return post;
 		}
