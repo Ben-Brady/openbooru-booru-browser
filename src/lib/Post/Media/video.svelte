@@ -1,26 +1,24 @@
 <script lang="ts">
 	import type { Video, Image } from "js/booru/types";
 	import { generateUrl } from "js/proxy";
+	import { onMount } from "svelte";
 	export let video: Video;
 	export let poster: Image | null = null;
 
-	let videoElement: HTMLVideoElement;
+	let volume = 1;
 
 	function updateVolume() {
-		let volume = videoElement.volume;
 		localStorage.setItem("video-volume", volume.toString());
 	}
 
-	function setVolume() {
-		let volume = localStorage.getItem("video-volume");
-		videoElement.volume = Number(volume);
-	}
+	onMount(() => {
+		volume = localStorage.getItem("video-volume") ?? 1;
+	})
 </script>
 
 <!-- svelte-ignore a11y-media-has-caption -->
 <video
-	bind:this="{videoElement}"
-	on:load="{setVolume}"
+	bind:volume="{volume}"
 	on:volumechange="{updateVolume}"
 	poster="{generateUrl(poster?.url)}"
 	preload="auto"
