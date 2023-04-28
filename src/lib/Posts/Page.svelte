@@ -20,7 +20,8 @@
 
 	async function resetSearch() {
 		if (!browser) return
-		await goto(generate_posts_link("", query));
+		await goto(generate_posts_link(query))
+
 		pid = 0;
 		finished = false;
 		loading = false;
@@ -41,7 +42,7 @@
 			return;
 		}
 
-		pid += 1;
+		pid += 1
 		posts = posts.concat(...new_posts);
 		if (new_posts.length === 0) finished = true;
 		loading = false;
@@ -57,9 +58,11 @@
 	} else {
 		layout_element = Column;
 	}
+	let width = 0;
 </script>
 
-{#if browser && innerWidth < 640}
+<svelte:window bind:innerWidth="{width}"/>
+{#if browser && width < 640}
 	<Column
 		finished="{finished}"
 		loading="{loading}"

@@ -8,17 +8,17 @@ export const CONTACT_US = "/info/contact";
 export const TOS = "/info/tos";
 
 export const generate_post_link = (id: string|number, booru: string) => `/post/${booru}/${id}`;
-export function generate_posts_link(layout: "column" | "grid" |  "" = "", query: Query = {}) {
+export function generate_posts_link(query: Query = {}) {
     if (!query) {
-        return `/posts/${layout}`
+        return `/posts/`
     }
 
     let params = encode_query(query);
 
     if (params.toString() === "") {
-        return `/posts/${layout}`;
+        return `/posts/`;
     } else {
-        return `/posts/${layout}?${params.toString()}`;
+        return `/posts/?${params.toString()}`;
     }
 }
 
