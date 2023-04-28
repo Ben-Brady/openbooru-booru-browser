@@ -38,7 +38,7 @@
 		src="{generateUrl(image.url)}"
 		width="{image.width}"
 		height="{image.height}"
-		alt="{post.tags.join(', ')}"
+		alt="{post.tags.map(tag => tag.name).join(', ')}"
 		loading="{priority ? null : 'lazy'}"
 		on:load={onLoad}
 	/>
