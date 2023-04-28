@@ -82,9 +82,9 @@
 			filter: invert(90%);
 		}
 
-		display: none;
+		opacity: 0;
 		nav:hover & {
-			display: block;
+			opacity: 1;
 		}
 	}
 
