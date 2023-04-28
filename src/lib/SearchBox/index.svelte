@@ -4,9 +4,12 @@
   import SortSelect from "./SortSelect.svelte";
   import BooruSelect from "./BooruSelect/index.svelte";
   import type { Query, Booru } from "js/booru/types";
+  import { current_booru } from "js/settings";
 
   export let query: Query = {};
   export let booru: Booru;
+
+  $: tmp_query = query;
   $: {
     let tmp_query: Query = Object.assign({}, query);
     if (tmp_query.media && tmp_query.media.length === 0) {
@@ -20,16 +23,18 @@
       query = tmp_query
     }
   }
+
+  $: current_booru.set(booru.short_name);
 </script>
 
 <div id="container">
   <!-- Only one booru supported rn -->
-  <MediaSelect bind:media={query.media}/>
+  <MediaSelect bind:media={tmp_query.media}/>
   <div id="asdf">
     <BooruSelect bind:booru={booru}/>
-    <SortSelect bind:sort={query.sort}/>
+    <SortSelect bind:sort={tmp_query.sort}/>
   </div>
-  <SearchInput bind:search={query.search}/>
+  <SearchInput bind:search={tmp_query.search}/>
 </div>
 
 <style>
