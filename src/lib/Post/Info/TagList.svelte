@@ -1,19 +1,28 @@
 <script lang="ts">
-	import type { TagNamespace, Tag as TagType } from "js/booru";
+	import { TagNamespace, type Tag as TagType } from "js/booru";
 	import Tag from "lib/Tag.svelte";
 	import { generate_posts_link } from "js/links";
 	export let tags: TagType[] = [];
-	tags.sort();
+
+	let order = [
+		TagNamespace.Creator,
+		TagNamespace.Copyright,
+		TagNamespace.Character,
+		TagNamespace.Meta,
+		TagNamespace.Generic,
+	]
+	let tags_copy = tags.slice();
+	tags_copy.sort()
+	tags_copy.sort((a, b) => order.indexOf(a.namespace) - order.indexOf(b.namespace));
 
 	function create_link(tag: string) {
-		let href = generate_posts_link("", { search: tag });
+		let href = generate_posts_link({ search: tag });
 		return href;
 	}
-	
 </script>
 
 <div>
-	{#each tags as tag}
+	{#each tags_copy as tag}
 		<Tag
 			name="{tag.name}"
 			count={tag.count}
