@@ -73,7 +73,7 @@ export enum TagNamespace {
 
 export interface Tag {
 	name: string;
-	namespace?: TagNamespace;
+	namespace: TagNamespace;
 	count?: number;
 }
 
