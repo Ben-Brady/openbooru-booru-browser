@@ -1,27 +1,10 @@
 import type { Booru, Post, Query, Tag } from "../types";
-import { Sort, MediaType } from "../types";
+import { Sort, MediaType, TagNamespace } from "../types";
 import { parse_xml_nodes } from "./utils";
 import { CORS_PROXY } from "js/config";
 import Cache from "js/cache";
 
-const BLACKLISTED_TAGS = [
-	"gore",
-	"scat",
-	"shit",
-	"pissing",
-	"smegma",
-	"musk",
-	"fart_fetish",
-	"fart_cloud",
-	"fart",
-	"incest",
-	"gore",
-	"cannibalism",
-	"implied_cannibalism",
-	"rape",
-	"necrophilia",
-	"gaping",
-]
+const BLACKLISTED_TAGS: string[] = []
 
 export abstract class Gelbooru2 implements Booru {
 	url!:string
@@ -51,7 +34,7 @@ export abstract class Gelbooru2 implements Booru {
 		let params = new URLSearchParams();
 		params.set("tags", search ?? "");
 		params.set("pid", page.toString());
-		params.set("limit", "100");
+		params.set("limit", "64");
 
 		let url = this.api_url + "/index.php?page=dapi&s=post&q=index&" + params.toString();
 		let r = await fetch(url);
@@ -97,7 +80,7 @@ export abstract class Gelbooru2 implements Booru {
 				count = Number(count_match[1])
 			}
 
-			return { count, name }
+			return { name, count, namespace: TagNamespace.Generic }
 		});
 	}
 

@@ -4,27 +4,7 @@ import { guess_media_type, guess_mimetype } from "./utils";
 import { CORS_PROXY } from "js/config";
 import Cache from "js/cache";
 
-const BLACKLISTED_TAGS = [
-	"gore",
-	"scat",
-	"shit",
-	"pissing",
-	"smegma",
-	"musk",
-	"fart_fetish",
-	"fart_cloud",
-	"fart",
-	"mlp",
-	"my_little_pony",
-	"friendship_is_magic",
-	"incest",
-	"gore",
-	"cannibalism",
-	"implied_cannibalism",
-	"necrophilia",
-    "rape",
-	"gaping",
-]
+const BLACKLISTED_TAGS: string[] = []
 
 const CLIENT_NAME = "Rule34Pics/1.0 (NoHomoZone)"
 
@@ -56,7 +36,7 @@ export class E621 implements Booru {
 		let params = new URLSearchParams();
 		params.set("tags", search ?? "");
 		params.set("page", page.toString());
-        params.set("limit", "320");
+        params.set("limit", "64");
         params.set("_client", CLIENT_NAME);
 
 		let url = "https://e621.net/posts.json?" + params.toString();
@@ -109,32 +89,40 @@ export class E621 implements Booru {
             return []
         }
 
-        let tags: E621Tag[] = data
-
-        function parse_tag(tag: E621Tag): Tag {
-            let namespace: TagNamespace;
-            if (tag.category === 1) {
-                namespace = TagNamespace.Creator
-            } else if (tag.category === 3) {
-                namespace = TagNamespace.Copyright
-            } else if (tag.category === 4 || tag.category === 5) {
-                namespace = TagNamespace.Character
-            } else if (tag.category === 7 || tag.category === 8) {
-                namespace = TagNamespace.Meta
-            } else {
-                namespace = TagNamespace.Generic
-            }
-
-            return {
-                name: tag.name,
-                count: tag.post_count,
-                namespace: namespace,
-            }
-        }
-
-        return tags
+        let e621_tags: E621Tag[] = data
+        let tags =  e621_tags
             .sort((a, b) => b.post_count - a.post_count)
-            .map(parse_tag)
+            .map(((tag: E621Tag): Tag => {
+                let namespace: TagNamespace;
+                if (tag.category === 1) {
+                    namespace = TagNamespace.Creator
+                } else if (tag.category === 3) {
+                    namespace = TagNamespace.Copyright
+                } else if (tag.category === 4 || tag.category === 5) {
+                    namespace = TagNamespace.Character
+                } else if (tag.category === 7 || tag.category === 8) {
+                    namespace = TagNamespace.Meta
+                } else {
+                    namespace = TagNamespace.Generic
+                }
+
+                return {
+                    name: tag.name,
+                    count: tag.post_count,
+                    namespace: namespace,
+                }
+            }))
+
+        let unique_tags = new Set<string>();
+        tags = tags.filter(tag => {
+            if (unique_tags.has(tag.name)) {
+                return false
+            } else {
+                unique_tags.add(tag.name);
+                return true
+            }
+        })
+        return tags;
 	}
 
 	private async create_media_tags(query: Query): Promise<string> {
