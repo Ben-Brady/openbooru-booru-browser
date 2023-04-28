@@ -17,9 +17,9 @@ let serverStorage = {
 		if (value === undefined) return null;
 		else return value;
 	},
-	setItem: _store.set,
-	removeItem: _store.delete,
-	clear: _store.clear
+	setItem: (key: string, value: string) => _store.set(key, value),
+	removeItem: (key: string) => _store.delete(key),
+	clear: () => _store.clear(),
 }
 
 function get(key: string): null | any {
