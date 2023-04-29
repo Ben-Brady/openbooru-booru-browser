@@ -32,6 +32,7 @@
 	}
 
 	span {
+		width: min-content;
 		display: flex;
 		gap: 0.2rem;
 		align-items: center;
@@ -46,7 +47,7 @@
 		background: var(--BACKGROUND-3);
 
 		padding: 0 0.3rem;
-		
+
 		transition: 0.2s ease-in-out;
 		a:hover & {
 			color: invert(90%);
