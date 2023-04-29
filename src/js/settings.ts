@@ -1,6 +1,6 @@
 import { writable, type Writable } from 'svelte/store';
 import { browser } from "$app/environment";
-import { Rule34, get_booru } from "js/booru";
+import { type Query, Rule34 } from "js/booru";
 
 
 class Setting<T> {
@@ -11,10 +11,10 @@ class Setting<T> {
     constructor(key: string, default_value: T) {
         this.#key = key
         this.#default = default_value
-        this.#store = writable(this.#get())
+        this.#store = writable(this.get())
     }
 
-    #get(): T {
+    get(): T {
         if (!browser) return this.#default
 
         let stored_value = localStorage.getItem(this.#key)
@@ -39,9 +39,9 @@ class Setting<T> {
 
 export const current_booru = new Setting("booru-name", Rule34.short_name)
 export const tracking_cookies = new Setting("tracking-cookies", false)
-export const counter = new Setting("counter", 0)
+export const current_query = new Setting<Query>("query", {})
 export default {
     current_booru,
+    current_query,
     tracking_cookies,
-    counter,
 }
