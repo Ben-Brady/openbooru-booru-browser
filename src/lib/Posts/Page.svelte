@@ -9,17 +9,20 @@
 	import Column from "lib/Posts/Column/index.svelte";
 	import { browser } from "$app/environment";
 	import Cache from "js/cache";
+	import { onMount } from "svelte";
 
-	const layout = "column";
 	export let booru: Booru;
 
+	let page_width = 0;
 	let pid = 0;
 	let finished = false;
 	let loading = false;
 	let posts: Post[] = [];
+	let query: Query = {};
 
 	async function resetSearch() {
-		if (!browser) return
+		if (!browser || query === null) return
+
 		await goto(generate_posts_link(query))
 
 		pid = 0;
@@ -28,41 +31,37 @@
 		posts = [];
 		await requestPosts();
 	}
+	$: ((..._) => resetSearch())(query, booru)
 
 	async function requestPosts() {
-		if (finished || loading) return;
-		loading = true;
+		if (finished || loading || query === null) return;
+		navigator.locks.request("posts-search", { ifAvailable: true}, async () => {
+			loading = true;
 
-		let new_posts: Post[];
-		try {
-			let cache_key = `${booru.short_name}-${pid}-${JSON.stringify(query)}`;
-			new_posts = await Cache.use_cache_async(cache_key, 60 , () => booru.search(query, pid));
-		} catch (e) {
-			console.trace(e);
-			return;
-		}
+			let new_posts: Post[];
+			try {
+				let cache_key = `${booru.short_name}-${pid}-${JSON.stringify(query)}`;
+				new_posts = await Cache.use_cache_async(cache_key, 60000, () => booru.search(query, pid));
+			} catch (e) {
+				console.trace(e);
+				return;
+			}
 
-		pid += 1
-		posts = posts.concat(...new_posts);
-		if (new_posts.length === 0) finished = true;
-		loading = false;
+			pid += 1
+			posts = posts.concat(...new_posts);
+			if (new_posts.length === 0) finished = true;
+			loading = false;
+		})
 	}
 
-	let query = decode_query($page.url.searchParams);
-	$: (_ => resetSearch())((query, booru))
-
-
-	let layout_element: any;
-	if (layout === "column") {
-		layout_element = Column;
-	} else {
-		layout_element = Column;
-	}
-	let width = 0;
+	onMount(async () => {
+		query = decode_query($page.url.searchParams);
+		await resetSearch()
+	})
 </script>
 
-<svelte:window bind:innerWidth="{width}"/>
-{#if browser && width < 640}
+<svelte:window bind:innerWidth="{page_width}"/>
+{#if browser && page_width < 640}
 	<Column
 		finished="{finished}"
 		loading="{loading}"
@@ -77,7 +76,7 @@
 				bind:query={query}
 			/>
 		</div>
-		<svelte:component this="{layout_element}"
+		<Column
 			finished="{finished}"
 			loading="{loading}"
 			posts="{posts}"

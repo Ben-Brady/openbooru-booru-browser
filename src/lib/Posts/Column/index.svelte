@@ -3,8 +3,7 @@
 	import { onMount, onDestroy } from "svelte";
 	import LoadingIcon from "lib/LoadingIcon.svelte";
 	import Item from "./Item.svelte";
-	import { reachedEndOfScroll } from "../search";
-	import { SplitPosts } from "./utils";
+	import { reachedEndOfScroll, SplitPosts } from "./utils";
 
 	export let finished: boolean;
 	export let loading: boolean;
@@ -16,25 +15,30 @@
 	let container: Element;
 	async function checkNewPosts() {
 		if (!container) return;
-		if (reachedEndOfScroll(container, 5000) && !finished) {
+		if (reachedEndOfScroll(container, 2000) && !finished) {
 			await requestPosts();
 		}
 	}
 
-	let width = 0;
-	$: column_count = Math.floor((width - 200) / 300);
+	let page_width = 0;
+	$: column_count = Math.floor((page_width - 200) / 300);
 	$: post_columns = SplitPosts(posts, Clamp(column_count, 1, 8));
 
 	let interval: NodeJS.Timer;
 	onMount(() => {
-		interval = setInterval(checkNewPosts, 300);
+		interval = setInterval(checkNewPosts, 1000);
 	});
 	onDestroy(() => clearInterval(interval));
 
 	onMount(checkNewPosts);
 </script>
 
-<div id="main" bind:this="{container}" bind:clientWidth="{width}">
+<div
+	id="main"
+	bind:this="{container}"
+	bind:clientWidth="{page_width}"
+	on:scroll="{checkNewPosts}"
+>
 	<div id="columns">
 		{#each post_columns as column}
 			<div class="column">
