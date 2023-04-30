@@ -54,7 +54,24 @@ function set(key: string, value: any, ttl: number = 5000) {
 	}
 }
 
+function removed_outdated_entries() {
+	if (!browser) return;
+
+	for (let key of Object.keys(sessionStorage)) {
+		let json = localStorage.getItem(key);
+		if (json == null) continue;
+
+		let store: CacheStore = JSON.parse(json);
+		console.log(store);
+		if (Date.now() > store.expiration) {
+			localStorage.removeItem(key);
+		}
+	}
+}
+
 function use_cache<T>(key: string, ttl: number = 5000, func: () => T): T {
+	removed_outdated_entries();
+
 	let cached_value = get(key);
 	if (cached_value) {
 		return cached_value;
@@ -66,6 +83,8 @@ function use_cache<T>(key: string, ttl: number = 5000, func: () => T): T {
 }
 
 async function use_cache_async<T>(key: string, ttl: number = 5000, func: () => Promise<T>): Promise<Awaited<T>> {
+	removed_outdated_entries();
+
 	let cached_value = get(key);
 	if (cached_value) {
 		return cached_value;
