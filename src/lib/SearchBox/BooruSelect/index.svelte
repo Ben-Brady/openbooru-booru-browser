@@ -11,7 +11,7 @@
 </script>
 
 <BooruButton booru={booru} on:click={toggle}/>
-<div hidden>
+<div hidden={!displayBooruSelect}>
   <BooruSelect
     on:click={event => {
       booru = event.detail;
