@@ -26,10 +26,20 @@ export abstract class Gelbooru2 implements Booru {
 
 
 	async search(query: Query, page: number = 0): Promise<Post[]> {
-		let search = query.search ?? "";
-		search += await this.create_sort_tag(query);
-		search += await this.create_media_tags(query);
-		search += " " + BLACKLISTED_TAGS.map(tag => "-" + tag).join(" ") + " ";
+		let tags: string[] = ["rating:safe"]
+		if (query.include_tags) {
+			tags.push(...query.include_tags);
+		}
+		if (query.exclude_tags) {
+			let exclude_tags = query.exclude_tags.map(tag => `-${tag}`);
+			tags.push(...exclude_tags);
+		}
+		tags.push(get_sort_tag(query));
+		tags.push(...BLACKLISTED_TAGS);
+
+		let search = tags.join(" ");
+		search += ` ${query.search ?? ""} `;
+		search += create_media_tags(query);
 
 		let params = new URLSearchParams();
 		params.set("tags", search ?? "");
@@ -83,41 +93,40 @@ export abstract class Gelbooru2 implements Booru {
 			return { name, count, namespace: TagNamespace.Generic }
 		});
 	}
+}
 
-	private async create_media_tags(query: Query): Promise<string> {
-		if (query.media === undefined) return ""
-		if (query.media.length === 0) return ""
 
-		let images = query.media.includes(MediaType.Image);
-		let videos = query.media.includes(MediaType.Video);
-		let gifs = query.media.includes(MediaType.Animation);
+function create_media_tags(query: Query): string {
+	if (query.media === undefined) return ""
+	if (query.media.length === 0) return ""
 
-		// Some videos are tagged as gif
-		// So was can't do -gif if we need videos
-		// GIF filtering is hard :(
-		if (images && !videos && !gifs) {
-			return " -gif -video "
-		} else if (gifs && videos && !images) {
-			return " ( video ~ gif ) ";
-		} else if (gifs && !videos && !images) {
-			return " gif -video ";
-		} else if (videos && !gifs && !images) {
-			return " video "
-		} else if (gifs && images && !videos) {
-			return " -video ";
-		} else {
-			return ""
-		}
+	let images = query.media.includes(MediaType.Image);
+	let videos = query.media.includes(MediaType.Video);
+	let gifs = query.media.includes(MediaType.Animation);
+
+	// Some videos are tagged as gif
+	// So was can't do -gif if we need videos
+	// GIF filtering is hard :(
+	if (images && !videos && !gifs) {
+		return " -gif -video "
+	} else if (gifs && videos && !images) {
+		return " ( video ~ gif ) ";
+	} else if (gifs && !videos && !images) {
+		return " gif -video ";
+	} else if (videos && !gifs && !images) {
+		return " video "
+	} else if (gifs && images && !videos) {
+		return " -video ";
+	} else {
+		return ""
 	}
-
-	private async create_sort_tag(query: Query): Promise<string> {
-		const SORT_LOOKUP = new Map<Sort, string>([
-			[Sort.Top_Rated, "sort:score"],
-			[Sort.Lowest_Rated, "sort:score:asc"],
-			[Sort.Hotest, `sort:score`],
-			[Sort.Newest, "sort:id"],
-		]);
-		let sort = query.sort ?? Sort.Top_Rated;
-		return ` ${SORT_LOOKUP.get(sort)} `;
+}
+function get_sort_tag(query: Query): string {
+	let sort = query.sort ?? Sort.Top_Rated;
+	switch (sort) {
+		case Sort.Top_Rated: return "sort:score"
+		case Sort.Lowest_Rated: return "sort:score:asc"
+		case Sort.Hotest: return `sort:score`
+		case Sort.Newest: return "sort:id"
 	}
 }

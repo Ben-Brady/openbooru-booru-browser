@@ -71,16 +71,18 @@ export enum TagNamespace {
 	Meta = "meta",
 }
 
-export interface Tag {
+export type Tag = {
 	name: string;
 	namespace: TagNamespace;
 	count?: number;
 }
 
-export interface Query {
+export type Query = {
 	search?: string;
 	sort?: Sort;
 	media?: MediaType[];
+	include_tags?: string[];
+	exclude_tags?: string[];
 }
 
 export enum Sort {

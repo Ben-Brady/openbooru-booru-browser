@@ -27,11 +27,21 @@ export class E621 implements Booru {
 	}
 
 
-	async search(query: Query, page: number = 0): Promise<Post[]> {
-		let search = query.search ?? "";
-		search += await this.create_sort_tag(query);
-		search += await this.create_media_tags(query);
-		search += " " + BLACKLISTED_TAGS.map(tag => "-" + tag).join(" ") + " ";
+    async search(query: Query, page: number = 0): Promise<Post[]> {
+		let tags: string[] = []
+		if (query.include_tags) {
+			tags.push(...query.include_tags);
+		}
+		if (query.exclude_tags) {
+			let exclude_tags = query.exclude_tags.map(tag => `-${tag}`);
+			tags.push(...exclude_tags);
+		}
+		tags.push(get_sort_tag(query));
+		tags.push(...BLACKLISTED_TAGS);
+
+		let search = tags.join(" ");
+		search += ` ${query.search ?? ""} `;
+		search += await create_media_tags(query);
 
 		let params = new URLSearchParams();
 		params.set("tags", search ?? "");
@@ -125,7 +135,8 @@ export class E621 implements Booru {
         return tags;
 	}
 
-	private async create_media_tags(query: Query): Promise<string> {
+}
+async function create_media_tags(query: Query): Promise<string> {
 		if (query.media === undefined) return ""
 
         let search = "";
@@ -141,17 +152,14 @@ export class E621 implements Booru {
 
         return search
 	}
-
-	private async create_sort_tag(query: Query): Promise<string> {
-		const SORT_LOOKUP = new Map<Sort, string>([
-			[Sort.Top_Rated, "order:score"],
-			[Sort.Lowest_Rated, "order:score_asc"],
-			[Sort.Hotest, `order:score date:month`],
-			[Sort.Newest, "order:id"],
-		]);
-		let sort = query.sort ?? Sort.Top_Rated;
-		return ` ${SORT_LOOKUP.get(sort)} `;
-	}
+function get_sort_tag(query: Query): string {
+    let sort = query.sort ?? Sort.Top_Rated;
+    switch (sort) {
+        case Sort.Top_Rated: return "order:score"
+        case Sort.Lowest_Rated: return "order:score_asc"
+        case Sort.Hotest: return `order:score date:month`
+        case Sort.Newest: return "order:id"
+    }
 }
 
 function parse_post(data: E621Post, booru: Booru): Post {

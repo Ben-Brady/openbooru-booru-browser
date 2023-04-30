@@ -11,17 +11,15 @@
 </script>
 
 <BooruButton booru={booru} on:click={toggle}/>
-{#if displayBooruSelect}
-  <div>
-    <BooruSelect
-      on:click={event => {
-        booru = event.detail;
-        hide()
-      }}
-      bind:selected_booru={booru}
-    />
-  </div>
-{/if}
+<div hidden>
+  <BooruSelect
+    on:click={event => {
+      booru = event.detail;
+      hide()
+    }}
+    bind:selected_booru={booru}
+  />
+</div>
 
 <style>
   div {

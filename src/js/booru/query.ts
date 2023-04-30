@@ -24,11 +24,27 @@ export function encode_query(query: Query): URLSearchParams {
 		params.set("search", query.search);
 	}
 
+	if (query.include_tags) {
+		params.set("include", JSON.stringify(query.include_tags));
+	}
+	if (query.exclude_tags) {
+		params.set("exclude", JSON.stringify(query.exclude_tags));
+	}
+
 	return params;
 }
 
 export function decode_query(params: URLSearchParams): Query {
 	let query: Query = {};
+
+	let include_param = params.get("include");
+	if (include_param) query.include_tags = JSON.parse(include_param);
+
+	let exclude_param = params.get("exclude");
+	if (exclude_param) query.exclude_tags = JSON.parse(exclude_param);
+
+	let search_param = params.get("search")
+	if (search_param) query.search = search_param;
 
 	let sort_param = params.get("sort");
 	if (sort_param) {
@@ -43,11 +59,6 @@ export function decode_query(params: URLSearchParams): Query {
 		if (media_param.includes("image")) query.media.push(MediaType.Image);
 		if (media_param.includes("animation")) query.media.push(MediaType.Animation);
 		if (media_param.includes("video")) query.media.push(MediaType.Video);
-	}
-
-	let search_param = params.get("search")
-	if (search_param) {
-		query.search = search_param;
 	}
 
 	return query;
