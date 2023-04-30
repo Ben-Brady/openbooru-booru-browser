@@ -1,8 +1,7 @@
 import type { Booru, Post, Query, Tag, Media } from "./types";
 import { MediaType, Sort, TagNamespace } from "./types";
 import { guess_media_type, guess_mimetype } from "./utils";
-import { CORS_PROXY } from "js/config";
-import Cache from "js/cache";
+import { DEPLOYMENT } from "js/config";
 
 const BLACKLISTED_TAGS: string[] = []
 
@@ -29,6 +28,9 @@ export class E621 implements Booru {
 
     async search(query: Query, page: number = 0): Promise<Post[]> {
 		let tags: string[] = []
+		if (DEPLOYMENT === "dev") {
+			tags.push("rating:safe")
+		}
 		if (query.include_tags) {
 			tags.push(...query.include_tags);
 		}
