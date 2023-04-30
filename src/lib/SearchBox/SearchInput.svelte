@@ -23,7 +23,7 @@
 
 <div>
 	<img src="/images/search.svg" alt="Search" />
-	<input bind:this={element} bind:value="{input}"/>
+	<input bind:this={element} placeholder="Search Tags" bind:value="{input}"/>
 </div>
 
 <style>
