@@ -1,7 +1,6 @@
 import { writable, type Unsubscriber, type Writable } from "svelte/store";
 import { browser } from "$app/environment";
-import { Rule34 } from "js/booru";
-import type { Favourite } from "./types";
+import { type Post, Rule34 } from "js/booru";
 
 class Setting<T> {
 	#key: string;
@@ -45,5 +44,5 @@ class Setting<T> {
 
 export const previous_booru = new Setting("booru-name", Rule34.short_name);
 export const tracking_cookies = new Setting("tracking-cookies", false);
-export const favourites = new Setting<Favourite[]>("favourites", []);
+export const favourites = new Setting<Post[]>("favourites", []);
 

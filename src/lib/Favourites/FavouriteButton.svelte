@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Post } from "js/booru";
-	import type { Favourite } from "js/types";
   import { favourites } from "js/settings";
 
   export let post: Post;
@@ -8,12 +7,7 @@
   let favourited = $favourites.map(f => f.id).includes(post.id);
 
   function add_favourite(post: Post) {
-      let favourite: Favourite = {
-        id: post.id,
-        booru: post.booru,
-        thumbnail: post.preview?.url ?? post.thumbnail.url,
-      };
-      favourites.update(favs => [...favs, favourite]);
+      favourites.update(favs => [...favs, post]);
   }
 
   function remove_favourite(post: Post) {

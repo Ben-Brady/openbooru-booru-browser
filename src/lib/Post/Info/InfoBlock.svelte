@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Post } from "js/booru/types";
-	import FavouriteButton from "lib/FavouriteButton.svelte";
+	import FavouriteButton from "lib/Favourites/FavouriteButton.svelte";
 
 	export let post: Post;
 
