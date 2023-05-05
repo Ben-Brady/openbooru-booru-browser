@@ -10,4 +10,4 @@
 </script>
 
 <HeadInfo path="/posts" />
-<PostsPage booru="{booru}" query="{data.query}" />
+<PostsPage booru="{booru}" />

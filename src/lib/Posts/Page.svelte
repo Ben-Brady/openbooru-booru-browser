@@ -2,7 +2,7 @@
 	import type { Post, Booru, Query } from "js/booru/types";
 	import { page } from "$app/stores";
 	import { goto } from '$app/navigation';
-	import { DEFAULT_QUERY, decode_query, encode_query } from "js/booru/query";
+	import { decode_query, DEFAULT_QUERY } from "js/booru/query";
 	import { generate_posts_link } from "js/links";
 
 	import SearchBox from "lib/SearchBox/index.svelte";
@@ -10,13 +10,11 @@
 	import { browser } from "$app/environment";
 	import Cache from "js/cache";
 	import { onMount } from "svelte";
-	import { useInfiniteQuery } from "@sveltestack/svelte-query";
-
 	export let booru: Booru;
 
 	let page_width = 0;
 
-	let query: Query|null = null;
+	let query: Query = DEFAULT_QUERY;
 	let pid = 0;
 	let finished = false;
 	let loading = false;
