@@ -42,7 +42,6 @@
 		height: auto;
 		max-height: 40rem;
 		min-height: 10rem;
-		max-height: 200%;
 		width: 100%;
 		cursor: pointer;
 
