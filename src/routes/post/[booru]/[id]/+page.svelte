@@ -25,7 +25,7 @@
 			return post;
 		}
 	}
-	const queryResult = useQuery("post", getPost, { initialData: post });
+	const queryResult = useQuery([id, booru_name], getPost, { initialData: post });
 </script>
 
 {#if $queryResult.data === undefined}
