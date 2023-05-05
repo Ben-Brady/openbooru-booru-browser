@@ -1,6 +1,7 @@
 import { writable, type Unsubscriber, type Writable } from "svelte/store";
 import { browser } from "$app/environment";
 import { Rule34 } from "js/booru";
+import type { Favourite } from "./favoruites";
 
 class Setting<T> {
 	#key: string;
@@ -31,6 +32,12 @@ class Setting<T> {
 		this.store.set(value);
 	}
 
+	update(callback: (current: T) => T) {
+		let value = this.get();
+		let new_value = callback(value);
+		this.set(new_value);
+	}
+
 	subscribe(func: (value: T) => void): Unsubscriber {
 		return this.store.subscribe(func);
 	}
@@ -38,7 +45,5 @@ class Setting<T> {
 
 export const previous_booru = new Setting("booru-name", Rule34.short_name);
 export const tracking_cookies = new Setting("tracking-cookies", false);
-export default {
-	previous_booru,
-	tracking_cookies,
-};
+export const favourites = new Setting<Favourite[]>("favourites", []);
+

@@ -1,10 +1,14 @@
 <nav>
 	<a href="/" title="Home">
-		<img src="/images/home.svg" alt="Home" height="32" width="32" />
+		<img src="/images/home.svg" alt="Home"/>
 		<span> Home </span>
 	</a>
+	<a href="/favourites" title="Favourites">
+		<img src="/images/heart-solid.svg" alt="Info"/>
+		<span>Favourites</span>
+	</a>
 	<a href="/info" title="Info">
-		<img src="/images/info.svg" alt="Info" height="32" width="32" />
+		<img src="/images/info.svg" alt="Info"/>
 		<span> Info </span>
 	</a>
 </nav>
