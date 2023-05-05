@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Favourite } from "js/favoruites";
+  import type { Favourite } from "js/types";
 	import { generate_post_link } from "js/links";
 
   export let favourite: Favourite;

@@ -1,7 +1,7 @@
 import { writable, type Unsubscriber, type Writable } from "svelte/store";
 import { browser } from "$app/environment";
 import { Rule34 } from "js/booru";
-import type { Favourite } from "./favoruites";
+import type { Favourite } from "./types";
 
 class Setting<T> {
 	#key: string;

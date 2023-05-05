@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Post } from "js/booru";
-	import type { Favourite } from "js/favoruites";
+	import type { Favourite } from "js/types";
   import { favourites } from "js/settings";
 
   export let post: Post;
