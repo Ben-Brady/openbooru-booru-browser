@@ -6,33 +6,25 @@
 	export let post: Post;
 	export let priority: boolean = false;
 
-	const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
-
 	let image: Image;
-	function onLoad(e: Event) {
-		if (post.preview === undefined) return
-		if (post.preview.type !== "image") return
+	function onLoad() {
+		if (post.preview === undefined) return;
+		if (post.preview.type !== "image") return;
 
 		const MAX_SIZE_PIXELS = 8_000_000;
 		let { width, height } = post.preview;
-		if ((width * height) > MAX_SIZE_PIXELS) return
+		if (width * height > MAX_SIZE_PIXELS) return;
 
 		image = post.preview;
 	}
 
 	image = post.thumbnail;
-
-	let aspectRatio = image.height / image.width;
-	let adjustedAspectRatio = clamp(aspectRatio, 0.5, 2);
-	let adjustedHeight = (image.height / aspectRatio) * adjustedAspectRatio;
-	let aspectRatioStyle = `aspect-ratio: ${image.width}/${adjustedHeight}`;
 </script>
 
 <a
 	title="Post: {post.id}"
 	href="{generate_post_link(post.id, post.booru)}"
 	class="{post.full.type}"
-	style="{aspectRatioStyle}"
 >
 	<img
 		src="{generateUrl(image.url)}"
@@ -40,7 +32,7 @@
 		height="{image.height}"
 		alt="{post.tags.map(tag => tag.name).join(', ')}"
 		loading="{priority ? null : 'lazy'}"
-		on:load={onLoad}
+		on:load="{onLoad}"
 	/>
 </a>
 
@@ -48,7 +40,9 @@
 	a {
 		display: block;
 		height: auto;
-		max-height: 50rem;
+		max-height: 40rem;
+		min-height: 10rem;
+		max-height: 200%;
 		width: 100%;
 		cursor: pointer;
 
@@ -57,7 +51,7 @@
 		background: var(--BACKGROUND-3);
 
 		&.image {
-		outline-color: var(--BACKGROUND-3);
+			outline-color: var(--BACKGROUND-3);
 		}
 
 		&.video {
@@ -69,7 +63,6 @@
 		}
 	}
 
-
 	img {
 		height: 100%;
 		width: 100%;
@@ -77,7 +70,8 @@
 		border-radius: 1rem;
 	}
 
-	a, img {
+	a,
+	img {
 		border-radius: 1rem;
 	}
 

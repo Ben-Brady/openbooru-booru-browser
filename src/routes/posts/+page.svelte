@@ -1,12 +1,10 @@
-<script lang="ts">
-	import { get_booru, type Booru } from "js/booru";
-	import PostsPage from "lib/Posts/Page.svelte";
-	import HeadInfo from "lib/HeadInfo.svelte";
-	import Settings from "js/settings";
+<script>
+	import { goto } from "$app/navigation";
+	import { previous_booru } from "js/settings";
+	import { onMount } from "svelte";
 
-	let booru: Booru;
-	Settings.current_booru.subscribe(value => {booru = get_booru(value)})
+  onMount(async () => {
+    let booru = $previous_booru;
+    goto(`/posts/${booru}`)
+  })
 </script>
-
-<HeadInfo path="/posts" />
-<PostsPage booru="{booru}" />

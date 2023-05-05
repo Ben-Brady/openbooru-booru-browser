@@ -8,8 +8,8 @@ export const load: PageServerLoad = async ({ params }) => {
 	const booru = attempt_get_booru(booru_name);
 	if (booru === undefined) throw error(404, "Booru Not Found");
 
-	let key = `post-${id}-${booru_name}`
-	let post = await Cache.use_cache_async(key, 5, async () => {
+	let key = `post-${id}-${booru_name}`;
+	let post = await Cache.use_cache_async(key, 60000, async () => {
 		try {
 			const post = await booru.get(id);
 			if (post === undefined) throw error(404, "Post Not Found");

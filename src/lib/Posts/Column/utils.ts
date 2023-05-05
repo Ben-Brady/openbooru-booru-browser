@@ -29,8 +29,9 @@ function getColumnHeight(column: Post[]) {
 }
 
 export function reachedEndOfScroll(element: Element, threshold: number = 2000) {
-    const { scrollTop, offsetHeight, scrollHeight } = element;
-    let distanceFromTop = scrollTop + offsetHeight;
+	let { height } = element.getBoundingClientRect();
+	const { scrollTop, scrollHeight } = element;
+	let distanceFromTop = scrollTop + height;
 	let distanceFromBottom = scrollHeight - distanceFromTop;
-    return distanceFromBottom < threshold;
+	return distanceFromBottom < threshold;
 }

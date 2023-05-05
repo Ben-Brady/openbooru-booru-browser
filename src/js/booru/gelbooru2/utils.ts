@@ -1,10 +1,10 @@
-import type { Media, Post, Booru, Image } from "../types";
+import { type Media, type Post, type Booru, type Image, type Tag, TagNamespace } from "../types";
 import { guess_media_type, guess_mimetype } from "../utils";
 import { DOMParser } from "@xmldom/xmldom";
 
 export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 	const parser = new DOMParser();
-	const document = parser.parseFromString(xml, "application/xml")
+	const document = parser.parseFromString(xml, "application/xml");
 	const post_nodes = Array.from(document.getElementsByTagName("post"));
 
 	let posts: Post[] = [];
@@ -13,8 +13,8 @@ export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 		try {
 			const post = parse_post(gel_post, booru);
 			posts.push(post);
-		} catch { }
-	})
+		} catch {}
+	});
 
 	return posts;
 }
@@ -22,13 +22,13 @@ export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 function parse_post(post: GelbooruPost, booru: Booru): Post {
 	let origin = booru.generate_url(post.id);
 	let id = Number(post.id).toString();
-	let tags = post.tags
+	let tags: Tag[] = post.tags
 		.trim()
 		.split(" ")
 		.filter(v => v != "")
-		.map(tag => ({ name: tag }));
+		.map(tag => ({ name: tag, namespace: TagNamespace.Generic }));
 	let score = Number(post.score);
-	let created_at = new Date(post.created_at);
+	let created_at = new Date(post.created_at).toDateString();
 	let source = post.source;
 	let type = guess_media_type(post.file_url);
 
@@ -75,7 +75,7 @@ function parse_post(post: GelbooruPost, booru: Booru): Post {
 
 function parse_node(node: Element): GelbooruPost {
 	if (!node.getAttribute) {
-		throw new Error("Invalid Element")
+		throw new Error("Invalid Element");
 	}
 	function assert_get_attribute(key: string): string {
 		let value = node.getAttribute(key);

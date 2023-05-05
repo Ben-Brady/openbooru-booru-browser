@@ -7,17 +7,16 @@ export interface Booru {
 	generate_url: (id: string) => string;
 
 	is_working: () => Promise<boolean>;
-	search: (query: Query, page: number) => Promise<Post[]>;
+	search: (query: OptionalQuery, page: number) => Promise<Post[]>;
 	get: (id: string) => Promise<Post | undefined>;
 	search_tags: (search: string) => Promise<Tag[]>;
 }
-
 
 export type Post = {
 	booru: string;
 	id: string;
 	type: MediaType;
-	created_at: Date;
+	created_at: string;
 	title: string;
 	description: string;
 	tags: Tag[];
@@ -26,7 +25,7 @@ export type Post = {
 	origin: string;
 
 	thumbnail: Image;
-	preview: Media|undefined;
+	preview: Media | undefined;
 	full: Media;
 };
 
@@ -56,12 +55,11 @@ export type Video = {
 
 export type Media = Image | Animation | Video;
 
-export enum MediaType{
+export enum MediaType {
 	Image = "image",
 	Video = "video",
 	Animation = "animation",
 }
-
 
 export enum TagNamespace {
 	Generic = "generic",
@@ -75,15 +73,23 @@ export type Tag = {
 	name: string;
 	namespace: TagNamespace;
 	count?: number;
-}
+};
 
 export type Query = {
+	search: string;
+	sort: Sort;
+	media: MediaType[];
+	include_tags: string[];
+	exclude_tags: string[];
+};
+
+export type OptionalQuery = {
 	search?: string;
 	sort?: Sort;
 	media?: MediaType[];
 	include_tags?: string[];
 	exclude_tags?: string[];
-}
+};
 
 export enum Sort {
 	Newest = "Newest",

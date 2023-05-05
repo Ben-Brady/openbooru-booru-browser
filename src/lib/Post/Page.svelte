@@ -15,7 +15,7 @@
 <style>
 	main {
 		height: 100%;
-		overflow-y: scroll;
+		overflow-y: hidden;
 		display: grid;
 		grid-template-rows: calc(100% - 1.5rem) 1fr;
 	}

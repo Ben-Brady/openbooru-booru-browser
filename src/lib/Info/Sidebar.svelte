@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { TOS, ABOUT_US, CONTACT_US} from "js/links"
+	import { TOS, ABOUT_US, CONTACT_US } from "js/links";
 	export let current = "";
 
 	function getActiveClass(mode: string) {
@@ -12,9 +12,9 @@
 </script>
 
 <div>
-	<a href={ABOUT_US} class="{getActiveClass('about')}"> About Us </a>
-	<a href={CONTACT_US} class="{getActiveClass('contact')}"> Contact Us </a>
-	<a href={TOS} class="{getActiveClass('tos')}"> ToS </a>
+	<a href="{ABOUT_US}" class="{getActiveClass('about')}"> About Us </a>
+	<a href="{CONTACT_US}" class="{getActiveClass('contact')}"> Contact Us </a>
+	<a href="{TOS}" class="{getActiveClass('tos')}"> ToS </a>
 </div>
 
 <style lang="scss">

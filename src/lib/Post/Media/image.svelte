@@ -4,10 +4,10 @@
 	import ZoomableImage from "./ZoomableImage.svelte";
 	export let media: Image | Animation;
 
-	let aspectRatio = Math.max(media.height / media.width, media.width / media.height);
+	let aspectRatio = media.height / media.width;
 </script>
 
-{#if aspectRatio > 2.5}
+{#if aspectRatio > 2 || aspectRatio < 0.3}
 	<ZoomableImage media="{media}" />
 {:else}
 	<img

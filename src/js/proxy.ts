@@ -1,7 +1,7 @@
 import { CORS_PROXY } from "js/config";
 export function generateUrl(url: URL | string | undefined): string | undefined {
 	if (url === undefined) {
-		return undefined
+		return undefined;
 	}
 
 	url = new URL(url);
@@ -11,6 +11,6 @@ export function generateUrl(url: URL | string | undefined): string | undefined {
 	if (isBlocked) {
 		return CORS_PROXY + encodeURIComponent(url.toString());
 	} else {
-		return url.toString()
+		return url.toString();
 	}
 }

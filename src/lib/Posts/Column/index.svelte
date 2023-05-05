@@ -20,33 +20,25 @@
 		}
 	}
 
-	let page_width = 0;
-	$: column_count = Math.floor((page_width - 200) / 300);
-	$: post_columns = SplitPosts(posts, Clamp(column_count, 1, 8));
-
 	let interval: NodeJS.Timer;
 	onMount(() => {
+		checkNewPosts();
+		window.history.scrollRestoration = "auto";
 		interval = setInterval(checkNewPosts, 1000);
 	});
 	onDestroy(() => clearInterval(interval));
 
-	onMount(checkNewPosts);
+	let page_width = 0;
+	$: column_count = Math.floor((page_width - 200) / 300);
+	$: post_columns = SplitPosts(posts, Clamp(column_count, 1, 8));
 </script>
 
-<div
-	id="main"
-	bind:this="{container}"
-	bind:clientWidth="{page_width}"
-	on:scroll="{checkNewPosts}"
->
+<div id="main" bind:this="{container}" bind:clientWidth="{page_width}" on:scroll="{checkNewPosts}">
 	<div id="columns">
 		{#each post_columns as column}
 			<div class="column">
 				{#each column as post, index}
-					<Item
-						post="{post}"
-						priority="{index < 5}"
-					/>
+					<Item post="{post}" priority="{index < 5}" />
 				{/each}
 			</div>
 		{/each}
@@ -90,10 +82,6 @@
 	}
 
 	@media screen and (max-width: 40rem), (orientation: portrait) {
-		main {
-			padding-left: 1rem;
-			padding-right: 1rem;
-		}
 		div.column {
 			--IMAGE-WIDTH: 40vw;
 			margin: 8px;

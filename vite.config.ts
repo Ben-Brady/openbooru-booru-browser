@@ -16,8 +16,7 @@ const config: UserConfig = {
 		},
 	},
 	server: {
-		headers: {
-		},
+		headers: {},
 	},
 };
 

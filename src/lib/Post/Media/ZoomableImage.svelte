@@ -8,11 +8,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-	data-zoom="{zoomed}"
-	data-wide="{wide}"
-	on:click="{() => zoomed = !zoomed}"
-	>
+<div data-zoom="{zoomed}" data-wide="{wide}" on:click="{() => (zoomed = !zoomed)}">
 	<img
 		src="{generateUrl(media.url)}"
 		alt=""
@@ -35,8 +31,8 @@
 			overflow-y: scroll;
 		}
 		div[data-zoom="true"][data-wide="true"] & {
-				width: unset;
-				overflow-x: scroll;
+			width: unset;
+			overflow-x: scroll;
 		}
 	}
 

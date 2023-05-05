@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { boorus } from "js/booru";
 	import type { Media } from "js/booru/types";
 	import { SITE_NAME, SITE_DESC, SITE_URL, SITE_KEYWORDS } from "js/config";
 

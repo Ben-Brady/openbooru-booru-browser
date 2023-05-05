@@ -1,45 +1,37 @@
 <script lang="ts">
-	import { error } from "@sveltejs/kit";
 	import type { PageData } from "./$types";
+	import { error } from "@sveltejs/kit";
+	import { goto } from "$app/navigation";
+	import { useQuery } from "@sveltestack/svelte-query";
 	import { get_booru } from "js/booru";
 	import { generate_post_link } from "js/links";
 	import HeadInfo from "lib/HeadInfo.svelte";
 	import PostPage from "lib/Post/Page.svelte";
-	import { goto } from "$app/navigation";
+	import LoadingIcon from "lib/LoadingIcon.svelte";
 
 	export let data: PageData;
 	const { post, booru_name, id } = data;
 
 	const booru = get_booru(booru_name);
+	const title = `${booru?.display_name}: Post ${id}`;
+	const link = generate_post_link(id, booru_name);
 
 	async function getPost() {
 		const post = await booru.get(id);
-
 		if (post === undefined) {
-			await goto("/")
+			await goto("/");
 			throw error(404, "Post not found");
 		} else {
 			return post;
 		}
 	}
-
-	const title = `${booru?.display_name}: Post ${id}`;
-	const link = generate_post_link(id, booru_name);
+	const queryResult = useQuery("post", getPost, { initialData: post });
 </script>
 
-{#if post}
-	<HeadInfo
-		title="{title}"
-		path="{link}"
-		media="{post.full}"
-	/>
-	<PostPage post="{post}" />
+{#if $queryResult.data === undefined}
+	<HeadInfo title="Post" path="{link}" />
+	<LoadingIcon />
 {:else}
-	<HeadInfo
-		title="Post"
-		path="{link}"
-	/>
-	{#await getPost() then post}
-		<PostPage post="{post}" />
-	{/await}
+	<HeadInfo title="{title}" path="{link}" media="{$queryResult.data.full}" />
+	<PostPage post="{$queryResult.data}" />
 {/if}

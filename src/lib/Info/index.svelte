@@ -32,8 +32,8 @@
 	}
 
 	div {
-		padding-left: .5em;
-		padding-right: .5em;
+		padding-left: 0.5em;
+		padding-right: 0.5em;
 
 		font-size-adjust: 0.7;
 		height: 100%;

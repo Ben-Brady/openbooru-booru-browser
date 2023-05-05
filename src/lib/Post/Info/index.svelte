@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Post } from "js/booru/types";
 	import Source from "./Source.svelte";
-	import LeftBlock from "./LeftBlock.svelte";
+	import LeftBlock from "./InfoBlock.svelte";
 	import TagList from "./TagList.svelte";
 
 	export let post: Post | null;
@@ -10,7 +10,7 @@
 <div id="main">
 	{#if post}
 		<div id="source">
-			<Source source="{post.origin.toString()}" />
+			<Source source="{post.origin}" />
 		</div>
 		<div id="inner">
 			<LeftBlock post="{post}" />
@@ -21,31 +21,40 @@
 	{/if}
 </div>
 
-<style>
-	#source {
+<style lang="scss">
+	#main {
+		position: sticky;
+		float: left;
+		bottom: 0;
+		left: 0;
+		height: 1.5rem;
 		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+		z-index: 2;
 
-	div#main {
-		display: grid;
-		grid-template-rows: 1.2rem 1fr;
-
-		position: relative;
-		height: fit-content;
-		min-height: 14rem;
+		border-top: .1rem solid black;
 		background-color: var(--BACKGROUND-2);
+		display: grid;
+		grid-template-rows: 1.5rem 1fr;
+
+
+		transition: 200ms ease-in-out;
+		&:hover {
+			height: max(10rem, 100%);
+		}
 	}
 
-	div#inner {
+	#inner {
 		display: grid;
 		grid-template-columns: 14rem 1fr 4rem;
 		padding-bottom: 1rem;
 	}
 
-	/* div#content {} */
+	#source {
+		width: 100%;
+		display: flex;
+		align-items: baseline;
+		justify-content: center;
+	}
 
 	@media screen and (max-width: 40rem), (orientation: portrait) {
 		div#inner {

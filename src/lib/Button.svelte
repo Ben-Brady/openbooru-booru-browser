@@ -39,8 +39,9 @@
 
 		cursor: pointer;
 		transition: 0.2s ease-in-out;
-		&:hover, &.active {
-		background-color: var(--BACKGROUND-3-HOVER);
+		&:hover,
+		&.active {
+			background-color: var(--BACKGROUND-3-HOVER);
 		}
 	}
 
@@ -57,5 +58,4 @@
 			filter: invert(90%);
 		}
 	}
-
 </style>

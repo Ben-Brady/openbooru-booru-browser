@@ -1,25 +1,27 @@
 <script lang="ts">
+	import { QueryClient, QueryClientProvider } from "@sveltestack/svelte-query";
 	import ConsentPrompt from "lib/ConsentPrompt.svelte";
 	import NavigationBar from "lib/NavigationBar.svelte";
 	import Analytics from "lib/Analytics.svelte";
-	import Settings from "js/settings";
+	import { tracking_cookies } from "js/settings";
 
-	let tracking_cookies: boolean;
-	Settings.tracking_cookies.subscribe(value => { tracking_cookies = value })
+	const queryClient = new QueryClient();
 </script>
 
-{#if tracking_cookies}
-	<Analytics measurementID="G-DH7G2DZL9B"/>
+{#if $tracking_cookies}
+	<Analytics measurementID="G-DH7G2DZL9B" />
 {/if}
 
-<ConsentPrompt>
-	<div>
-		<NavigationBar/>
-		<main>
-			<slot/>
-		</main>
-	</div>
-</ConsentPrompt>
+<QueryClientProvider client="{queryClient}">
+	<ConsentPrompt>
+		<div>
+			<NavigationBar />
+			<main>
+				<slot />
+			</main>
+		</div>
+	</ConsentPrompt>
+</QueryClientProvider>
 
 <style>
 	div {
@@ -34,7 +36,6 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 	}
-
 
 	:global(:root) {
 		--BACKGROUND-1: #303a30;

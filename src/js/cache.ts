@@ -1,4 +1,5 @@
 import { browser } from "$app/environment";
+import { DEPLOYMENT } from "js/config";
 
 type CacheStore = {
 	expiration: number;
@@ -9,10 +10,9 @@ function generate_cache_key(key: string) {
 	return "cache-" + key;
 }
 
-
 let _store = new Map<string, string>();
 let serverStorage = {
-	getItem: (key: string): string|null => {
+	getItem: (key: string): string | null => {
 		let value = _store.get(key);
 		if (value === undefined) return null;
 		else return value;
@@ -20,7 +20,7 @@ let serverStorage = {
 	setItem: (key: string, value: string) => _store.set(key, value),
 	removeItem: (key: string) => _store.delete(key),
 	clear: () => _store.clear(),
-}
+};
 
 function get(key: string): null | any {
 	let storage = browser ? sessionStorage : serverStorage;
@@ -44,13 +44,13 @@ function set(key: string, value: any, ttl: number = 5000) {
 
 	let store = {
 		value: value,
-		expiration: Date.now() + ttl
+		expiration: Date.now() + ttl,
 	};
 
 	try {
 		storage.setItem(cache_key, JSON.stringify(store));
 	} catch {
-		storage.clear()
+		storage.clear();
 	}
 }
 
@@ -62,7 +62,6 @@ function removed_outdated_entries() {
 		if (json == null) continue;
 
 		let store: CacheStore = JSON.parse(json);
-		console.log(store);
 		if (Date.now() > store.expiration) {
 			localStorage.removeItem(key);
 		}
@@ -70,6 +69,8 @@ function removed_outdated_entries() {
 }
 
 function use_cache<T>(key: string, ttl: number = 5000, func: () => T): T {
+	// Cache is disabled in dev mode
+	if (DEPLOYMENT == "dev") return func();
 	removed_outdated_entries();
 
 	let cached_value = get(key);
@@ -82,7 +83,13 @@ function use_cache<T>(key: string, ttl: number = 5000, func: () => T): T {
 	}
 }
 
-async function use_cache_async<T>(key: string, ttl: number = 5000, func: () => Promise<T>): Promise<Awaited<T>> {
+async function use_cache_async<T>(
+	key: string,
+	ttl: number = 5000,
+	func: () => Promise<T>,
+): Promise<Awaited<T>> {
+	// Cache is disabled in dev mode
+	if (DEPLOYMENT == "dev") return await func();
 	removed_outdated_entries();
 
 	let cached_value = get(key);

@@ -6,6 +6,7 @@ import { RealBooru as _RealBooru } from "./gelbooru2/realbooru";
 import { XBooru as _XBooru } from "./gelbooru2/xbooru";
 import { E621 as _E621 } from "./e621";
 export * from "./types";
+export * as query from "./query";
 
 export const Rule34 = new _Rule34();
 export const Safebooru = new _Safebooru();
@@ -14,32 +15,24 @@ export const RealBooru = new _RealBooru();
 export const XBooru = new _XBooru();
 export const E621 = new _E621();
 
-export const boorus: Booru[] = [
-	Rule34,
-	Safebooru,
-	HypnoHub,
-	RealBooru,
-	XBooru,
-	E621,
-];
-
+export const boorus: Booru[] = [Rule34, Safebooru, HypnoHub, RealBooru, XBooru, E621];
 
 export function get_booru(booru_name: string): Booru {
 	for (let booru of boorus) {
 		if (booru.short_name === booru_name) {
-			return booru
+			return booru;
 		}
 	}
 
-	throw new Error(`Booru "${booru_name}" does not exist`)
+	throw new Error(`Booru "${booru_name}" does not exist`);
 }
 
-export function attempt_get_booru(booru_name: string): Booru|undefined {
+export function attempt_get_booru(booru_name: string): Booru | undefined {
 	for (let booru of boorus) {
 		if (booru.short_name === booru_name) {
-			return booru
+			return booru;
 		}
 	}
 
-	return undefined
+	return undefined;
 }

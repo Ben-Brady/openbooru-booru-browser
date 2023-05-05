@@ -1,5 +1,5 @@
 import type { Booru } from "../types";
-import { Gelbooru2 } from "./base";
+import { Gelbooru2 } from "./generic";
 
 export class HypnoHub extends Gelbooru2 implements Booru {
 	url = "https://hypnohub.net";

@@ -1,13 +1,14 @@
-import type { Booru, Post, Query, Tag } from "../types";
+import { DEFAULT_QUERY } from "../query";
+import type { Booru, Post, Query, OptionalQuery, Tag } from "../types";
 import { Sort, MediaType, TagNamespace } from "../types";
 import { parse_xml_nodes } from "./utils";
 import { CORS_PROXY, DEPLOYMENT } from "js/config";
 
-const BLACKLISTED_TAGS: string[] = []
+const BLACKLISTED_TAGS: string[] = [];
 
 export abstract class Gelbooru2 implements Booru {
-	url!:string
-	api_url!:string
+	url!: string;
+	api_url!: string;
 	short_name!: string;
 	display_name!: string;
 
@@ -23,25 +24,20 @@ export abstract class Gelbooru2 implements Booru {
 		return this.url + `/index.php?page=post&s=view&id=${id}`;
 	}
 
-
-	async search(query: Query, page: number = 0): Promise<Post[]> {
-		let tags: string[] = []
+	async search(query: OptionalQuery, page: number = 0): Promise<Post[]> {
+		let filled_query: Query = Object.assign({...DEFAULT_QUERY}, query)
+		let tags: string[] = [];
 		if (DEPLOYMENT === "dev") {
-			tags.push("rating:safe")
+			tags.push("rating:safe");
 		}
-		if (query.include_tags) {
-			tags.push(...query.include_tags);
-		}
-		if (query.exclude_tags) {
-			let exclude_tags = query.exclude_tags.map(tag => `-${tag}`);
-			tags.push(...exclude_tags);
-		}
-		tags.push(get_sort_tag(query));
+		tags.push(...filled_query.include_tags);
+		tags.push(...filled_query.exclude_tags.map(tag => `-${tag}`));
+		tags.push(get_sort_tag(filled_query.sort));
 		tags.push(...BLACKLISTED_TAGS);
 
 		let search = tags.join(" ");
 		search += ` ${query.search ?? ""} `;
-		search += create_media_tags(query);
+		search += create_media_tags(filled_query);
 
 		let params = new URLSearchParams();
 		params.set("tags", search ?? "");
@@ -75,11 +71,11 @@ export abstract class Gelbooru2 implements Booru {
 		};
 
 		let url = this.url;
-		url += "/autocomplete.php"
-		url += "?"
-		url += new URLSearchParams({ q: search })
+		url += "/autocomplete.php";
+		url += "?";
+		url += new URLSearchParams({ q: search });
 
-		url = CORS_PROXY + encodeURI(url)
+		url = CORS_PROXY + encodeURI(url);
 		let r = await fetch(url);
 		let raw_tags: GelbooruTag[] = await r.json();
 
@@ -89,18 +85,17 @@ export abstract class Gelbooru2 implements Booru {
 			let count_match = tag.label.match(/\((\d+)\)/);
 			let count = 0;
 			if (count_match) {
-				count = Number(count_match[1])
+				count = Number(count_match[1]);
 			}
 
-			return { name, count, namespace: TagNamespace.Generic }
+			return { name, count, namespace: TagNamespace.Generic };
 		});
 	}
 }
 
-
 function create_media_tags(query: Query): string {
-	if (query.media === undefined) return ""
-	if (query.media.length === 0) return ""
+	if (query.media === undefined) return "";
+	if (query.media.length === 0) return "";
 
 	let images = query.media.includes(MediaType.Image);
 	let videos = query.media.includes(MediaType.Video);
@@ -110,25 +105,28 @@ function create_media_tags(query: Query): string {
 	// So was can't do -gif if we need videos
 	// GIF filtering is hard :(
 	if (images && !videos && !gifs) {
-		return " -gif -video "
+		return " -gif -video ";
 	} else if (gifs && videos && !images) {
 		return " ( video ~ gif ) ";
 	} else if (gifs && !videos && !images) {
 		return " gif -video ";
 	} else if (videos && !gifs && !images) {
-		return " video "
+		return " video ";
 	} else if (gifs && images && !videos) {
 		return " -video ";
 	} else {
-		return ""
+		return "";
 	}
 }
-function get_sort_tag(query: Query): string {
-	let sort = query.sort ?? Sort.Top_Rated;
+function get_sort_tag(sort: Sort): string {
 	switch (sort) {
-		case Sort.Top_Rated: return "sort:score"
-		case Sort.Lowest_Rated: return "sort:score:asc"
-		case Sort.Hotest: return `sort:score`
-		case Sort.Newest: return "sort:id"
+		case Sort.Top_Rated:
+			return "sort:score";
+		case Sort.Lowest_Rated:
+			return "sort:score:asc";
+		case Sort.Hotest:
+			return `sort:score`;
+		case Sort.Newest:
+			return "sort:id";
 	}
 }

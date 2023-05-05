@@ -12,8 +12,8 @@
 	}
 
 	onMount(() => {
-		volume = localStorage.getItem("video-volume") ?? 1;
-	})
+		volume = Number(localStorage.getItem("video-volume")) ?? 1;
+	});
 </script>
 
 <!-- svelte-ignore a11y-media-has-caption -->
@@ -29,7 +29,7 @@
 		src="{generateUrl(video.url)}"
 		width="{video.width}"
 		height="{video.height}"
-		type={video.mimetype}
+		type="{video.mimetype}"
 	/>
 </video>
 
