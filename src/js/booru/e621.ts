@@ -40,8 +40,8 @@ export class E621 implements Booru {
 		tags.push(...BLACKLISTED_TAGS);
 		// tags.push(...create_media_tags(filled_query));
 
-		search += ` ${filled_query.search} `;
 		search = tags.join(" ");
+		search += ` ${filled_query.search} `;
 
 		let params = new URLSearchParams();
 		params.set("tags", search);
@@ -62,7 +62,11 @@ export class E621 implements Booru {
 			}
 		});
 		let posts = parsed_posts.filter(post => post !== undefined) as Post[];
-		return posts.filter(post => filled_query.media.includes(post.type));
+		if (filled_query.media.length === 0 || filled_query.media.length === 3) {
+			return posts
+		} else {
+			return posts.filter(post => filled_query.media.includes(post.type));
+		}
 	}
 
 	async get(id: string): Promise<Post | undefined> {
