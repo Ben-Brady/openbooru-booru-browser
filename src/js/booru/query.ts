@@ -48,7 +48,7 @@ export function decode_query(params: URLSearchParams): Query {
 			case "worst":
 				return Sort.Lowest_Rated;
 			default:
-				return Sort.Newest;
+				return DEFAULT_QUERY.sort;
 		}
 	})();
 
@@ -75,5 +75,5 @@ export const DEFAULT_QUERY: Query = {
 	exclude_tags: [],
 	media: [],
 	search: "",
-	sort: Sort.Newest,
+	sort: Sort.Hotest,
 };
