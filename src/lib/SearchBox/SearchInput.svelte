@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy } from "svelte";
 
-	export let search: string | undefined;
-	let input: string = search ?? "";
+	export let search: string;
+	let input: string = search;
 
 	$: {
 		clearTimeout(update_timeout);
@@ -12,12 +12,8 @@
 	}
 
 	let update_timeout: string | number | NodeJS.Timeout | undefined;
-	onMount(() => {
-		search = input;
-	});
-	onDestroy(() => {
-		clearTimeout(update_timeout);
-	});
+	onMount(() => (search = input));
+	onDestroy(() => (clearTimeout(update_timeout)));
 </script>
 
 <div>

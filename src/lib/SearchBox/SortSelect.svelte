@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Sort } from "js/booru/types";
 
-	export let sort: Sort | undefined;
+	export let sort: Sort;
 </script>
 
 <div>

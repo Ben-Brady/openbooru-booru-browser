@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { MediaType } from "js/booru/types";
 
-	export let media: MediaType[] | undefined;
+	export let media: MediaType[];
 
 	let media_types = [
 		{ text: "Gifs", value: MediaType.Animation },
@@ -11,14 +11,10 @@
 
 	function createToggleCallback(media_type: MediaType): () => void {
 		return () => {
-			if (media === undefined) {
-				media = [];
-			}
-
 			if (media.includes(media_type)) {
-				media = media.filter(v => v !== media_type);
+				media = media.filter(v => v !== media_type).sort();
 			} else {
-				media = media.concat(media_type);
+				media = media.concat(media_type).sort();
 			}
 		};
 	}
@@ -28,10 +24,10 @@
 	{#each media_types as { text, value }}
 		<button
 			on:click="{createToggleCallback(value)}"
-			data-selected="{String(media && media.includes(value))}"
+			data-selected="{media.includes(value)}"
 		>
-			<div class="blacked">
-				<span data-selected="{String(media && media.includes(value))}">
+			<div class="media-box">
+				<span data-selected="{media.includes(value)}">
 					{text}
 				</span>
 			</div>
@@ -49,7 +45,7 @@
 		border: solid #c54242(0, 0%, 100%, 0.12) 1px;
 	}
 
-	div.blacked {
+	div.media-box {
 		&:hover {
 			background: rgba(0, 0, 0, 0.12);
 		}

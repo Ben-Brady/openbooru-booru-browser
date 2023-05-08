@@ -8,7 +8,7 @@
 	export let finished: boolean;
 	export let loading: boolean;
 	export let posts: Post[];
-	export let requestPosts: () => Promise<void>;
+	export let requestPosts: () => Promise<any>;
 
 	const Clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 

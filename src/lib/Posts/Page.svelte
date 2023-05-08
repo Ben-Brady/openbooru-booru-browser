@@ -1,73 +1,54 @@
 <script lang="ts">
-	import type { Post, Booru, Query } from "js/booru/types";
-	import { page } from "$app/stores";
-	import { goto } from '$app/navigation';
-	import { decode_query, DEFAULT_QUERY } from "js/booru/query";
-	import { generate_posts_link } from "js/links";
-
+	import { goto } from "$app/navigation";
+	import { browser } from "$app/environment";
+	import { createInfiniteQuery, useQueryClient } from '@tanstack/svelte-query'
+	import type { Booru, Query } from "js/booru/types";
 	import SearchBox from "lib/SearchBox/index.svelte";
 	import Column from "lib/Posts/Column/index.svelte";
-	import { browser } from "$app/environment";
-	import Cache from "js/cache";
-	import { onMount } from "svelte";
+	import { generate_posts_link } from "js/links";
+
 	export let booru: Booru;
+	export let query: Query;
 
 	let page_width = 0;
 
-	let query: Query = DEFAULT_QUERY;
-	let pid = 0;
-	let finished = false;
-	let loading = false;
-	let posts: Post[] = [];
-
-	async function resetSearch() {
-		if (!browser || query === null) return
-
-		await goto(generate_posts_link(query, booru.short_name))
-
-
-		pid = 0;
-		finished = false;
-		loading = false;
-		posts = [];
-		await requestPosts();
-	}
-	$: ((..._) => resetSearch())(query, booru)
-
-	async function requestPosts() {
-		if (finished || loading || query === null) return;
-		navigator.locks.request("posts-search", { ifAvailable: true}, async () => {
-			loading = true;
-
-			let new_posts: Post[];
-			try {
-				let cache_key = `${booru.short_name}-${pid}-${JSON.stringify(query)}`;
-				new_posts = await Cache.use_cache_async(cache_key, 60000, () => booru.search(query, pid));
-			} catch (e) {
-				console.trace(e);
-				return;
-			}
-
-			pid += 1
-			posts = posts.concat(...new_posts);
-			if (new_posts.length === 0) finished = true;
-			loading = false;
-		})
+	$: {
+		if (browser) {
+			let url = generate_posts_link(query, booru.short_name);
+			goto(url);
+		}
 	}
 
-	onMount(async () => {
-		query = decode_query($page.url.searchParams);
-		await resetSearch()
+	async function fetchNextPage({ pageParam: pid = 0 }) {
+		let posts = await booru.search(query, pid);
+		let next_page_param = posts.length > 0 ? pid + 1 : undefined;
+		console.log({ pid, next_page_param });
+		return {
+			posts,
+			next_page_param,
+		};
+	}
+
+	$: infinite_query = createInfiniteQuery({
+		queryKey: [booru.short_name, query],
+		queryFn: fetchNextPage,
+		getNextPageParam: (lastGroup) => lastGroup.next_page_param,
+		staleTime: Infinity,
+		cacheTime: 60 * 1000
 	})
+	$: console.log(query)
+	$: posts = $infinite_query.data?.pages.map(p => p.posts).flat() ?? [];
+	$: loading = $infinite_query.isLoading;
+	$: requestPosts = $infinite_query.fetchNextPage;
 </script>
 
 <svelte:window bind:innerWidth="{page_width}"/>
 {#if browser && page_width < 640}
 	<Column
-		{finished}
-		{loading}
-		{posts}
-		{requestPosts}
+		finished={false}
+		loading={loading}
+		posts={posts}
+		requestPosts={requestPosts}
 	/>
 {:else}
 	<div id="container">
@@ -78,10 +59,10 @@
 			/>
 		</div>
 		<Column
-			{finished}
-			{loading}
-			{posts}
-			{requestPosts}
+			finished={false}
+			loading={loading}
+			posts={posts}
+			requestPosts={requestPosts}
 		/>
 	</div>
 {/if}

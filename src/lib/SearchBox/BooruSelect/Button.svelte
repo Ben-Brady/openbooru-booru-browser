@@ -1,17 +1,14 @@
 <script lang="ts">
+	import type { Booru } from "js/booru/types";
 	import { createEventDispatcher } from "svelte";
 	const dispatch = createEventDispatcher();
-	import type { Booru } from "js/booru/types";
-	import { browser } from "$app/environment";
 
-	export let booru: Booru | null = null;
+	export let booru: Booru;
 </script>
 
 <button on:click="{() => dispatch('click')}">
 	<div>
-		{#if browser}
-			<img src="{booru?.icon}" alt="{booru?.display_name}" />
-		{/if}
+		<img src="{booru.icon}" alt="{booru.display_name}" />
 	</div>
 </button>
 

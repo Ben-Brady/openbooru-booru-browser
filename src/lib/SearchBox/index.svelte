@@ -9,24 +9,16 @@
 	export let query: Query;
 	export let booru: Booru;
 
-	$: tmp_query = query;
-	$: {
-		let tmp_query: Query = Object.assign({}, query);
-		if (tmp_query !== query) {
-			query = tmp_query;
-		}
-	}
-
 	$: previous_booru.set(booru.short_name);
 </script>
 
 <div id="container">
-	<MediaSelect bind:media="{tmp_query.media}" />
+	<MediaSelect bind:media="{query.media}" />
 	<div id="select">
 		<BooruSelect bind:booru="{booru}" />
-		<SortSelect bind:sort="{tmp_query.sort}" />
+		<SortSelect bind:sort="{query.sort}" />
 	</div>
-	<SearchInput bind:search="{tmp_query.search}" />
+	<SearchInput bind:search="{query.search}" />
 	<!-- <TagSelect on:addTag={event => addTag(event.detail)} /> -->
 </div>
 

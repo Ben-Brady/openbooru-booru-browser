@@ -2,7 +2,7 @@
 	import type { PageData } from "./$types";
 	import { error } from "@sveltejs/kit";
 	import { goto } from "$app/navigation";
-	import { useQuery } from "@sveltestack/svelte-query";
+	import { createQuery } from '@tanstack/svelte-query';
 	import { get_booru } from "js/booru";
 	import { generate_post_link } from "js/links";
 	import HeadInfo from "lib/HeadInfo.svelte";
@@ -25,7 +25,11 @@
 			return post;
 		}
 	}
-	const queryResult = useQuery([id, booru_name], getPost, { initialData: post });
+	const queryResult = createQuery({
+		queryKey: [booru_name, id],
+		queryFn: getPost,
+		initialData: post,
+	});
 </script>
 
 {#if $queryResult.data === undefined}
