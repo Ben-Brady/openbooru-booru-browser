@@ -12,7 +12,7 @@ export function generate_post_link(id: string | number, booru: string): string {
 }
 
 export function generate_tag_link(tag: string): string {
-	return generate_posts_link({ include_tags: [tag] });
+	return generate_posts_link({ search: tag });
 }
 
 export function generate_posts_link(query: OptionalQuery, booru: string | undefined = undefined) {
