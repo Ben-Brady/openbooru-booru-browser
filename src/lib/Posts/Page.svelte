@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { browser } from "$app/environment";
-	import { createInfiniteQuery, useQueryClient } from '@tanstack/svelte-query'
+	import { createInfiniteQuery } from '@tanstack/svelte-query'
 	import type { Booru, Query } from "js/booru/types";
 	import SearchBox from "lib/SearchBox/index.svelte";
 	import Column from "lib/Posts/Column/index.svelte";
@@ -22,7 +22,6 @@
 	async function fetchNextPage({ pageParam: pid = 0 }) {
 		let posts = await booru.search(query, pid);
 		let next_page_param = posts.length > 0 ? pid + 1 : undefined;
-		console.log({ pid, next_page_param });
 		return {
 			posts,
 			next_page_param,
@@ -36,10 +35,14 @@
 		staleTime: Infinity,
 		cacheTime: 60 * 1000
 	})
-	$: console.log(query)
 	$: posts = $infinite_query.data?.pages.map(p => p.posts).flat() ?? [];
 	$: loading = $infinite_query.isLoading;
-	$: requestPosts = $infinite_query.fetchNextPage;
+	$: requestPosts = async () => {
+		navigator.locks.request("posts-search", { ifAvailable: true, }, async (lock) => {
+			if (lock === null) return;
+			await $infinite_query.fetchNextPage();
+		});
+	};
 </script>
 
 <svelte:window bind:innerWidth="{page_width}"/>
