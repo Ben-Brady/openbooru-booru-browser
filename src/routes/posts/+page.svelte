@@ -5,6 +5,6 @@
 
   onMount(async () => {
     let booru = $previous_booru;
-    goto(`/posts/${booru}${location.search}`)
+    goto(`/posts/${booru}${location.search}`, { replaceState: true })
   })
 </script>
