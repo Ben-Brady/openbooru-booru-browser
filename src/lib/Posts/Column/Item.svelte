@@ -7,8 +7,8 @@
 	export let priority: boolean = false;
 
 	const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max)
-	let image = post.thumbnail;
-	let aspectRatio = clamp(image.width / image.height, 0.5, 4);
+	$: image = post.thumbnail;
+	$: aspectRatio = clamp(image.width / image.height, 0.5, 4);
 </script>
 
 <a
