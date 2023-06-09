@@ -15,8 +15,11 @@
   }
 
   function toggle() {
-    if (favourited) remove_favourite(post);
-    else add_favourite(post);
+    if (favourited) {
+      remove_favourite(post);
+    } else {
+      add_favourite(post);
+    }
     favourited = !favourited;
   }
 </script>
