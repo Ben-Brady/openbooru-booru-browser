@@ -7,9 +7,9 @@
 <div>
 	<img src="/images/sort.svg" alt="Sort" />
 	<select bind:value="{sort}">
-		<option value="{Sort.Hotest}"> Hotest </option>
-		<option value="{Sort.Newest}"> Newest </option>
 		<option value="{Sort.Top_Rated}"> Highest Rated </option>
+		<option value="{Sort.Newest}"> Newest </option>
+		<option value="{Sort.Random}"> Random</option>
 		<option value="{Sort.Lowest_Rated}"> Lowest Rated </option>
 	</select>
 </div>
