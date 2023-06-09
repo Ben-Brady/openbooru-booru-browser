@@ -39,7 +39,7 @@ export class E621 implements Booru {
 
 		tags.push(get_sort_tag(filled_query.sort));
 		tags.push(...BLACKLISTED_TAGS);
-		// tags.push(...create_media_tags(filled_query));
+		tags.push(...create_media_tags(filled_query));
 
 		search = tags.join(" ");
 		search += ` ${filled_query.search} `;
@@ -139,22 +139,20 @@ export class E621 implements Booru {
 	}
 }
 
-// function create_media_tags(query: Query): string[] {
-// 	if (query.media === undefined) return [];
+function create_media_tags(query: Query): string[] {
+	let media = query.media ?? [];
+	const compareArrays = (a: any[], b: any[]) => a.toString() === b.toString();
 
-// 	let tags = [];
-// 	if (query.media.includes(MediaType.Image)) {
-// 		tags.push(...["~type:png", "~type:jpg"]);
-// 	}
-// 	if (query.media.includes(MediaType.Animation)) {
-// 		tags.push(...["~type:gif"]);
-// 	}
-// 	if (query.media.includes(MediaType.Video)) {
-// 		tags.push(...["~type:webm"]);
-// 	}
-
-// 	return tags;
-// }
+	if (compareArrays(media, [MediaType.Video])) {
+		return ["type:webm"];
+	} else if (compareArrays(media, [MediaType.Animation])) {
+		return ["type:gif"];
+	} else if (compareArrays(media, [MediaType.Image])) {
+		return ["-video"]
+	} else {
+		return []
+	}
+}
 
 function get_sort_tag(sort: Sort): string {
 	switch (sort) {
