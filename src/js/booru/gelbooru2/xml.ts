@@ -2,6 +2,7 @@ import { type Media, type Post, type Booru, type Image, type Tag, TagNamespace }
 import { guess_media_type, guess_mimetype } from "../utils";
 import { DOMParser } from "@xmldom/xmldom";
 
+
 export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 	const parser = new DOMParser();
 	const document = parser.parseFromString(xml, "application/xml");
@@ -18,6 +19,7 @@ export function parse_xml_nodes(xml: string, booru: Booru): Post[] {
 
 	return posts;
 }
+
 
 function parse_post(post: GelbooruPost, booru: Booru): Post {
 	let origin = booru.generate_url(post.id);
@@ -73,6 +75,7 @@ function parse_post(post: GelbooruPost, booru: Booru): Post {
 	};
 }
 
+
 function parse_node(node: Element): GelbooruPost {
 	if (!node.getAttribute) {
 		throw new Error("Invalid Element");
@@ -112,6 +115,7 @@ function parse_node(node: Element): GelbooruPost {
 	};
 }
 
+
 export type GelbooruPost = {
 	file_url: string;
 	width: string;
@@ -137,29 +141,3 @@ export type GelbooruPost = {
 	has_notes: string;
 	has_comments: string;
 };
-// 	file_url="https://api-cdn.rule34.xxx/images/6626/12a78cf55a628c59abc8742dd0a5b4fc.jpeg"
-// 	width="768"
-// 	height="1056"
-
-// 	sample_url="https://api-cdn.rule34.xxx/images/6626/12a78cf55a628c59abc8742dd0a5b4fc.jpeg"
-// 	sample_width="768"
-// 	sample_height="1056"
-
-// 	preview_url="https://api-cdn.rule34.xxx/thumbnails/6626/thumbnail_12a78cf55a628c59abc8742dd0a5b4fc.jpg"
-// 	preview_width="109"
-// 	preview_height="150"
-
-// 	score="3"
-// 	parent_id=""
-// 	rating="q"
-// 	tags=" lop_(star_wars_visions) lop_and_ochou lopunny_(cosplay) tagme "
-// 	id="7560776"
-// 	change="1678375135"
-// 	md5="12a78cf55a628c59abc8742dd0a5b4fc"
-// 	creator_id="1809909"
-// 	has_children="false"
-// 	created_at="Thu Mar 09 15:18:55 +0000 2023"
-// 	status="active"
-// 	source=""
-// 	has_notes="false"
-// 	has_comments="false"

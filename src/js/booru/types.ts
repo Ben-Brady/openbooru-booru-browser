@@ -93,7 +93,7 @@ export type OptionalQuery = {
 
 export enum Sort {
 	Newest = "Newest",
-	Hotest = "Hotest",
 	Top_Rated = "Top-Rated",
 	Lowest_Rated = "Lowest-Rated",
+	Random = "Random",
 }

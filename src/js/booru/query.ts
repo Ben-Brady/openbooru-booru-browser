@@ -4,7 +4,7 @@ import { type OptionalQuery, type Query, Sort, MediaType } from "./types";
 export function encode_query(query: OptionalQuery): URLSearchParams {
 	let params = new URLSearchParams();
 	if (DEFAULT_QUERY.sort !== query.sort) {
-		if (query.sort === Sort.Hotest) params.set("sort", "hotest");
+		if (query.sort === Sort.Random) params.set("sort", "random");
 		if (query.sort === Sort.Newest) params.set("sort", "newest");
 		if (query.sort === Sort.Top_Rated) params.set("sort", "best");
 		if (query.sort === Sort.Lowest_Rated) params.set("sort", "worst");
@@ -41,10 +41,10 @@ export function decode_query(params: URLSearchParams): Query {
 		switch (params.get("sort")) {
 			case "newest":
 				return Sort.Newest;
-			case "hotest":
-				return Sort.Hotest;
 			case "best":
 				return Sort.Top_Rated;
+			case "random":
+				return Sort.Random;
 			case "worst":
 				return Sort.Lowest_Rated;
 			default:
@@ -75,5 +75,5 @@ export const DEFAULT_QUERY: Query = {
 	exclude_tags: [],
 	media: [],
 	search: "",
-	sort: Sort.Hotest,
+	sort: Sort.Top_Rated,
 };

@@ -3,6 +3,7 @@ import type { Booru, Post, Query, Tag, Media, OptionalQuery } from "./types";
 import { MediaType, Sort, TagNamespace } from "./types";
 import { guess_media_type, guess_mimetype } from "./utils";
 import { DEPLOYMENT } from "js/config";
+import { DOMParser } from "@xmldom/xmldom";
 
 const BLACKLISTED_TAGS: string[] = [];
 
@@ -157,12 +158,12 @@ export class E621 implements Booru {
 
 function get_sort_tag(sort: Sort): string {
 	switch (sort) {
-		case Sort.Hotest:
-			return `order:score date:month`;
-		case Sort.Newest:
-			return "order:id";
 		case Sort.Top_Rated:
 			return "order:score";
+		case Sort.Newest:
+			return "order:id_desc";
+		case Sort.Random:
+			return "order:random";
 		case Sort.Lowest_Rated:
 			return "order:score_asc";
 	}
