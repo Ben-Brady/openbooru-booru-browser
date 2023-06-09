@@ -15,15 +15,15 @@
 	let container: Element;
 	async function checkNewPosts() {
 		if (!container) return;
-		if (reachedEndOfScroll(container, 2000) && !finished) {
+		if (reachedEndOfScroll(container, 8000) && !finished) {
 			await requestPosts();
 		}
 	}
 
 	let interval: NodeJS.Timer;
 	onMount(() => {
-		checkNewPosts();
 		window.history.scrollRestoration = "auto";
+		checkNewPosts();
 		interval = setInterval(checkNewPosts, 1000);
 	});
 	onDestroy(() => clearInterval(interval));
