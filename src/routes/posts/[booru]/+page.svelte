@@ -9,5 +9,9 @@
 	let booru: Booru = get_booru(data.booru_name);
 </script>
 
-<HeadInfo path="/posts" />
+<HeadInfo
+	title={booru.display_name}
+	description="Posts"
+	path="/posts"
+/>
 <PostsPage booru="{booru}" query={data.query}/>
