@@ -15,9 +15,9 @@
 <style>
 	main {
 		height: 100%;
-		overflow-y: hidden;
+		overflow-y: auto;
 		display: grid;
-		grid-template-rows: calc(100% - 1.5rem) 1fr;
+		grid-template-rows: 1fr 1.5rem;
 	}
 
 	div {

@@ -5,11 +5,13 @@
 	import TagList from "./TagList.svelte";
 
 	export let post: Post | null;
+
+	let container: Element;
 </script>
 
-<div id="main">
+<div id="main" bind:this={container}>
 	{#if post}
-		<div id="source">
+		<div id="top">
 			<Source source="{post.origin}" />
 		</div>
 		<div id="inner">
@@ -25,31 +27,24 @@
 	#main {
 		position: sticky;
 		float: left;
+		height: 1rem;
 		bottom: 0;
 		left: 0;
-		height: 1.5rem;
-		width: 100%;
+		width: max(10rem, 100%);
 		z-index: 2;
 
 		border-top: .1rem solid black;
-		background-color: var(--BACKGROUND-2);
 		display: grid;
 		grid-template-rows: 1.5rem 1fr;
 
-
-		transition: 200ms ease-in-out;
-		&:hover {
-			height: max(10rem, 100%);
+		#inner {
+			display: grid;
+			grid-template-columns: 14rem 1fr 4rem;
+			padding-bottom: 1rem;
 		}
 	}
 
-	#inner {
-		display: grid;
-		grid-template-columns: 14rem 1fr 4rem;
-		padding-bottom: 1rem;
-	}
-
-	#source {
+	#top {
 		width: 100%;
 		display: flex;
 		align-items: baseline;
