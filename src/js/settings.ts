@@ -1,8 +1,10 @@
 import { writable, type Unsubscriber, type Writable } from "svelte/store";
 import { browser } from "$app/environment";
 import { type Post, Rule34 } from "js/booru";
+import { page } from "$app/stores";
 
-class Setting<T> {
+
+class Setting<T> implements Writable {
 	#key: string;
 	#default: T;
 	store: Writable<T>;
@@ -26,6 +28,7 @@ class Setting<T> {
 
 	set(value: T) {
 		if (!browser) return;
+
 		let data = JSON.stringify(value);
 		localStorage.setItem(this.#key, data);
 		this.store.set(value);
